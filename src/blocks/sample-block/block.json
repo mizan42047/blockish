@@ -20,6 +20,12 @@
 			"type": "string",
 			"default": "h2"
 		},
+		"opacity": {
+			"type": "number",
+			"selectors": {
+				".{{WRAPPER}} .sample-block__content": "opacity: {{VALUE}};"
+			}
+		},
 		"textColor": {
 			"type": "string",
 			"selectors": {

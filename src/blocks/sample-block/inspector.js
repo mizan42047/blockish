@@ -33,6 +33,14 @@ const Inspector = ({ advancedControls }) => {
                             tabName === 'content' && (
                                 <BoilerplateControl type="BoilerplatePanelBody" title={__('Content', 'boilerplate-blocks')}>
                                     <BoilerplateControl
+                                        type="BoilerplateRangeControl"
+                                        label={__('Opacity', 'boilerplate-blocks')}
+                                        slug="opacity"
+                                        min={0}
+                                        max={1}
+                                        step={0.1}
+                                    />
+                                    <BoilerplateControl
                                         type="SelectControl"
                                         label={__('Tag', 'boilerplate-blocks')}
                                         slug="tag"

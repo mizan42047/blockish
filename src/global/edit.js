@@ -34,7 +34,7 @@ const BoilerplateBlocksAdvancedControls = createHigherOrderComponent(
                 return (
                     <>
                         <BoilerplateStyleTag {...props} hash={hash} />
-                        <BlockEdit {...props} />
+                        <BlockEdit {...wrappedProps} />
                     </>
                 )
             }

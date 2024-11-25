@@ -51,24 +51,26 @@ class Utilities
 
     public static function replace_css_placeholders($value, $attribute)
     {
-        foreach (BOILERPLATE_RESERVED_PLACEHOLDERS as $placeholder) {
-            if (strpos($value, $placeholder) !== false) {
-                switch ($placeholder) {
-                    case '{{VALUE}}':
-                        $value = str_replace($placeholder, $attribute ?? '', $value);
-                        break;
-                    case '{{TOP}}':
-                        $value = str_replace($placeholder, $attribute['top'] ?? '', $value);
-                        break;
-                    case '{{BOTTOM}}':
-                        $value = str_replace($placeholder, $attribute['bottom'] ?? '', $value);
-                        break;
-                    case '{{LEFT}}':
-                        $value = str_replace($placeholder, $attribute['left'] ?? '', $value);
-                        break;
-                    case '{{RIGHT}}':
-                        $value = str_replace($placeholder, $attribute['right'] ?? '', $value);
-                        break;
+        if (!empty($attribute)) {
+            foreach (BOILERPLATE_RESERVED_PLACEHOLDERS as $placeholder) {
+                if (strpos($value, $placeholder) !== false) {
+                    switch ($placeholder) {
+                        case '{{VALUE}}':
+                            $value = str_replace($placeholder, $attribute ?? '', $value);
+                            break;
+                        case '{{TOP}}':
+                            $value = str_replace($placeholder, $attribute['top'] ?? '', $value);
+                            break;
+                        case '{{BOTTOM}}':
+                            $value = str_replace($placeholder, $attribute['bottom'] ?? '', $value);
+                            break;
+                        case '{{LEFT}}':
+                            $value = str_replace($placeholder, $attribute['left'] ?? '', $value);
+                            break;
+                        case '{{RIGHT}}':
+                            $value = str_replace($placeholder, $attribute['right'] ?? '', $value);
+                            break;
+                    }
                 }
             }
         }
