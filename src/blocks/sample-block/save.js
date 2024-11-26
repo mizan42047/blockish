@@ -1,6 +1,6 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor';
 
-export default function Edit({ attributes }) {
+export default function Save({ attributes }) {
 	const blockProps = useBlockProps.save({
 		className: 'sample-block',
 	});

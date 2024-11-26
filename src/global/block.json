@@ -7,13 +7,16 @@
 			"type": "string"
 		},
 		"padding": {
-			"type": "object"
+			"type": "object",
+			"selectors": {
+				".{{WRAPPER}}": "padding: {{TOP}} {{RIGHT}} {{BOTTOM}} {{LEFT}};"
+			}
 		},
 		"margin": {
-			"type": "object"
-		},
-		"globalStyles": {
-			"type": "object"
+			"type": "object",
+			"selectors": {
+				".{{WRAPPER}}": "margin: {{TOP}} {{RIGHT}} {{BOTTOM}} {{LEFT}};"
+			}
 		},
 		"preview": {
 			"type": "boolean",
