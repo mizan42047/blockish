@@ -11,6 +11,7 @@ import BoilerplateConditionalWrapper from "./conditional-wrapper";
 import BoilerplateResponsive from "./responsive";
 import BoilerplateRangeControl from "./range-control";
 import BoilerplateTextareaControl from "./textarea-control";
+import BoilerplateSelectControl from "./select-control";
 
 if(window?.boilerplateBlocks?.screen) {
     window.boilerplateBlocks.components = {
@@ -25,6 +26,7 @@ if(window?.boilerplateBlocks?.screen) {
         BoilerplateConditionalWrapper,
         BoilerplateResponsive,
         BoilerplateRangeControl,
-        BoilerplateTextareaControl
+        BoilerplateTextareaControl,
+        BoilerplateSelectControl
     }
 }

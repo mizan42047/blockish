@@ -1,7 +1,6 @@
 import { InspectorControls } from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
 import { memo } from '@wordpress/element';
-import BoilerplateTextareaControl from '../../components/textarea-control';
+import { __ } from '@wordpress/i18n';
 const Inspector = ({ advancedControls }) => {
     const {
         BoilerplateControl,
@@ -44,6 +43,21 @@ const Inspector = ({ advancedControls }) => {
                                         min={0}
                                         max={1}
                                         step={0.1}
+                                    />
+                                    <BoilerplateControl
+                                        type="BoilerplateSelectControl"
+                                        label={__('Overflow', 'boilerplate-blocks')}
+                                        options={[
+                                            {
+                                                label: 'Visible',
+                                                value: 'visible'
+                                            },
+                                            {
+                                                label: 'Hidden',
+                                                value: 'hidden'
+                                            }
+                                        ]}
+                                        slug="overflow"
                                     />
                                     <BoilerplateControl
                                         type="SelectControl"
