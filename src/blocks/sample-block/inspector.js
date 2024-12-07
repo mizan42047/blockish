@@ -1,11 +1,10 @@
 import { InspectorControls } from '@wordpress/block-editor';
-import { __ } from '@wordpress/i18n';
 import { memo } from '@wordpress/element';
-
+import { __ } from '@wordpress/i18n';
 const Inspector = ({ advancedControls }) => {
     const {
         BoilerplateControl,
-        BoilerplateResponsiveControl
+        BoilerplateResponsiveControl,
     } = window?.boilerplateBlocks?.controls;
 
     return (
@@ -33,12 +32,32 @@ const Inspector = ({ advancedControls }) => {
                             tabName === 'content' && (
                                 <BoilerplateControl type="BoilerplatePanelBody" title={__('Content', 'boilerplate-blocks')}>
                                     <BoilerplateControl
+                                        type="BoilerplateTextareaControl"
+                                        label={__('Content', 'boilerplate-blocks')}
+                                        slug="content"
+                                    />
+                                    <BoilerplateControl
                                         type="BoilerplateRangeControl"
                                         label={__('Opacity', 'boilerplate-blocks')}
                                         slug="opacity"
                                         min={0}
                                         max={1}
                                         step={0.1}
+                                    />
+                                    <BoilerplateControl
+                                        type="BoilerplateSelectControl"
+                                        label={__('Overflow', 'boilerplate-blocks')}
+                                        options={[
+                                            {
+                                                label: 'Visible',
+                                                value: 'visible'
+                                            },
+                                            {
+                                                label: 'Hidden',
+                                                value: 'hidden'
+                                            }
+                                        ]}
+                                        slug="overflow"
                                     />
                                     <BoilerplateControl
                                         type="SelectControl"

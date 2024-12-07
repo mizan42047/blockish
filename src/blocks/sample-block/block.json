@@ -43,6 +43,12 @@
 			"selectors": {
 				".{{WRAPPER}} .sample-block__content": "text-align: {{VALUE}};"
 			}
+		},
+		"overflow": {
+			"type": "object",
+			"selectors": {
+				".{{WRAPPER}} .sample-block__content": "overflow: {{VALUE}};"
+			}
 		}
 	},
 	"supports": {
