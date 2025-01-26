@@ -1,14 +1,14 @@
 <?php
 
-namespace BoilerplateBlocks\Core;
+namespace Blockish\Core;
 
-use BoilerplateBlocks\Config\BlocksList;
+use Blockish\Config\BlocksList;
 
 defined('ABSPATH') || exit;
 
 class Blocks
 {
-    use \BoilerplateBlocks\Traits\SingletonTrait;
+    use \Blockish\Traits\SingletonTrait;
 
     public $block_class = '';
     private $collected_block_css = ''; // Store CSS for all blocks
@@ -20,10 +20,13 @@ class Blocks
         add_filter('render_block_data', [$this, 'collect_block_css'], 10);
         add_filter('render_block', [$this, 'add_unique_class_to_block'], 10, 2);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_block_styles']);
+        add_filter('block_categories_all', [$this, 'add_block_category'], 10, 2);
     }
 
     public function register_blocks()
     {
+        // Load plugin textdomain for translations.
+        load_plugin_textdomain( 'blockish', false, BLOCKISH_DIR . 'languages/' );
         $active_blocks = BlocksList::get_instance()->get_list('active');
 
         if (empty($active_blocks)) {
@@ -31,7 +34,7 @@ class Blocks
         }
 
         foreach ($active_blocks as $slug => $block) {
-            $path = BOILERPLATE_BLOCKS_BLOCKS_DIR . $slug;
+            $path = BLOCKISH_BLOCKS_DIR . $slug;
 
             if (is_readable($path)) {
                 register_block_type($path);
@@ -41,11 +44,11 @@ class Blocks
 
     public function get_global_attributes()
     {
-        \BoilerplateBlocks\Core\Utilities::get_filesystem();
+        \Blockish\Core\Utilities::get_filesystem();
 
         global $wp_filesystem;
 
-        $global_metadata_path = BOILERPLATE_BLOCKS_PLUGIN_DIR . '/build/global/block.json';
+        $global_metadata_path = BLOCKISH_DIR . '/build/global/block.json';
 
         if (!is_readable($global_metadata_path)) {
             return [];
@@ -68,7 +71,7 @@ class Blocks
 
     public function setup_block_metadata($metadata)
     {
-        if (!isset($metadata['name']) || !str_contains($metadata['name'], 'boilerplate-blocks')) {
+        if (!isset($metadata['name']) || !str_contains($metadata['name'], 'blockish')) {
             return $metadata;
         }
 
@@ -83,7 +86,7 @@ class Blocks
 
     public function get_device_list()
     {
-        return get_option('boilerplate_device_list', [
+        return get_option('blockish_device_list', [
             'Desktop' => 'base',
             'Tablet' => '1024px',
             'Mobile' => '767px',
@@ -92,10 +95,10 @@ class Blocks
 
     public function collect_block_css($block_data)
     {
-        if (!empty($block_data['blockName']) && str_contains($block_data['blockName'], 'boilerplate-blocks')) {
-            $this->block_class = 'bb-' . \BoilerplateBlocks\Core\Utilities::generate_uniqueId(6);
-            $name = str_replace('boilerplate-blocks/', '', $block_data['blockName']);
-            $metadata = \BoilerplateBlocks\Core\Utilities::get_block_metadata($name);
+        if (!empty($block_data['blockName']) && str_contains($block_data['blockName'], 'blockish')) {
+            $this->block_class = 'bb-' . \Blockish\Core\Utilities::generate_uniqueId(6);
+            $name = str_replace('blockish/', '', $block_data['blockName']);
+            $metadata = \Blockish\Core\Utilities::get_block_metadata($name);
             $meta_attributes = isset($metadata['attributes']) ? $metadata['attributes'] : [];
             $attributes = $block_data['attrs'];
             $breakpoints = $this->get_device_list();
@@ -134,7 +137,7 @@ class Blocks
 
     public function add_unique_class_to_block($block_content, $block)
     {
-        if (!empty($block['blockName']) && str_contains($block['blockName'], 'boilerplate-blocks') && !empty($this->block_class)) {
+        if (!empty($block['blockName']) && str_contains($block['blockName'], 'blockish') && !empty($this->block_class)) {
             $block_content = new \WP_HTML_Tag_Processor($block_content);
             $block_content->next_tag();
             $block_content->add_class($this->block_class);
@@ -147,9 +150,22 @@ class Blocks
     public function enqueue_block_styles()
     {
         if (!empty($this->collected_block_css)) {
-            wp_register_style('boilerplate-block-styles', false);
-            wp_enqueue_style('boilerplate-block-styles');
-            wp_add_inline_style('boilerplate-block-styles', $this->collected_block_css);
+            wp_register_style('blockish-block-styles', false);
+            wp_enqueue_style('blockish-block-styles');
+            wp_add_inline_style('blockish-block-styles', $this->collected_block_css);
         }
+    }
+
+    public function add_block_category($categories, $post)
+    {
+        return array_merge(
+            [
+                [
+                    'slug' => 'blockish-framework',
+                    'title' => __('Blockish Framework', 'blockish'),
+                ],
+            ],
+            $categories,
+        );
     }
 }

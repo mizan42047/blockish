@@ -1,12 +1,12 @@
 <?php
-namespace BoilerplateBlocks\Config;
+namespace Blockish\Config;
 
 defined('ABSPATH') || exit;
 
 class BlocksList extends ConfigList {
 
     // Use the Singleton trait
-    use \BoilerplateBlocks\Traits\SingletonTrait;
+    use \Blockish\Traits\SingletonTrait;
 
     /**
      * Define the type of configuration this list is for.
@@ -28,8 +28,8 @@ class BlocksList extends ConfigList {
      */
     protected function set_list() {
         $this->list = array(
-            'sample-block' => array(
-                'name'    => 'Sample Block',
+            'container' => array(
+                'name'    => 'Container',
                 'package' => 'free',
                 'status'  => 'active',
             ),

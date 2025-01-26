@@ -3,16 +3,16 @@ import {
     __experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
 
-const BoilerplateToggleGroup = ({ label = '', value, onChange, options = [], itemProps = {}, ...props }) => {
+const BlockishToggleGroup = ({ label = '', value, onChange, options = [], itemProps = {}, isDeselectable = true, ...props }) => {
     return (
-        <div className="boilerplate-toggle-group">
+        <div className="blockish-toggle-group blockish-control">
             <ToggleGroupControl
                 label={label}
                 value={value}
                 isBlock
                 __nextHasNoMarginBottom={true}
                 onChange={onChange}
-                isDeselectable={true}
+                isDeselectable={isDeselectable}
                 {...props}
             >
                 {
@@ -30,4 +30,4 @@ const BoilerplateToggleGroup = ({ label = '', value, onChange, options = [], ite
     );
 }
 
-export default BoilerplateToggleGroup;
+export default BlockishToggleGroup;

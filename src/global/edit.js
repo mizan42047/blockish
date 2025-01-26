@@ -1,24 +1,25 @@
 import { addFilter } from '@wordpress/hooks';
 import { createHigherOrderComponent } from '@wordpress/compose';
 import { useMemo, memo } from '@wordpress/element';
-import BoilerplateBlocksWrapperProps from './blocks-wrapper-props';
+import BlockishBlocksWrapperProps from './blocks-wrapper-props';
 import Layout from './components/layout';
+import Width from './components/width';
 import * as previews from './preview';
 
-const BoilerplateBlocksAdvancedControls = createHigherOrderComponent(
+const BlockishBlocksAdvancedControls = createHigherOrderComponent(
     (BlockEdit) =>
         memo((props) => {
-            if (props?.name?.includes('boilerplate-blocks/')) {
+            if (props?.name?.includes('blockish/')) {
 
                 // Preview mode
                 if (props?.attributes?.preview) {
-                    const { blockNameCamelcase } = window?.boilerplateBlocks?.helpers;
+                    const { blockNameCamelcase } = window?.blockish?.helpers;
                     const name = blockNameCamelcase(props?.name);
                     const Preview = previews[name];
                     return Preview;
                 }
 
-                const { BoilerplateStyleTag } = window?.boilerplateBlocks?.components;
+                const { BlockishStyleTag } = window?.blockish?.components;
                 const hash = useMemo(() => {
                     return props?.clientId?.slice(-6);
                 }, [props?.clientId]);
@@ -28,28 +29,29 @@ const BoilerplateBlocksAdvancedControls = createHigherOrderComponent(
                     advancedControls: (
                         <>
                             <Layout {...props} />
+                           {/*  <Width {...props} /> */}
                         </>
                     )
                 };
                 return (
                     <>
-                        <BoilerplateStyleTag {...props} hash={hash} />
+                        <BlockishStyleTag {...props} hash={hash} />
                         <BlockEdit {...wrappedProps} />
                     </>
                 )
             }
 
             return <BlockEdit {...props} />;
-        }), 'BoilerplateBlocksAdvancedControls');
+        }), 'BlockishBlocksAdvancedControls');
 
 addFilter(
     'editor.BlockEdit',
-    'boilerplate-blocks/addAdvancedControls',
-    BoilerplateBlocksAdvancedControls
+    'blockish/addAdvancedControls',
+    BlockishBlocksAdvancedControls
 );
 
 addFilter(
     'editor.BlockListBlock',
-    'boilerplate-blocks/blockWrapper',
-    BoilerplateBlocksWrapperProps
+    'blockish/blockWrapper',
+    BlockishBlocksWrapperProps
 );
