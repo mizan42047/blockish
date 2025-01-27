@@ -1,4 +1,4 @@
-=== Blockish (Cteative Ultimate Blocks) ===
+=== Blockish ===
 Contributors: bdkoder
 Donate link: https://github.com/bdkoder
 Tags: blocks, builder, designs
@@ -42,6 +42,10 @@ Yes, you can use this plugin on your client's website.
 = How do I get support for this plugin? =
 
 You can get support for this plugin by creating a support ticket on the WordPress support forum.
+
+== External services ==
+
+A JSON Schema for block.json [https://schemas.wp.org/trunk/block.json](https://schemas.wp.org/trunk/block.json) can be used by code editors to provide things like tooltips, autocomplete, and validation while editing block.json.
 
 == Screenshots ==
 
