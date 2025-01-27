@@ -25,8 +25,6 @@ class Blocks
 
     public function register_blocks()
     {
-        // Load plugin textdomain for translations.
-        load_plugin_textdomain( 'blockish', false, BLOCKISH_DIR . 'languages/' );
         $active_blocks = BlocksList::get_instance()->get_list('active');
 
         if (empty($active_blocks)) {

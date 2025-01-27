@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Blockish (Cteative Ultimate Blocks)
+ * Plugin Name:       Blockish
  * Description:       A collection of creative Gutenberg blocks to help you build beautiful websites.
  * Requires at least: 6.1
  * Requires PHP:      7.4
