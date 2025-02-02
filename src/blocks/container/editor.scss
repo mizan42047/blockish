@@ -1,6 +1,10 @@
-.blockish-container {
+.wp-block-blockish-container {
     &:not(.has-child-blocks) {
-        .block-list-appender {
+       > .block-list-appender {
+            min-height: var(--container-min-height, 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             &::before {
                 content: '';
                 border: 1px dashed #d3d3d3;

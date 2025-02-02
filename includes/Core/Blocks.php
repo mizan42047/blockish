@@ -91,6 +91,57 @@ class Blocks
         ]);
     }
 
+    function generate_additional_style( $attributes, $wrapper ) {
+        if ( ! isset( $attributes['widthType'] ) || ! is_array( $attributes['widthType'] ) ) {
+            return ''; // Prevent errors if widthType is missing or not an array
+        }
+    
+        $device_list = $this->get_device_list(); // Expected to return an associative array
+        $css         = '';
+    
+        foreach ( $device_list as $device_slug => $device_value ) {
+            $width_rules = null;
+    
+            // Ensure widthType is an array before accessing keys
+            $width_type_value = isset( $attributes['widthType'][ $device_slug ]['value'] )
+                ? $attributes['widthType'][ $device_slug ]['value']
+                : null;
+    
+            if ( $width_type_value && $width_type_value !== 'custom' ) {
+                $width_rules = $width_type_value;
+            } elseif (
+                isset( $attributes['customWidth'][ $device_slug ] ) &&
+                isset( $width_type_value ) &&
+                $width_type_value === 'custom'
+            ) {
+                $width_rules = $attributes['customWidth'][ $device_slug ];
+            }
+    
+            // Only add styles if width_rules is set
+            if ( ! empty( $width_rules ) ) {
+                if ( 'Desktop' === $device_slug ) {
+                    $css .= sprintf(
+                        '.%s { width: %s; }',
+                        esc_attr( $wrapper ),
+                        esc_attr( $width_rules )
+                    );
+                } else {
+                    $css .= sprintf(
+                        '@media (max-width: %s) { .%s { width: %s; } }',
+                        esc_attr( $device_value ),
+                        esc_attr( $wrapper ),
+                        esc_attr( $width_rules )
+                    );
+                }
+            }
+        }
+    
+        return $css;
+    }
+    
+    
+    
+
     public function get_block_default_attributes($meta_attributes)
     {
         $default_attributes = [];
@@ -138,6 +189,10 @@ class Blocks
             }
             
             $final_css = Utilities::generate_css_string($css_rules, $breakpoints);
+            $additional_css = $this->generate_additional_style($block_data['attrs'], $this->block_class);
+            if (!empty($additional_css)) {
+                $final_css .= $additional_css;
+            }
             $this->collected_block_css .= $final_css;
         }
 

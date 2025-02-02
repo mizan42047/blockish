@@ -42,7 +42,7 @@ const Width = ({ name, attributes }) => {
                             left="40px"
                             options={[
                                 { value: 'auto', label: __('Auto', 'blockish') },
-                                { value: 'full', label: __('Full', 'blockish') },
+                                { value: '100%', label: __('Full', 'blockish') },
                                 { value: 'custom', label: __('Custom', 'blockish') },
                             ]}
                         />

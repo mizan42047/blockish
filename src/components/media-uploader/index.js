@@ -1,0 +1,112 @@
+import {
+    MediaUpload,
+    MediaUploadCheck
+} from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
+import {
+    Button,
+    __experimentalHStack as HStack,
+    ResponsiveWrapper,
+    BaseControl
+} from '@wordpress/components';
+import { useRef } from '@wordpress/element';
+
+const instructions = (
+    <p>
+        {__(
+            'To edit the image, you need permissions to upload media.',
+            'blockish'
+        )}
+    </p>
+);
+
+const ALLOWED_MEDIA_TYPES = ['image'];
+
+const BlockishMediaUploader = ({ label = __('Image', 'blockish'), placeholder = __('Upload Image', 'blockish'), value, onChange, allowedTypes = ALLOWED_MEDIA_TYPES }) => {
+    const toggleRef = useRef();
+    return (
+        <div className="blockish-control blockish-media-uploader">
+            <BaseControl label={label}>
+                <MediaUploadCheck fallback={instructions}>
+                    <MediaUpload
+                        title={label}
+                        onSelect={(media) => {
+                            onChange({
+                                id: media.id,
+                                url: media.url,
+                                alt: media.alt,
+                                width: media.width,
+                                height: media.height,
+                                sizes: media.sizes
+                            });
+                        }}
+                        unstableFeaturedImageFlow
+                        allowedTypes={allowedTypes}
+                        modalClass="blockish-media-uploader-modal"
+                        render={({ open }) => (
+                            <div className="blockish-media-uploader-wrapper">
+                                <Button
+                                    ref={toggleRef}
+                                    className={
+                                        !value?.id ? 'blockish-media-uploader-toggle' : 'blockish-media-uploader-preview'
+                                    }
+                                    __next40pxDefaultSize
+                                    onClick={open}
+                                    aria-label={
+                                        !value?.id
+                                            ? null
+                                            : __('Edit or replace the image')
+                                    }
+                                    aria-describedby={
+                                        !value?.id
+                                            ? null
+                                            : `blockish-media-uploader-${value?.id}-describedby`
+                                    }
+                                >
+                                    {!!value?.id && value?.url && (
+                                        <ResponsiveWrapper
+                                            naturalWidth={value?.width}
+                                            naturalHeight={value?.height}
+                                            isInline
+                                        >
+                                            <img
+                                                className="blockish-media-uploader-image"
+                                                src={value?.url}
+                                                alt={value?.alt}
+                                            />
+                                        </ResponsiveWrapper>
+                                    )}
+                                    {!value?.id && placeholder}
+                                </Button>
+                                {!!value?.id && (
+                                    <HStack className="blockish-media-uploader-actions">
+                                        <Button
+                                            className="blockish-media-uploader-image-action"
+                                            onClick={open}
+                                            // Prefer that screen readers use the .editor-post-featured-image__preview button.
+                                            aria-hidden="true"
+                                        >
+                                            {__('Replace')}
+                                        </Button>
+                                        <Button
+                                            className="blockish-media-uploader-image-action"
+                                            onClick={() => {
+                                                onChange(null);
+                                                toggleRef.current.focus();
+                                            }}
+                                        >
+                                            {__('Remove')}
+                                        </Button>
+                                    </HStack>
+                                )}
+                            </div>
+                        )}
+                        value={value?.id}
+                    />
+                </MediaUploadCheck>
+            </BaseControl>
+        </div>
+    )
+}
+
+export default BlockishMediaUploader;

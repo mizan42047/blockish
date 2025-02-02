@@ -12,6 +12,17 @@ const variations = [
     {
         name: '50-50',
         icon: Column5050,
+        attributes: {
+            flexDirection: {
+                Mobile: 'column',
+            },
+            columnGap: {
+                Desktop: '10px',
+            },
+            rowGap: {
+                Mobile: '10px',
+            },
+        },
         innerBlocks: [
             [
                 'blockish/container',
@@ -27,18 +38,29 @@ const variations = [
     {
         name: '33-33-33',
         icon: Column333333,
+        attributes: {
+            flexDirection: {
+                Mobile: 'column',
+            },
+            columnGap: {
+                Desktop: '10px',
+            },
+            rowGap: {
+                Mobile: '10px',
+            },
+        },
         innerBlocks: [
             [
                 'blockish/container',
-                { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 33, unit: "%"}, customWidthTablet: {size: 33, unit: "%"}, customWidthMobile: {size: 33, unit: "%"}, variationSeleted: true },
+                { isVariationPicked: true },
             ],
-			[
+            [
                 'blockish/container',
-                { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 33, unit: "%"}, customWidthTablet: {size: 33, unit: "%"}, customWidthMobile: {size: 33, unit: "%"}, variationSeleted: true },
+                { isVariationPicked: true },
             ],
-			[
+            [
                 'blockish/container',
-                { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 33, unit: "%"}, customWidthTablet: {size: 33, unit: "%"}, customWidthMobile: {size: 33, unit: "%"}, variationSeleted: true },
+                { isVariationPicked: true },
             ],
         ],
         scope: ['block'],
@@ -46,42 +68,128 @@ const variations = [
     {
         name: '50-25-25',
         icon: Column502525,
+        attributes: {
+            flexWrap: {
+                Tablet: 'wrap',
+                Mobile: 'wrap',
+            },
+            flexDirection: {
+                Mobile: 'column',
+            },
+            columnGap: {
+                Desktop: '10px',
+                Tablet: '10px',
+            },
+            rowGap: {
+                Tablet: '10px',
+                Mobile: '10px',
+            },
+        },
         innerBlocks: [
             [
                 'blockish/container',
-                { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 50, unit: "%"}, customWidthTablet: {size: 50, unit: "%"}, customWidthMobile: {size: 50, unit: "%"}, variationSeleted: true },
+                {
+                    isVariationPicked: true,
+                    containerWidth: 'align-custom-width',
+                    customWidthContainer: {
+                        Desktop: '50%',
+                        Tablet: '100%',
+                        Mobile: '100%'
+                    }
+                },
             ],
             [
                 'blockish/container',
-                { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size: 25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
+                {
+                    isVariationPicked: true,
+                    containerWidth: 'align-custom-width',
+                    customWidthContainer: {
+                        Desktop: '25%',
+                        Tablet: '49.2%',
+                        Mobile: '100%'
+                    }
+                },
             ],
-			[
+            [
                 'blockish/container',
-                { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size: 25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
-            ]
+                {
+                    isVariationPicked: true,
+                    containerWidth: 'align-custom-width',
+                    customWidthContainer: {
+                        Desktop: '25%',
+                        Tablet: '49.2%',
+                        Mobile: '100%'
+                    }
+                },
+            ],
         ],
         scope: ['block'],
     },
     {
         name: '25-25-25-25',
         icon: Column25252525,
+        attributes: {
+            flexWrap: {
+                Tablet: 'wrap',
+                Mobile: 'wrap',
+            },
+            flexDirection: {
+                Mobile: 'column',
+            },
+            columnGap: {
+                Desktop: '10px',
+                Tablet: '10px',
+            },
+            rowGap: {
+                Tablet: '10px',
+                Mobile: '10px',
+            },
+        },
         innerBlocks: [
             [
                 'blockish/container',
-                { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size: 25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
+                { 
+                    isVariationPicked: true,
+                    containerWidth: 'align-custom-width',
+                    customWidthContainer: {
+                        Tablet: '49.2%',
+                        Mobile: '100%'
+                    }
+                },
             ],
             [
                 'blockish/container',
-                { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size:25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
+                { 
+                    isVariationPicked: true,
+                    containerWidth: 'align-custom-width',
+                    customWidthContainer: {
+                        Tablet: '49.2%',
+                        Mobile: '100%'
+                    }
+                },
             ],
             [
                 'blockish/container',
-                { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size: 25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
+                { 
+                    isVariationPicked: true,
+                    containerWidth: 'align-custom-width',
+                    customWidthContainer: {
+                        Tablet: '49.2%',
+                        Mobile: '100%'
+                    }
+                },
             ],
-			[
+            [
                 'blockish/container',
-                { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size: 25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
-            ]
+                { 
+                    isVariationPicked: true,
+                    containerWidth: 'align-custom-width',
+                    customWidthContainer: {
+                        Tablet: '49.2%',
+                        Mobile: '100%'
+                    }
+                },
+            ],
         ],
         scope: ['block'],
     },
@@ -100,7 +208,7 @@ const variations = [
     //     ],
     //     scope: ['block'],
     // },
-	// {
+    // {
     //     name: '15-70-15',
     //     icon: Column157015,
     //     innerBlocks: [
@@ -119,7 +227,7 @@ const variations = [
     //     ],
     //     scope: ['block'],
     // },
-	// {
+    // {
     //     name: '80-20',
     //     icon: Column8020,
     //     innerBlocks: [
@@ -134,14 +242,14 @@ const variations = [
     //     ],
     //     scope: ['block'],
     // },
-	// {
+    // {
     //     name: '20-20-20-20',
     //     icon: Column20202020,
-	// 	attributes: {
-	// 		directionDesktop: 'row',
-	// 		wrapDesktop: 'wrap',
-	// 		wrapMobile: 'wrap',
-	// 	},
+    // 	attributes: {
+    // 		directionDesktop: 'row',
+    // 		wrapDesktop: 'wrap',
+    // 		wrapMobile: 'wrap',
+    // 	},
     //     innerBlocks: [
     //         [
     //             'blockish/container',
@@ -155,21 +263,21 @@ const variations = [
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 50, unit: "%"}, customWidthTablet: {size: 50, unit: "%"}, customWidthMobile: {size: 50, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 50, unit: "%"}, customWidthTablet: {size: 50, unit: "%"}, customWidthMobile: {size: 50, unit: "%"}, variationSeleted: true },
     //         ]
     //     ],
     //     scope: ['block'],
     // },
-	// {
+    // {
     //     name: '33-33-33-33',
     //     icon: Column33333333,
-	// 	attributes: {
-	// 		directionDesktop: 'row',
-	// 		wrapDesktop: 'wrap',
-	// 		wrapMobile: 'wrap',
-	// 	},
+    // 	attributes: {
+    // 		directionDesktop: 'row',
+    // 		wrapDesktop: 'wrap',
+    // 		wrapMobile: 'wrap',
+    // 	},
     //     innerBlocks: [
     //         [
     //             'blockish/container',
@@ -183,29 +291,29 @@ const variations = [
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 33, unit: "%"}, customWidthTablet: {size: 33, unit: "%"}, customWidthMobile: {size: 33, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 33, unit: "%"}, customWidthTablet: {size: 33, unit: "%"}, customWidthMobile: {size: 33, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 33, unit: "%"}, customWidthTablet: {size: 33, unit: "%"}, customWidthMobile: {size: 33, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 33, unit: "%"}, customWidthTablet: {size: 33, unit: "%"}, customWidthMobile: {size: 33, unit: "%"}, variationSeleted: true },
     //         ],
     //     ],
     //     scope: ['block'],
     // },
-	// {
+    // {
     //     name: '25-25 25-25',
     //     icon: Column2525_2525,
-	// 	attributes: {
-	// 		directionDesktop: 'row',
-	// 		wrapDesktop: 'wrap',
-	// 		wrapMobile: 'wrap',
-	// 	},
+    // 	attributes: {
+    // 		directionDesktop: 'row',
+    // 		wrapDesktop: 'wrap',
+    // 		wrapMobile: 'wrap',
+    // 	},
     //     innerBlocks: [
     //         [
     //             'blockish/container',
@@ -219,37 +327,37 @@ const variations = [
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size: 25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size: 25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size: 25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size: 25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size: 25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 25, unit: "%"}, customWidthTablet: {size: 25, unit: "%"}, customWidthMobile: {size: 25, unit: "%"}, variationSeleted: true },
     //         ],
     //     ],
     //     scope: ['block'],
     // },
-	// {
+    // {
     //     name: '505010',
     //     icon: Column505010,
-	// 	attributes: {
-	// 		directionDesktop: 'row',
-	// 		wrapDesktop: 'wrap',
-	// 		wrapMobile: 'wrap',
-	// 	},
+    // 	attributes: {
+    // 		directionDesktop: 'row',
+    // 		wrapDesktop: 'wrap',
+    // 		wrapMobile: 'wrap',
+    // 	},
     //     innerBlocks: [
     //         [
     //             'blockish/container',
@@ -266,14 +374,14 @@ const variations = [
     //     ],
     //     scope: ['block'],
     // },
-	// {
+    // {
     //     name: '80208020',
     //     icon: Column80208020,
-	// 	attributes: {
-	// 		directionDesktop: 'row',
-	// 		wrapDesktop: 'wrap',
-	// 		wrapMobile: 'wrap',
-	// 	},
+    // 	attributes: {
+    // 		directionDesktop: 'row',
+    // 		wrapDesktop: 'wrap',
+    // 		wrapMobile: 'wrap',
+    // 	},
     //     innerBlocks: [
     //         [
     //             'blockish/container',
@@ -287,21 +395,21 @@ const variations = [
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 80, unit: "%"}, customWidthTablet: {size: 80, unit: "%"}, customWidthMobile: {size: 80, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 20, unit: "%"}, customWidthTablet: {size: 20, unit: "%"}, customWidthMobile: {size: 20, unit: "%"}, variationSeleted: true },
     //         ]
     //     ],
     //     scope: ['block'],
     // },
-	// {
+    // {
     //     name: '80202080',
     //     icon: Column80202080,
-	// 	attributes: {
-	// 		directionDesktop: 'row',
-	// 		wrapDesktop: 'wrap',
-	// 		wrapMobile: 'wrap',
-	// 	},
+    // 	attributes: {
+    // 		directionDesktop: 'row',
+    // 		wrapDesktop: 'wrap',
+    // 		wrapMobile: 'wrap',
+    // 	},
     //     innerBlocks: [
     //         [
     //             'blockish/container',
@@ -311,27 +419,27 @@ const variations = [
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 20, unit: "%"}, customWidthTablet: {size: 20, unit: "%"}, customWidthMobile: {size: 20, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 20, unit: "%"}, customWidthTablet: {size: 20, unit: "%"}, customWidthMobile: {size: 20, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 80, unit: "%"}, customWidthTablet: {size: 80, unit: "%"}, customWidthMobile: {size: 80, unit: "%"}, variationSeleted: true },
     //         ],
     //     ],
     //     scope: ['block'],
     // },
-	// {
+    // {
     //     name: '20808020',
     //     icon: Column20808020,
-	// 	attributes: {
-	// 		directionDesktop: 'row',
-	// 		wrapDesktop: 'wrap',
-	// 		wrapMobile: 'wrap',
-	// 	},
+    // 	attributes: {
+    // 		directionDesktop: 'row',
+    // 		wrapDesktop: 'wrap',
+    // 		wrapMobile: 'wrap',
+    // 	},
     //     innerBlocks: [
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 20, unit: "%"}, customWidthTablet: {size: 20, unit: "%"}, customWidthMobile: {size: 20, unit: "%"}, variationSeleted: true },
     //         ],
@@ -339,11 +447,11 @@ const variations = [
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 80, unit: "%"}, customWidthTablet: {size: 80, unit: "%"}, customWidthMobile: {size: 80, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 80, unit: "%"}, customWidthTablet: {size: 80, unit: "%"}, customWidthMobile: {size: 80, unit: "%"}, variationSeleted: true },
     //         ],
-	// 		[
+    // 		[
     //             'blockish/container',
     //             { containerWidth: 'gkit-block-custom-wide', customWidthDesktop: {size: 20, unit: "%"}, customWidthTablet: {size: 20, unit: "%"}, customWidthMobile: {size: 20, unit: "%"}, variationSeleted: true },
     //         ],

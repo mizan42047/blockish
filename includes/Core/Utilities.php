@@ -56,6 +56,7 @@ class Utilities
                 if (strpos($value, $placeholder) !== false) {
                     switch ($placeholder) {
                         case '{{VALUE}}':
+                            error_log( print_r( $attribute, true ) );
                             $attribute_value = '';
                             if ($attribute && (is_string($attribute) || is_numeric($attribute))) {
                                 $attribute_value = $attribute;

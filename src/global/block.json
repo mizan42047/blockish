@@ -18,6 +18,12 @@
 				".{{WRAPPER}}": "margin: {{TOP}} {{RIGHT}} {{BOTTOM}} {{LEFT}};"
 			}
 		},
+		"zIndex": {
+			"type": "object",
+			"selectors": {
+				".{{WRAPPER}}": "z-index: {{VALUE}};"
+			}	
+		},
 		"minWidth": {
 			"type": "object",
 			"selectors": {
@@ -34,10 +40,7 @@
 			"type": "object"
 		},
 		"customWidth": {
-			"type": "object",
-			"selectors": {
-				".{{WRAPPER}}": "width: {{VALUE}};"
-			}
+			"type": "object"
 		},
 		
 		"preview": {
