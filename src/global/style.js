@@ -6,7 +6,7 @@ const useStyle = (attributes, WRAPPER) => {
 
     for (const device of deviceList) {
         let widthRules = null;
-        if (attributes.widthType[device.slug] && attributes.widthType[device.slug]?.value !== 'custom') {
+        if (attributes.widthType?.[device?.slug] && attributes?.widthType?.[device?.slug]?.value !== 'custom') {
             widthRules = attributes.widthType[device.slug]?.value
         } else if (attributes.customWidth?.[device?.slug] && attributes.widthType?.[device.slug]?.value == 'custom') {
             widthRules = attributes.customWidth[device.slug]
