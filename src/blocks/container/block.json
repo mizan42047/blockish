@@ -5,8 +5,7 @@
 	"version": "0.1.0",
 	"title": "Container",
 	"category": "blockish-framework",
-	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Container block for help to create responsive layout for your website.",
 	"example": {
 		"attributes": {
 			"preview": true
@@ -24,33 +23,50 @@
 				"value": "div"
 			}
 		},
-		"display": {
+		"containerWidth": {
+			"type": "string",
+			"default": "alignfull"
+		},
+		"customWidthContainer": {
 			"type": "object",
 			"default": {
-				"Desktop": "flex",
-				"Tablet": "flex",
-				"Mobile": "flex"
+				"Desktop": "100%",
+				"Tablet": "100%",
+				"Mobile": "100%"
 			},
 			"selectors": {
-				".{{WRAPPER}}": "display: {{VALUE}};"
+				".{{WRAPPER}}.align-custom-width": "max-width: {{VALUE}};"
+			}
+		},
+		"containerMinHeight": {
+			"type": "object",
+			"selectors": {
+				".{{WRAPPER}}": "--container-min-height: {{VALUE}};"
+			}
+		},
+		"display": {
+			"type": "string",
+			"default": "flex",
+			"selectors": {
+				".{{WRAPPER}}.blockish-container": "display: {{VALUE}};"
 			}
 		},
 		"flexWrap": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}": "flex-wrap: {{VALUE}};"
+				".{{WRAPPER}}.blockish-container.layout-type-flex": "flex-wrap: {{VALUE}};"
 			}
 		},
 		"flexDirection": {
 			"type": "object",
 			"default": {
 				"Desktop": {
-					"label": "Column",
-					"value": "column"
+					"label": "Row",
+					"value": "row"
 				}
 			},
 			"selectors": {
-				".{{WRAPPER}}": "flex-direction: {{VALUE}};"
+				".{{WRAPPER}}.blockish-container.layout-type-flex": "flex-direction: {{VALUE}};"
 			}
 		},
 		"justifyContent": {
@@ -70,7 +86,7 @@
 				}
 			},
 			"selectors": {
-				".{{WRAPPER}}": "justify-content: {{VALUE}};"
+				".{{WRAPPER}}.blockish-container.layout-type-flex": "justify-content: {{VALUE}};"
 			}
 		},
 		"alignItems": {
@@ -90,19 +106,58 @@
 				}
 			},
 			"selectors": {
-				".{{WRAPPER}}": "align-items: {{VALUE}};"
+				".{{WRAPPER}}.blockish-container.layout-type-flex": "align-items: {{VALUE}};"
+			}
+		},
+		"gridLayoutType": {
+			"type": "string",
+			"default": "auto"
+		},
+		"autoGridWidth": {
+			"type": "object",
+			"default": {
+				"Desktop": "12rem"
+			},
+			"selectors": {
+				".{{WRAPPER}}.blockish-container.layout-type-grid.grid-layout-type-auto": "grid-template-columns: repeat(auto-fill,minmax(min({{VALUE}},100%),1fr));"
+			}
+		},
+		"autoGridHeight": {
+			"type": "object",
+			"selectors": {
+				".{{WRAPPER}}.blockish-container.layout-type-grid.grid-layout-type-auto": "grid-auto-rows: minmax({{VALUE}}, auto);"
+			}
+		},
+		"gridColumns": {
+			"type": "object",
+			"default": {
+				"Desktop": 3,
+				"Tablet": 2,
+				"Mobile": 1
+			},
+			"selectors": {
+				".{{WRAPPER}}.blockish-container.layout-type-grid.grid-layout-type-fixed": "grid-template-columns: repeat({{VALUE}}, minmax(0, 1fr));"
+			}
+		},
+		"gridRows": {
+			"type": "object",
+			"default": {
+				"Desktop": 1
+			},
+			"selectors": {
+				".{{WRAPPER}}.blockish-container.layout-type-grid.grid-layout-type-fixed": "grid-template-rows: repeat({{VALUE}}, minmax(0, 1fr));"
 			}
 		},
 		"columnGap": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}": "column-gap: {{VALUE}};"
+				".{{WRAPPER}}.blockish-container": "column-gap: {{VALUE}};"
 			}
 		},
 		"rowGap": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}": "row-gap: {{VALUE}};"
+				".{{WRAPPER}}.blockish-container": "row-gap: {{VALUE}};"
 			}
 		}
 	},
@@ -110,6 +165,10 @@
 		"html": true,
 		"anchor": true
 	},
+	"providesContext": {
+		"display": "display"
+	},
+	"usesContext": [ "display" ],
 	"textdomain": "blockish",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

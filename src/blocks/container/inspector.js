@@ -1,13 +1,18 @@
 import { InspectorControls } from '@wordpress/block-editor';
-import { memo } from '@wordpress/element';
+import { memo, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 const Inspector = ({ attributes, advancedControls }) => {
     const {
         BlockishControl,
         BlockishResponsiveControl,
     } = window?.blockish?.controls;
-    const { useDeviceType, getResponsiveValue } = window?.blockish?.helpers;
-    const device = useDeviceType();
+
+    const {
+        BlockishMediaUploader
+    } = window?.blockish?.components;
+
+    const [backgroundImage, setBackgroundImage] = useState(null);
+    
     return (
         <InspectorControls>
             <BlockishControl
@@ -34,7 +39,42 @@ const Inspector = ({ attributes, advancedControls }) => {
                             tabName === 'layout' && (
                                 <>
                                     <BlockishControl type="BlockishPanelBody" title={__('Layout', 'blockish')}>
+                                        <BlockishControl
+                                            type="BlockishToggleGroup"
+                                            label={__('Container Width', 'blockish')}
+                                            slug="containerWidth"
+                                            options={[
+                                                {
+                                                    label: 'Full Width',
+                                                    value: 'alignfull'
+                                                },
+                                                {
+                                                    label: 'Boxed',
+                                                    value: 'alignwide'
+                                                },
+                                                {
+                                                    label: 'Custom',
+                                                    value: 'align-custom-width'
+                                                }
+                                            ]}
+                                        />
+                                        {
+                                            attributes?.containerWidth === 'align-custom-width' && (
+                                                <BlockishResponsiveControl
+                                                    type="BlockishRangeUnit"
+                                                    label={__('Custom Width', 'blockish')}
+                                                    slug="customWidthContainer"
+                                                    left="90px"
+                                                />
+                                            )
+                                        }
                                         <BlockishResponsiveControl
+                                            type="BlockishRangeUnit"
+                                            label={__('Min Height', 'blockish')}
+                                            slug="containerMinHeight"
+                                            left="68px"
+                                        />
+                                        <BlockishControl
                                             type="BlockishToggleGroup"
                                             label={__('Display', 'blockish')}
                                             slug="display"
@@ -57,7 +97,7 @@ const Inspector = ({ attributes, advancedControls }) => {
                                             isDeselectable={false}
                                         />
                                         {
-                                            getResponsiveValue(attributes, 'display', device) === 'flex' && (
+                                            attributes?.display === 'flex' && (
                                                 <>
                                                     <BlockishResponsiveControl
                                                         type="BlockishSelect"
@@ -163,6 +203,74 @@ const Inspector = ({ attributes, advancedControls }) => {
                                                         __nextHasNoMarginBottom={true}
                                                         left="75px"
                                                     />
+                                                </>
+                                            )
+                                        }
+                                        {
+                                            attributes?.display === 'grid' && (
+                                                <>
+                                                    <BlockishControl
+                                                        type="BlockishToggleGroup"
+                                                        label={__('Grid Layout', 'blockish')}
+                                                        slug="gridLayoutType"
+                                                        options={[
+                                                            {
+                                                                label: 'Auto',
+                                                                value: 'auto'
+                                                            },
+                                                            {
+                                                                label: 'Fixed',
+                                                                value: 'fixed'
+                                                            }
+                                                        ]}
+                                                        isDeselectable={false}
+                                                    />
+                                                    {
+                                                        attributes?.gridLayoutType === 'fixed' && (
+                                                            <>
+                                                                <BlockishResponsiveControl
+                                                                    type="BlockishRangeControl"
+                                                                    label={__('Columns', 'blockish')}
+                                                                    slug="gridColumns"
+                                                                    left="60px"
+                                                                    min={1}
+                                                                    max={12}
+                                                                />
+                                                                <BlockishResponsiveControl
+                                                                    type="BlockishRangeControl"
+                                                                    label={__('Rows', 'blockish')}
+                                                                    slug="gridRows"
+                                                                    left="60px"
+                                                                    min={1}
+                                                                    max={12}
+                                                                />
+                                                            </>
+                                                        )
+                                                    }
+                                                    {
+                                                        attributes?.gridLayoutType === 'auto' && (
+                                                            <>
+                                                                <BlockishResponsiveControl
+                                                                    type="BlockishRangeUnit"
+                                                                    label={__('Grid Width', 'blockish')}
+                                                                    slug="autoGridWidth"
+                                                                    left="70px"
+                                                                />
+                                                                <BlockishResponsiveControl
+                                                                    type="BlockishRangeUnit"
+                                                                    label={__('Grid Height', 'blockish')}
+                                                                    slug="autoGridHeight"
+                                                                    left="72px"
+                                                                />
+                                                            </>
+                                                        )
+                                                    }
+                                                </>
+                                            )
+                                        }
+                                        {
+                                            attributes?.display !== 'block' && (
+                                                <>
                                                     <BlockishResponsiveControl
                                                         type="BlockishRangeUnit"
                                                         label={__('Column Gap', 'blockish')}
@@ -243,7 +351,7 @@ const Inspector = ({ attributes, advancedControls }) => {
                         {
                             tabName === 'style' && (
                                 <BlockishControl type="BlockishPanelBody" title={__('Style', 'blockish')}>
-                                    <BlockishControl
+                                    {/* <BlockishControl
                                         type="BlockishColor"
                                         slug="textColor"
                                         label={__('Text Color', 'blockish')}
@@ -252,6 +360,14 @@ const Inspector = ({ attributes, advancedControls }) => {
                                         type="BlockishFontSizePicker"
                                         slug="fontSize"
                                         label={__('Font Size', 'blockish')}
+                                    /> */}
+                                    <BlockishMediaUploader 
+                                        label={__('Background Image', 'blockish')}
+                                        placeholder={__('Upload Background Image', 'blockish')}
+                                        value={backgroundImage}
+                                        onChange={(image) => {
+                                            setBackgroundImage(image);
+                                        }}
                                     />
                                 </BlockishControl>
                             )

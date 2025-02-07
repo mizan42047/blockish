@@ -22,8 +22,12 @@ export default function Edit({ attributes, setAttributes, advancedControls, clie
 	);
 	const { replaceInnerBlocks } = dispatch(blockEditorStore);
 	const blockProps = useBlockProps({
-		className: clsx('blockish-container', {
+		className: clsx({
 			'has-child-blocks': hasChildBlocks,
+			'blockish-container': attributes?.isVariationPicked && hasChildBlocks,
+			[`${attributes?.containerWidth}`]: attributes?.containerWidth && attributes?.isVariationPicked,
+			[`layout-type-${attributes?.display}`]: attributes?.display,
+			[`grid-layout-type-${attributes?.gridLayoutType}`]: attributes?.display === 'grid' && attributes?.gridLayoutType,
 		}),
 	});
 
@@ -37,6 +41,9 @@ export default function Edit({ attributes, setAttributes, advancedControls, clie
 				isVariationPicked: true,
 			});
 		} else if (nextVariation?.name && nextVariation?.innerBlocks) {
+			if (nextVariation?.attributes) {
+				setAttributes(nextVariation?.attributes);
+			}
 			const innerBlocks = createBlocksFromInnerBlocksTemplate(nextVariation.innerBlocks);
 			replaceInnerBlocks(clientId, innerBlocks).then(() => {
 				setAttributes({

@@ -28,6 +28,6 @@ if( window?.blockish?.screen ){
         replaceString,
         reservedPlaceholder,
         generateCssString,
-        isResponsiveValue
+        isResponsiveValue,
     }
 }

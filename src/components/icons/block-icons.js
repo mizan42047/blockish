@@ -1,0 +1,1 @@
+export const container = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="none" stroke="currentColor" strokeMiterlimit="10" strokeWidth="2" d="M1 1h62v14H1zM1 15h62v48H1zM22 15v48M22 38h41"/></svg>

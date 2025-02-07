@@ -13,6 +13,8 @@ import BlockishRangeControl from "./range-control";
 import BlockishTextareaControl from "./textarea-control";
 import BlockishSelect from "./select";
 import BlockishRangeUnit from "./range-unit";
+import * as blockIcons from "./icons/block-icons";
+import BlockishMediaUploader from "./media-uploader";
 
 if(window?.blockish?.screen) {
     window.blockish.components = {
@@ -29,6 +31,8 @@ if(window?.blockish?.screen) {
         BlockishRangeControl,
         BlockishTextareaControl,
         BlockishSelect,
-        BlockishRangeUnit
+        BlockishRangeUnit,
+        blockIcons,
+        BlockishMediaUploader
     }
 }
