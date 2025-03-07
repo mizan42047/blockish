@@ -21,7 +21,7 @@ import {
   faYoutube
 } from "@fortawesome/free-brands-svg-icons";
 
-const Widgets = ({ isWizard = false }) => {
+const Blocks = ({ isWizard = false }) => {
   const [loading, setLoading] = useState(true);
 
 
@@ -38,14 +38,14 @@ const Widgets = ({ isWizard = false }) => {
     <div className="mt-10 pt-6">
       <div className="mb-12 relative flex flex-col bg-clip-border rounded-xl bg-white dark:bg-gray-900 text-gray-700 shadow-sm">
         <PageHeader
-          title="Widgets List"
+          title="Blocks List"
           desc="It is important to be aware of your system settings and make sure that they are correctly configured for optimal performance." />
         <div className="p-6 pt-2">
-          <RenderWidgets featuresType="get_widgets" />
+          <RenderWidgets featuresType="get_blocks" />
         </div>
       </div>
     </div>
   );
 };
 
-export default Widgets;
+export default Blocks;

@@ -61,6 +61,13 @@ final class Blockish {
 
         // Initialize plugin hooks.
         add_action( 'plugins_loaded', array( $this, 'plugins_loaded' ) );
+
+        add_action( 'init', function() {
+           if(is_admin()) {
+              new \Blockish\Admin\Admin();
+          }
+        });
+        new \Blockish\Admin\Admin();
     }
 
     /**
@@ -132,10 +139,6 @@ final class Blockish {
         Enqueue::get_instance();
         StyleGenerator::get_instance();
         // ExtenSions::get_instance();
-
-        if(is_admin()) {
-            new \Blockish\Admin\Admin();
-        }
     }
 
     public function admin_enqueue_scripts($screen) {

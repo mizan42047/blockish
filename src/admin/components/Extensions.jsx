@@ -22,7 +22,7 @@ const Extensions = ({ isWizard = false }) => {
     <div className="mt-10 pt-6">
       <div className="mb-12 relative flex flex-col bg-clip-border rounded-xl bg-white dark:bg-gray-900 text-gray-700 shadow-sm">
         <PageHeader
-          title="Widgets List"
+          title="Extensions List"
           desc="It is important to be aware of your system settings and make sure that they are correctly configured for optimal performance." />
         <div className="p-6">
           <RenderWidgets featuresType="get_extensions" />

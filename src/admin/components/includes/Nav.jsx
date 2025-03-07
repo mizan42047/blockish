@@ -28,10 +28,10 @@ export default function Nav() {
               <img
                 src={BlockishConfig.logo}
                 className="mr-3 h-10 rounded"
-                alt="Sky Addons"
+                alt="Blockish"
               />
               <span className="text-2xl font-bold text-gray-900 dark:text-white">
-                SKY ADDONS
+                Blockish
               </span>
             </a>
           </div>
@@ -63,7 +63,7 @@ export default function Nav() {
               id="notification-dropdown"
             >
               <div className="block py-2 px-4 text-base font-medium text-center text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                {/*?php esc_html_e( 'Notifications (Empty)', 'sky-elementor-addons' ); ?*/}
+                {/*?php esc_html_e( 'Notifications (Empty)', 'blockish' ); ?*/}
               </div>
               <div></div>
               <a
@@ -85,7 +85,7 @@ export default function Nav() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  {/*?php esc_html_e( 'View all', 'sky-elementor-addons' ); ?*/}
+                  {/*?php esc_html_e( 'View all', 'blockish' ); ?*/}
                 </div>
               </a>
             </div>
@@ -97,7 +97,7 @@ export default function Nav() {
               data-dropdown-toggle="dropdown"
             >
               <span className="sr-only">
-                {/*?php esc_html_e( 'Open user menu', 'sky-elementor-addons' ); ?*/}
+                {/*?php esc_html_e( 'Open user menu', 'blockish' ); ?*/}
               </span>
               <img className="w-9 h-9 rounded-full" src={BlockishConfig.current_user.avatar} alt="%s" />
               <span className="top-0 left-7 absolute w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"

@@ -64,18 +64,18 @@ const Welcome = () => {
   const features = [
     {
       icon: faFile,
-      title: __('Documentation', 'sky-elementor-addons'),
-      description: __('It\'s hard to create good documentation.It\'s even harder to make it awesome. But we think we\'ve solved this for you.We\'ve created a complete package, with everything you need to make your documentation as awesome as the product you\'re building.', 'sky-elementor-addons'),
+      title: __('Documentation', 'blockish'),
+      description: __('It\'s hard to create good documentation.It\'s even harder to make it awesome. But we think we\'ve solved this for you.We\'ve created a complete package, with everything you need to make your documentation as awesome as the product you\'re building.', 'blockish'),
     },
     {
       icon: faGlobe,
-      title: __('Widgets Demo', 'sky-elementor-addons'),
-      description: __('We are making an easy way to create your own website. With Widget Demo, you can launch your website in just a few minutes. You can create unlimited free demo site with more than 1000+ design layouts. All designs are fully responsive and ready-to-use.', 'sky-elementor-addons'),
+      title: __('Widgets Demo', 'blockish'),
+      description: __('We are making an easy way to create your own website. With Widget Demo, you can launch your website in just a few minutes. You can create unlimited free demo site with more than 1000+ design layouts. All designs are fully responsive and ready-to-use.', 'blockish'),
     },
     {
       icon: faHeadset,
-      title: __('Need Help?', 'sky-elementor-addons'),
-      description: __('Customer satisfaction is our top priority. We take pride in the support we provide our users. Whether you need help with our app or want to provide feedback or ask a question, please don\'t hesitate to contact us right away.', 'sky-elementor-addons'),
+      title: __('Need Help?', 'blockish'),
+      description: __('Customer satisfaction is our top priority. We take pride in the support we provide our users. Whether you need help with our app or want to provide feedback or ask a question, please don\'t hesitate to contact us right away.', 'blockish'),
     },
   ];
 
@@ -93,7 +93,7 @@ const Welcome = () => {
         </div>
         <div className="absolute w-100 top-0 left-0 right-0 bottom-0 flex flex-col justify-center items-left p-8">
           <h3 className="text-5xl font-bold text-white dark:text-white">
-            Welcome to Sky Elementor Addons
+            Welcome to Blockish
           </h3>
           <p className="mt-4 text-base text-white dark:text-gray-300">
             Power to create stunning websites with one-click. Create beautiful, mobile-ready sites in minutes.

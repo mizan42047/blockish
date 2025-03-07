@@ -37,7 +37,7 @@ const RenderWidgets = ({ featuresType }) => {
       try {
         setLoading(true); // Ensure loading state starts before fetch
 
-        const response = await axios.get('/wp-json/skyaddons/v1/widget-settings', {
+        const response = await axios.get( BlockishConfig?.rest_url + 'blockish/v1/blocks-settings', {
           params: { action: featuresType },
           headers: { 'X-WP-Nonce': BlockishConfig.nonce }
         });
@@ -74,7 +74,7 @@ const RenderWidgets = ({ featuresType }) => {
   if (loading) {
     return (
       <>
-        <div className="text-center">{__('Loading', 'sky-elementor-addons')}...</div>
+        <div className="text-center">{__('Loading', 'blockish')}...</div>
         <div className="flex justify-center items-center h-40 mt-12"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div></div>
       </>
     )
@@ -96,7 +96,7 @@ const RenderWidgets = ({ featuresType }) => {
         Swal.showLoading();
       }
     });
-    axios.post('/wp-json/skyaddons/v1/widget-settings', {
+    axios.post( BlockishConfig?.rest_url + 'blockish/v1/blocks-settings', {
       action: featuresType,
       widgets: updatedWidgets // Send all updated checkboxes in one request
     }, {

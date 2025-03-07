@@ -5,7 +5,7 @@ import Nav from "./components/includes/Nav";
 import Footer from "./components/includes/Footer";
 
 const Welcome = lazy(() => import("./components/Welcome"));
-const Widgets = lazy(() => import("./components/Widgets"));
+const Blocks = lazy(() => import("./components/Blocks"));
 const Extensions = lazy(() => import("./components/Extensions"));
 const ThirdParty = lazy(() => import("./components/ThirdParty"));
 const License = lazy(() => import("./components/License"));
@@ -62,61 +62,61 @@ const Dashboard = () => {
 
   const data = [
     {
-      label: __('Dashboard', 'sky-elementor-addons'),
+      label: __('Dashboard', 'blockish'),
       value: "dashboard",
       icon: <FontAwesomeIcon icon={faWifi} className="h-5 w-5" />,
       desc: <Welcome />,
     },
     {
-      label: __('Widgets', 'sky-elementor-addons'),
+      label: __('Blocks', 'blockish'),
       value: "widgets",
       icon: <FontAwesomeIcon icon={faObjectGroup} className="h-5 w-5" />,
-      desc: <Widgets />,
+      desc: <Blocks />,
     },
     {
-      label: __('Extensions', 'sky-elementor-addons'),
+      label: __('Extensions', 'blockish'),
       value: "extensions",
       icon: <FontAwesomeIcon icon={faSwatchbook} className="h-5 w-5" />,
       desc: <Extensions />,
     },
     {
-      label: __('3rd Party', 'sky-elementor-addons'),
+      label: __('3rd Party', 'blockish'),
       value: "thirdparty",
       icon: <FontAwesomeIcon icon={faFolder} className="h-5 w-5" />,
       desc: <ThirdParty />,
     },
     {
-      label: BlockishConfig.pro_init ? __('License', 'sky-elementor-addons') : __('Get Pro', 'sky-elementor-addons'),
+      label: BlockishConfig.pro_init ? __('License', 'blockish') : __('Get Pro', 'blockish'),
       value: "license",
       icon: <FontAwesomeIcon icon={faKey} className="h-5 w-5" />,
       desc: BlockishConfig.pro_init ? <License /> : <GetPro />,
     },
     // {
-    //     label: __('Settings', 'sky-elementor-addons'),
+    //     label: __('Settings', 'blockish'),
     //     value: "settings",
     //     icon: <FontAwesomeIcon icon={faGears} className="h-5 w-5" />,
     //     desc: <Settings />,
     // },
     // {
-    //     label: __('Reviews', 'sky-elementor-addons'),
+    //     label: __('Reviews', 'blockish'),
     //     value: "reviews",
     //     icon: <FontAwesomeIcon icon={faHeart} className="h-5 w-5" />,
     //     desc: <Reviews />,
     // },
     {
-      label: __('FAQs', 'sky-elementor-addons'),
+      label: __('FAQs', 'blockish'),
       value: "faqs",
       icon: <FontAwesomeIcon icon={faQuestion} className="h-5 w-5" />,
       desc: <FAQs />,
     },
     {
-      label: __('Support', 'sky-elementor-addons'),
+      label: __('Support', 'blockish'),
       value: "docs",
       icon: <FontAwesomeIcon icon={faHeadset} className="h-5 w-5" />,
       desc: helpCenter(),
     },
     // {
-    //     label: __('Setup Wizard', 'sky-elementor-addons'),
+    //     label: __('Setup Wizard', 'blockish'),
     //     value: "setup",
     //     icon: <FontAwesomeIcon icon={faGears} className="h-5 w-5" />,
     //     desc: <SetupWizard />,
@@ -146,9 +146,9 @@ const Dashboard = () => {
       {/* <Modal 
             open={openModal} 
             onClose={onCloseModal} 
-            center classNames={{ modal: 'sky-elementor-addons' }}
+            center classNames={{ modal: 'blockish' }}
             closeOnEsc={true}
-            >   <Suspense fallback={<div>{__('Loading...', 'sky-elementor-addons')}</div>}>
+            >   <Suspense fallback={<div>{__('Loading...', 'blockish')}</div>}>
                 <SetupWizard />
                 </Suspense>
             </Modal> */}
@@ -179,7 +179,7 @@ const Dashboard = () => {
         <TabsBody>
           {data.map(({ value, desc }) => (
             <TabPanel key={value} value={value} className="py-0">
-              <Suspense fallback={<div>{__('Loading...', 'sky-elementor-addons')}</div>}>
+              <Suspense fallback={<div>{__('Loading...', 'blockish')}</div>}>
                 {desc}
               </Suspense>
             </TabPanel>

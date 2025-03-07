@@ -31,3 +31,4 @@ node_modules/
 blockish
 .DS_Store
 composer.lock
+assets

@@ -16,7 +16,7 @@ const Notice = () => {
       try {
         const response = await axios.get('/wp-json/linkboss/v1/notices', {
           params: { who: 'dashboardApp' },
-          headers: { 'X-WP-Nonce': SkyAddonsConfig.nonce }
+          headers: { 'X-WP-Nonce': BlockishConfig.nonce }
         });
         const fetchedNotices = response?.data?.data?.notices || [];
         setNotices(fetchedNotices);
@@ -34,7 +34,7 @@ const Notice = () => {
 
     const response = axios.get('/wp-json/linkboss/v1/notices', {
       params: { action: 'cron_dismiss', who: 'dashboardApp' },
-      headers: { 'X-WP-Nonce': SkyAddonsConfig.nonce }
+      headers: { 'X-WP-Nonce': BlockishConfig.nonce }
     });
     
   };

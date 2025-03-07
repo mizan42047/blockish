@@ -19,9 +19,9 @@ export default function Footer() {
 						dark:bg-stone-900"
             >
                 <p className="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
-            {__("Thank You for Using ", "sky-elementor-addons")}<a target="_blank" href="https://wowdevs.com" className="hover:underline dark:text-white"><strong>wowDevs.com (v{BlockishConfig.version})</strong></a>
+            {__("Thank You for Using ", "blockish")}<a target="_blank" href="https://wowdevs.com" className="hover:underline dark:text-white"><strong>wowDevs.com (v{BlockishConfig.version})</strong></a>
                     {" "}© 2023 - {new Date().getFullYear()}{" "}
-                    {" "}{__("All rights reserved.", "sky-elementor-addons")}
+                    {" "}{__("All rights reserved.", "blockish")}
                 </p>
                 <div className="flex justify-center items-center space-x-1">
                     <a
@@ -35,7 +35,7 @@ export default function Footer() {
                     <div
                         className="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700"
                     >
-                        {__("Follow us on Facebook", "sky-elementor-addons")}
+                        {__("Follow us on Facebook", "blockish")}
                         <div className="tooltip-arrow" data-popper-arrow="" />
                     </div>
                     <a
@@ -51,7 +51,7 @@ export default function Footer() {
                         role="tooltip"
                         className="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700"
                     >
-                        {/*?php esc_html_e( 'Follow us on Twitter', 'sky-elementor-addons' ); ?*/}
+                        {/*?php esc_html_e( 'Follow us on Twitter', 'blockish' ); ?*/}
                         <div className="tooltip-arrow" data-popper-arrow="" />
                     </div>
                     <a
@@ -67,7 +67,7 @@ export default function Footer() {
                         role="tooltip"
                         className="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700"
                     >
-                        {/*?php esc_html_e( 'Follow us on Linkedin', 'sky-elementor-addons' ); ?*/}
+                        {/*?php esc_html_e( 'Follow us on Linkedin', 'blockish' ); ?*/}
                         <div className="tooltip-arrow" data-popper-arrow="" />
                     </div>
                     <a
@@ -83,7 +83,7 @@ export default function Footer() {
                         role="tooltip"
                         className="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700"
                     >
-                        {/*?php esc_html_e( 'Follow us on YouTube', 'sky-elementor-addons' ); ?*/}
+                        {/*?php esc_html_e( 'Follow us on YouTube', 'blockish' ); ?*/}
                         <div className="tooltip-arrow" data-popper-arrow="" />
                     </div>
                 </div>

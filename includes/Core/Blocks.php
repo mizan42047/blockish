@@ -75,8 +75,8 @@ class Blocks
         return array_merge(
             [
                 [
-                    'slug' => 'blockish-framework',
-                    'title' => __('Blockish Framework', 'blockish'),
+                  'slug'   => 'blockish-framework',
+                  'title'  => __('Blockish Framework', 'blockish'),
                 ],
             ],
             $categories,

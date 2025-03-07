@@ -22,8 +22,11 @@ class Admin {
 		add_action( 'admin_enqueue_scripts', array( $this, 'app_enqueue_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'app_enqueue_scripts' ) );
 		$this->dispatch_actions();
-		error_log( 'Admin constructor' );
-		new Menu();
+		// new Menu() :: get_instance();
+
+    // Initialize the singleton instance
+Menu::get_instance();
+
 	}
 
 	/**
@@ -33,7 +36,7 @@ class Admin {
 	 */
 	public function dispatch_actions() {
 		// new Classes\Dashboard();
-		// new Classes\Widgets_Settings();
+		new \Blockish\Admin\Classes\Widgets_Settings();
 	}
 
 	/**
@@ -82,7 +85,7 @@ class Admin {
 			'version'      => BLOCKISH_VERSION,
 			'nonce'        => wp_create_nonce( 'wp_rest' ),
 			'assets_url'   => BLOCKISH_ASSETS_URL,
-			'logo'         => BLOCKISH_ASSETS_URL . 'images/sky-logo-gradient.png',
+			'logo'         => BLOCKISH_ASSETS_URL . 'imgs/logo.png',
 			'root_url'     => BLOCKISH_URL,
 			'pro_init'     => apply_filters( 'blockish_pro_init', false ),
 			'current_user' => array(

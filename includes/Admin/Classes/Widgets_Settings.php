@@ -6,7 +6,7 @@
  * @since 2.7.0
  */
 
-namespace Blockish\Classes;
+namespace Blockish\Admin\Classes;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -43,18 +43,19 @@ class Widgets_Settings {
 
 	protected $rest_base;
 
-	const WIDGETS_DB_KEY           = 'sky_addons_inactive_widgets';
-	const WIDGETS_3RD_PARTY_DB_KEY = 'sky_addons_inactive_3rd_party_widgets';
-	const EXTENSIONS_DB_KEY        = 'sky_addons_inactive_extensions';
-	const API_DB_KEY               = 'sky_addons_api';
+	const WIDGETS_DB_KEY           = 'blockish_inactive_blocks';
+	const WIDGETS_3RD_PARTY_DB_KEY = 'blockish_inactive_3rd_party_blocks';
+	const EXTENSIONS_DB_KEY        = 'blockish_inactive_extensions';
+	const API_DB_KEY               = 'blockish_api';
 
 	/**
 	 * Construct
 	 */
 	public function __construct() {
-		$this->namespace = 'skyaddons/v1';
-		$this->rest_base = 'widget-settings';
+		$this->namespace = 'blockish/v1';
+		$this->rest_base = 'blocks-settings';
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
+		error_log( 'Widgets_Settings constructor' );
 	}
 
 	/**
@@ -111,16 +112,16 @@ class Widgets_Settings {
 		}
 
 		switch ( $action ) {
-			case 'get_widgets':
-				$widgets = $this->get_widgets_list( 'sky_addons_widgets' );
-				return new WP_REST_Response( $widgets, 200 );
+			case 'get_blocks':
+				$blocks = $this->get_blocks_list( 'blockish_blocks' );
+				return new WP_REST_Response( $blocks, 200 );
 
 			case 'get_extensions':
-				$extensions = $this->get_widgets_list( 'sky_addons_extensions' );
+				$extensions = $this->get_blocks_list( 'blockish_extensions' );
 				return new WP_REST_Response( $extensions, 200 );
 
 			case 'get_3rd_party':
-				$_3rd_party = $this->get_widgets_list( 'sky_addons_3rd_party_widget' );
+				$_3rd_party = $this->get_blocks_list( 'blockish_3rd_party_widget' );
 				return new WP_REST_Response( $_3rd_party, 200 );
 
 			default:
@@ -149,16 +150,16 @@ class Widgets_Settings {
 		}
 
 		switch ( $action ) {
-			case 'get_widgets':
-				$widgets = $this->save_options( 'sky_addons_inactive_widgets', $params['widgets'] );
-				return new WP_REST_Response( $widgets, 200 );
+			case 'get_blocks':
+				$blocks = $this->save_options( 'blockish_inactive_blocks', $params['blocks'] );
+				return new WP_REST_Response( $blocks, 200 );
 
 			case 'get_extensions':
-				$extensions = $this->save_options( 'sky_addons_inactive_extensions', $params['widgets'] );
+				$extensions = $this->save_options( 'blockish_inactive_extensions', $params['blocks'] );
 				return new WP_REST_Response( $extensions, 200 );
 
 			case 'get_3rd_party':
-				$_3rd_party = $this->save_options( 'sky_addons_inactive_3rd_party_widgets', $params['widgets'] );
+				$_3rd_party = $this->save_options( 'blockish_inactive_3rd_party_blocks', $params['blocks'] );
 				return new WP_REST_Response( $_3rd_party, 200 );
 
 			default:
@@ -215,13 +216,27 @@ class Widgets_Settings {
 	 *
 	 * @since 2.7.0
 	 */
-	public function get_widgets_list( $list_name ) {
+	public function get_blocks_list( $list_name ) {
 
-		// $widgets_fields = Blockish_Admin::get_element_list();
+		// $blocks_fields = Blockish_Admin::get_element_list();
 
-		// $_widgets = $widgets_fields[ $list_name ];
+		// $_blocks = $blocks_fields[ $list_name ];
 
-		// return $_widgets;
-    return [];
+		// return $_blocks;
+    $blocks_db = [];
+		$blocks = array(
+			array(
+				'name'         => 'container',
+				'label'        => __( 'Container', 'blockish' ),
+				'type'         => 'checkbox',
+				'value'        => ! in_array( 'container', $blocks_db ) ? 'on' : 'off',
+				'default'      => 'on',
+				'video_url'    => '#',
+				'content_type' => 'custom',
+				'widget_type'  => 'free',
+				'demo_url'     => 'container-blocks/',
+			),
+		);
+		return $blocks;
 	}
 }
