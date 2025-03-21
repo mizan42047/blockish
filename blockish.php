@@ -1,11 +1,12 @@
 <?php
 /**
  * Plugin Name:       Blockish
+ * Plugin URI: https://blockish.pro
  * Description:       A collection of creative Gutenberg blocks to help you build beautiful websites.
  * Requires at least: 6.1
  * Requires PHP:      7.4
  * Version:           1.0.0
- * Author:            bdkoder
+ * Author:            Shahidul Islam
  * Author URI:        https://github.com/bdkoder
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html

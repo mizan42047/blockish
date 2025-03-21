@@ -2,7 +2,9 @@
 Contributors: bdkoder
 Donate link: https://github.com/bdkoder
 Tags: blocks, builder, designs
+Requires at least: 6.1
 Tested up to: 6.7.2
+Requires PHP: 7.4
 Stable tag: 1.0.0
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
