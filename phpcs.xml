@@ -28,7 +28,7 @@
 	<!-- Check up to 8 files simultaneously. -->
 	<arg name="parallel" value="8"/>
 
-	<config name="text_domain" value="sky-elementor-addons" />
+	<config name="text_domain" value="blockish" />
 
 	<!--
 	#############################################################################

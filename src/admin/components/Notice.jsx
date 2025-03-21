@@ -22,7 +22,7 @@ const Notice = () => {
         setNotices(fetchedNotices);
       } catch (error) {
         console.error('Error fetching notices.', error);
-        setError(__('Error fetching notices.', 'sky-elementor-addons'));
+        setError(__('Error fetching notices.', 'blockish'));
       }
     };
 

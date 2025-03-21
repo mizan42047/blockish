@@ -21,7 +21,7 @@ export default function Nav() {
         <div className="flex flex-wrap justify-between items-center">
           <div className="flex justify-start items-center">
             <a
-              href="https://skyaddons.com"
+              href="https://blockish.pro"
               target="_blank"
               className="flex mr-4 items-center"
             >

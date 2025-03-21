@@ -24,7 +24,7 @@ use WP_Error;
  *
  * @since 2.7.0
  */
-class Widgets_Settings {
+class Blocks_Settings {
 
 	private static $instance = null;
 
@@ -55,7 +55,6 @@ class Widgets_Settings {
 		$this->namespace = 'blockish/v1';
 		$this->rest_base = 'blocks-settings';
 		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
-		error_log( 'Widgets_Settings constructor' );
 	}
 
 	/**
@@ -69,7 +68,7 @@ class Widgets_Settings {
 			$this->namespace,
 			'/' . $this->rest_base,
 			array(
-				'methods'             => WP_REST_Server::READABLE,
+				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => array( $this, 'get_settings' ),
 				// 'permission_callback' => array( $this, 'permissions_check' ),
 				'permission_callback' => '__return_true',
@@ -78,7 +77,7 @@ class Widgets_Settings {
 
 		register_rest_route(
 			$this->namespace,
-			'/' . $this->rest_base,
+			'/' . $this->rest_base . '/save',
 			array(
 				'methods'             => WP_REST_Server::EDITABLE,
 				'callback'            => array( $this, 'set_settings' ),
@@ -192,20 +191,20 @@ class Widgets_Settings {
 		if ( $savedOption === $post_value ) {
 			return array(
 				'status' => 'error',
-				'title'  => esc_html__( 'Already Updated.', 'sky-elementor-addons' ),
-				'msg'    => esc_html__( 'There is no change in your settings. So there is no need to save the settings again.', 'sky-elementor-addons' ),
+				'title'  => esc_html__( 'Already Updated.', 'blockish' ),
+				'msg'    => esc_html__( 'There is no change in your settings. So there is no need to save the settings again.', 'blockish' ),
 			);
 		} elseif ( update_option( $option_name, $filter_value ) ) {
 			return array(
 				'status' => 'success',
-				'title'  => esc_html__( 'Successfully Updated.', 'sky-elementor-addons' ),
-				'msg'    => esc_html__( 'Great, your settings saved successfully in your system.', 'sky-elementor-addons' ),
+				'title'  => esc_html__( 'Successfully Updated.', 'blockish' ),
+				'msg'    => esc_html__( 'Great, your settings saved successfully in your system.', 'blockish' ),
 			);
 		} else {
 			return array(
 				'status' => 'error',
-				'title'  => esc_html__( 'Update Failed.', 'sky-elementor-addons' ),
-				'msg'    => esc_html__( 'There was an error updating your settings. Please try again.', 'sky-elementor-addons' ),
+				'title'  => esc_html__( 'Update Failed.', 'blockish' ),
+				'msg'    => esc_html__( 'There was an error updating your settings. Please try again.', 'blockish' ),
 			);
 		}
 	}
@@ -223,7 +222,7 @@ class Widgets_Settings {
 		// $_blocks = $blocks_fields[ $list_name ];
 
 		// return $_blocks;
-    $blocks_db = [];
+    $blocks_db = get_option( 'blockish_inactive_blocks', array() );
 		$blocks = array(
 			array(
 				'name'         => 'container',
@@ -234,7 +233,7 @@ class Widgets_Settings {
 				'video_url'    => '#',
 				'content_type' => 'custom',
 				'widget_type'  => 'free',
-				'demo_url'     => 'container-blocks/',
+				'demo_url'     => '#',
 			),
 		);
 		return $blocks;

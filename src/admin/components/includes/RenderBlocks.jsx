@@ -21,7 +21,7 @@ import {
   faYoutube
 } from "@fortawesome/free-brands-svg-icons";
 
-const RenderWidgets = ({ featuresType }) => {
+const RenderBlocks = ({ featuresType }) => {
   const { refreshKey } = useContext(AppContext);
   const { triggerRefresh } = useContext(AppContext);
 
@@ -29,26 +29,26 @@ const RenderWidgets = ({ featuresType }) => {
   const [countUnused, setCountUnused] = useState(0);
 
   const [loading, setLoading] = useState(true);
-  const [widgets, setWidgets] = useState([]);
+  const [blocks, setBlocks] = useState([]);
   const formRef = useRef(featuresType);
 
   useEffect(() => {
-    const fetchWidgets = async () => {
+    const fetchBlocks = async () => {
       try {
         setLoading(true); // Ensure loading state starts before fetch
 
-        const response = await axios.get( BlockishConfig?.rest_url + 'blockish/v1/blocks-settings', {
-          params: { action: featuresType },
+        const response = await axios.post( BlockishConfig?.rest_url + 'blockish/v1/blocks-settings', {
+          action: featuresType,
           headers: { 'X-WP-Nonce': BlockishConfig.nonce }
         });
 
-        const widgets = Array.isArray(response?.data) ? response.data : [];
-        setWidgets(widgets);
+        const blocks = Array.isArray(response?.data) ? response.data : [];
+        setBlocks(blocks);
 
-        // Count used & unused widgets using reduce()
-        const { used, unused } = widgets.reduce(
-          (acc, widget) => {
-            if (widget.total_used > 0) {
+        // Count used & unused blocks using reduce()
+        const { used, unused } = blocks.reduce(
+          (acc, block) => {
+            if (block.total_used > 0) {
               acc.used += 1;
             } else {
               acc.unused += 1;
@@ -67,7 +67,7 @@ const RenderWidgets = ({ featuresType }) => {
       }
     };
 
-    fetchWidgets();
+    fetchBlocks();
   }, []); // Dependency array
 
 
@@ -83,10 +83,10 @@ const RenderWidgets = ({ featuresType }) => {
   const submitForm = (event) => {
     event.preventDefault();
 
-    const updatedWidgets = {};
+    const updatedBlocks = {};
     const formData = new FormData(event.target);
     for (const [key, value] of formData.entries()) {
-      updatedWidgets[key] = value;
+      updatedBlocks[key] = value;
     }
 
     Swal.fire({
@@ -96,9 +96,9 @@ const RenderWidgets = ({ featuresType }) => {
         Swal.showLoading();
       }
     });
-    axios.post( BlockishConfig?.rest_url + 'blockish/v1/blocks-settings', {
+    axios.post(BlockishConfig?.rest_url + 'blockish/v1/blocks-settings/save', {
       action: featuresType,
-      widgets: updatedWidgets // Send all updated checkboxes in one request
+      blocks: updatedBlocks // Send all updated checkboxes in one request
     }, {
       headers: { 'X-WP-Nonce': BlockishConfig.nonce }
     }).then((response) => {
@@ -128,11 +128,11 @@ const RenderWidgets = ({ featuresType }) => {
         });
       }
     }).catch((error) => {
-      console.error('Error updating widget settings:', error);
+      console.error('Error updating block settings:', error);
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'An error occurred while updating widget settings.'
+        text: 'An error occurred while updating block settings.'
       });
     });
 
@@ -145,36 +145,36 @@ const RenderWidgets = ({ featuresType }) => {
       setIsChecked(!isChecked);
       setTimeout(() => {
         //update the data value
-        const updatedWidgets = {};
-        updatedWidgets[data.name] = !isChecked ? "on" : "off";
-        // console.log('Updated widget:', updatedWidgets);
+        const updatedBlocks = {};
+        updatedBlocks[data.name] = !isChecked ? "on" : "off";
+        // console.log('Updated block:', updatedBlocks);
 
-        setWidgets((prevWidgets) => {
-          const updatedWidgets = prevWidgets.map((widget) => {
-            if (widget.name === data.name) {
-              return { ...widget, value: !isChecked ? "on" : "off" };
+        setBlocks((prevBlocks) => {
+          const updatedBlocks = prevBlocks.map((block) => {
+            if (block.name === data.name) {
+              return { ...block, value: !isChecked ? "on" : "off" };
             }
-            return widget;
+            return block;
           });
-          return updatedWidgets;
+          return updatedBlocks;
         });
       }, 1000);
 
       // Delay request to avoid multiple requests at once
-      clearTimeout(window.widgetUpdateTimeout);
-      window.widgetUpdateTimeout = setTimeout(() => {
+      clearTimeout(window.blockUpdateTimeout);
+      window.blockUpdateTimeout = setTimeout(() => {
         // console.log('Submitting form...');
         formRef.current.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
       }, 2000); // Delay request by 1000ms to batch updates
     };
 
     let badgeValue = data?.content_type?.includes('new') ? 'New' : false;
-    const badge = ('pro' !== data?.widget_type ? badgeValue : (BlockishConfig?.pro_init ? badgeValue : 'Pro'));
+    const badge = ('pro' !== data?.block_type ? badgeValue : (BlockishConfig?.pro_init ? badgeValue : 'Pro'));
 
     return (
-      <div className="sky-widgets-items w-100 px-5 py-4 flex items-center gap-3 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 relative overflow-hidden"
+      <div className="blockish-blocks-items w-100 px-5 py-4 flex items-center gap-3 bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 relative overflow-hidden"
         data-used-status={data?.total_used > 0 ? 'used' : 'unused'}
-        data-widget-type={data?.widget_type}
+        data-block-type={data?.block_type}
       >
         {badge && (
           <div className="absolute left-0 top-0 h-16 w-16">
@@ -203,7 +203,7 @@ const RenderWidgets = ({ featuresType }) => {
           <label htmlFor={`switch-${data.name}`}>
             <input type="hidden" value="off" name={`${data.name}`}></input>
             <Switch
-              checked={'pro' !== data?.widget_type ? isChecked : (BlockishConfig?.pro_init && isChecked ? isChecked : false)}
+              checked={'pro' !== data?.block_type ? isChecked : (BlockishConfig?.pro_init && isChecked ? isChecked : false)}
               onChange={handleSwitchChange}
               onColor="#b47fcc"
               onHandleColor="#8441A4"
@@ -230,8 +230,8 @@ const RenderWidgets = ({ featuresType }) => {
         <div>
           <button type="button" className="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-3.5 py-1.5 rounded-md dark:bg-blue-900 dark:text-blue-300 hover:bg-blue-200"
             onClick={() => {
-              const usedItems = document.querySelectorAll('.sky-widgets-items[data-used-status="used"]');
-              const unusedItems = document.querySelectorAll('.sky-widgets-items[data-used-status="unused"]');
+              const usedItems = document.querySelectorAll('.blockish-blocks-items[data-used-status="used"]');
+              const unusedItems = document.querySelectorAll('.blockish-blocks-items[data-used-status="unused"]');
               usedItems.forEach(item => {
                 item.style.display = 'flex';
               });
@@ -249,8 +249,8 @@ const RenderWidgets = ({ featuresType }) => {
             <>
               <button type="button" className="bg-green-100 text-green-800 text-sm font-medium me-2 px-3.5 py-1.5 rounded-md dark:bg-green-900 dark:text-green-300 hover:bg-green-200"
                 onClick={() => {
-                  const usedItems = document.querySelectorAll('.sky-widgets-items[data-used-status="used"]');
-                  const unusedItems = document.querySelectorAll('.sky-widgets-items[data-used-status="unused"]');
+                  const usedItems = document.querySelectorAll('.blockish-blocks-items[data-used-status="used"]');
+                  const unusedItems = document.querySelectorAll('.blockish-blocks-items[data-used-status="unused"]');
 
                   if (usedItems.length > 0) {
                     unusedItems.forEach(item => {
@@ -269,8 +269,8 @@ const RenderWidgets = ({ featuresType }) => {
               </button>
               <button type="button" className="bg-red-100 text-red-800 text-sm font-medium me-2 px-3.5 py-1.5 rounded-md dark:bg-red-900 dark:text-red-300 hover:bg-red-200"
                 onClick={() => {
-                  const usedItems = document.querySelectorAll('.sky-widgets-items[data-used-status="used"]');
-                  const unusedItems = document.querySelectorAll('.sky-widgets-items[data-used-status="unused"]');
+                  const usedItems = document.querySelectorAll('.blockish-blocks-items[data-used-status="used"]');
+                  const unusedItems = document.querySelectorAll('.blockish-blocks-items[data-used-status="unused"]');
 
                   if (unusedItems.length > 0) {
                     usedItems.forEach(item => {
@@ -295,27 +295,27 @@ const RenderWidgets = ({ featuresType }) => {
             placeholder="Search ..."
             onChange={(event) => {
               const searchValue = event.target.value.toLowerCase();
-              const allItems = document.querySelectorAll('.sky-widgets-items');
+              const allItems = document.querySelectorAll('.blockish-blocks-items');
               allItems.forEach(item => {
-                const widgetName = item.querySelector('h6,p').textContent.toLowerCase();
-                if (widgetName.includes(searchValue)) {
+                const blockName = item.querySelector('h6,p').textContent.toLowerCase();
+                if (blockName.includes(searchValue)) {
                   item.style.display = 'flex';
                 } else {
                   item.style.display = 'none';
                 }
 
                 // if not found, append notice to the DOM
-                const notFound = document.querySelector('.widget-not-found');
+                const notFound = document.querySelector('.block-not-found');
                 if (notFound) {
                   notFound.remove();
                 }
-                if (document.querySelectorAll('.sky-widgets-items[style*="display: none"]').length === allItems.length) {
-                  const widgetContainer = document.querySelector('.sky-widgets-items');
+                if (document.querySelectorAll('.blockish-blocks-items[style*="display: none"]').length === allItems.length) {
+                  const blockContainer = document.querySelector('.blockish-blocks-items');
                   const notFound = document.createElement('div');
-                  notFound.classList.add('widget-not-found', 'text-center', 'text-gray-500', 'dark:text-gray-300', 'mt-5');
+                  notFound.classList.add('block-not-found', 'text-center', 'text-gray-500', 'dark:text-gray-300', 'mt-5');
 
                   notFound.textContent = 'Sorry, not found. Please contact support for more informations.';
-                  widgetContainer.parentNode.appendChild(notFound);
+                  blockContainer.parentNode.appendChild(notFound);
                 }
               });
             }}
@@ -332,11 +332,11 @@ const RenderWidgets = ({ featuresType }) => {
               allSwitches.forEach(switchInput => {
                 switchInput.checked = true;
                 switchInput.dispatchEvent(new Event('change', { cancelable: true, bubbles: true }));
-                setWidgets((prevWidgets) => {
-                  const updatedWidgets = prevWidgets.map((widget) => {
-                    return { ...widget, value: "on" };
+                setBlocks((prevBlocks) => {
+                  const updatedBlocks = prevBlocks.map((block) => {
+                    return { ...block, value: "on" };
                   });
-                  return updatedWidgets;
+                  return updatedBlocks;
                 });
               });
             }}
@@ -351,11 +351,11 @@ const RenderWidgets = ({ featuresType }) => {
               allSwitches.forEach(switchInput => {
                 switchInput.checked = false;
                 switchInput.dispatchEvent(new Event('change', { cancelable: true, bubbles: true }));
-                setWidgets((prevWidgets) => {
-                  const updatedWidgets = prevWidgets.map((widget) => {
-                    return { ...widget, value: "off" };
+                setBlocks((prevBlocks) => {
+                  const updatedBlocks = prevBlocks.map((block) => {
+                    return { ...block, value: "off" };
                   });
-                  return updatedWidgets;
+                  return updatedBlocks;
                 });
               });
             }}
@@ -367,8 +367,8 @@ const RenderWidgets = ({ featuresType }) => {
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {widgets.map((widget, index) => (
-          <WidgetCard key={index} data={widget} />
+        {blocks.map((block, index) => (
+          <WidgetCard key={index} data={block} />
         ))}
       </div>
       <button type="submit" className="hidden">Submit</button>
@@ -376,4 +376,4 @@ const RenderWidgets = ({ featuresType }) => {
   );
 };
 
-export default RenderWidgets;
+export default RenderBlocks;

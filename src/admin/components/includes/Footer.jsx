@@ -19,7 +19,7 @@ export default function Footer() {
 						dark:bg-stone-900"
             >
                 <p className="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
-            {__("Thank You for Using ", "blockish")}<a target="_blank" href="https://wowdevs.com" className="hover:underline dark:text-white"><strong>wowDevs.com (v{BlockishConfig.version})</strong></a>
+            {__("Thank You for Using ", "blockish")}<a target="_blank" href="https://blockish.pro" className="hover:underline dark:text-white"><strong>Blockish (v{BlockishConfig.version})</strong></a>
                     {" "}© 2023 - {new Date().getFullYear()}{" "}
                     {" "}{__("All rights reserved.", "blockish")}
                 </p>

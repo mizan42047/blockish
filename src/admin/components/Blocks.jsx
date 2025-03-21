@@ -3,7 +3,7 @@ import { __ } from "@wordpress/i18n";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import PageHeader from './includes/PageHeader';
-import RenderWidgets from './includes/RenderWidgets';
+import RenderBlocks from './includes/RenderBlocks';
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -41,7 +41,7 @@ const Blocks = ({ isWizard = false }) => {
           title="Blocks List"
           desc="It is important to be aware of your system settings and make sure that they are correctly configured for optimal performance." />
         <div className="p-6 pt-2">
-          <RenderWidgets featuresType="get_blocks" />
+          <RenderBlocks featuresType="get_blocks" />
         </div>
       </div>
     </div>

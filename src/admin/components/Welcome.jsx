@@ -64,28 +64,28 @@ const Welcome = () => {
   const features = [
     {
       icon: faFile,
-      title: __('Documentation', 'blockish'),
-      description: __('It\'s hard to create good documentation.It\'s even harder to make it awesome. But we think we\'ve solved this for you.We\'ve created a complete package, with everything you need to make your documentation as awesome as the product you\'re building.', 'blockish'),
+      title: __('Blocks Documentation', 'blockish'),
+      description: __('Discover comprehensive documentation to help you create and customize blocks effortlessly. Our guides cover everything from basic setup to advanced block development.', 'blockish'),
     },
     {
       icon: faGlobe,
-      title: __('Widgets Demo', 'blockish'),
-      description: __('We are making an easy way to create your own website. With Widget Demo, you can launch your website in just a few minutes. You can create unlimited free demo site with more than 1000+ design layouts. All designs are fully responsive and ready-to-use.', 'blockish'),
+      title: __('Blocks Demo', 'blockish'),
+      description: __('Explore a variety of block demos to see how they work in real-world scenarios. Experiment with layouts and functionalities to find the perfect fit for your project.', 'blockish'),
     },
     {
       icon: faHeadset,
-      title: __('Need Help?', 'blockish'),
-      description: __('Customer satisfaction is our top priority. We take pride in the support we provide our users. Whether you need help with our app or want to provide feedback or ask a question, please don\'t hesitate to contact us right away.', 'blockish'),
+      title: __('Blocks Support', 'blockish'),
+      description: __('Need assistance with blocks? Our dedicated support team is here to help you with any questions or issues you encounter while working with blocks.', 'blockish'),
     },
   ];
 
   return (
     <>
-      <div className="sky-welcome-hero-bg rounded-md overflow-hidden relative">
+      <div className="blockish-welcome-hero-bg rounded-md overflow-hidden relative">
         <div
-          className="sky-welcome-hero-overlay text-center lg:text-left shadow-sm sm:p-8"
+          className="blockish-welcome-hero-overlay text-center lg:text-left shadow-sm sm:p-8"
           style={{
-            backgroundImage: `url("${BlockishConfig.assets_url}images/rocket-bg.jpg")`,
+            backgroundImage: `url("${BlockishConfig.assets_url}imgs/rocket-bg.jpg")`,
             backgroundSize: "cover",
             backgroundPosition: "center"
           }}
@@ -96,7 +96,7 @@ const Welcome = () => {
             Welcome to Blockish
           </h3>
           <p className="mt-4 text-base text-white dark:text-gray-300">
-            Power to create stunning websites with one-click. Create beautiful, mobile-ready sites in minutes.
+            {__("Power to create stunning websites with Blockish. Create beautiful, mobile-ready sites in minutes.", "blockish")}
           </p>
         </div>
       </div>

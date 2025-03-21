@@ -25,7 +25,7 @@ class Admin {
 		// new Menu() :: get_instance();
 
     // Initialize the singleton instance
-Menu::get_instance();
+    Menu::get_instance();
 
 	}
 
@@ -36,7 +36,7 @@ Menu::get_instance();
 	 */
 	public function dispatch_actions() {
 		// new Classes\Dashboard();
-		new \Blockish\Admin\Classes\Widgets_Settings();
+		new \Blockish\Admin\Classes\Blocks_Settings();
 	}
 
 	/**
@@ -85,7 +85,7 @@ Menu::get_instance();
 			'version'      => BLOCKISH_VERSION,
 			'nonce'        => wp_create_nonce( 'wp_rest' ),
 			'assets_url'   => BLOCKISH_ASSETS_URL,
-			'logo'         => BLOCKISH_ASSETS_URL . 'imgs/logo.png',
+			'logo'         => BLOCKISH_ASSETS_URL . 'imgs/logo.svg',
 			'root_url'     => BLOCKISH_URL,
 			'pro_init'     => apply_filters( 'blockish_pro_init', false ),
 			'current_user' => array(

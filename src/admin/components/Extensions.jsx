@@ -3,7 +3,7 @@ import { __ } from "@wordpress/i18n";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import PageHeader from './includes/PageHeader';
-import RenderWidgets from './includes/RenderWidgets';
+import RenderBlocks from './includes/RenderBlocks';
 
 
 const Extensions = ({ isWizard = false }) => {
@@ -25,7 +25,7 @@ const Extensions = ({ isWizard = false }) => {
           title="Extensions List"
           desc="It is important to be aware of your system settings and make sure that they are correctly configured for optimal performance." />
         <div className="p-6">
-          <RenderWidgets featuresType="get_extensions" />
+          <RenderBlocks featuresType="get_extensions" />
         </div>
       </div>
     </div>

@@ -104,7 +104,7 @@ const License = ({ isWizard = false }) => {
 
       Swal.fire({
         icon: 'success',
-        title: __('Success', 'sky-elementor-addons'),
+        title: __('Success', 'blockish'),
         html: response?.data?.message,
         showConfirmButton: false,
         timer: 2500,
@@ -155,7 +155,7 @@ const License = ({ isWizard = false }) => {
 
       Swal.fire({
         icon: 'success',
-        title: __('Success', 'sky-elementor-addons'),
+        title: __('Success', 'blockish'),
         html: response?.data?.message,
         showConfirmButton: false,
         timer: 2500,
@@ -176,7 +176,7 @@ const License = ({ isWizard = false }) => {
   if (loading) {
     return (
       <>
-        <div className="text-center">{__('Loading', 'sky-elementor-addons')}...</div>
+        <div className="text-center">{__('Loading', 'blockish')}...</div>
         <div className="flex justify-center items-center h-40 mt-12"><div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div></div>
       </>
     )
@@ -192,7 +192,7 @@ const License = ({ isWizard = false }) => {
                 <div className="flex items-center gap-6">
                   <div className="w-[80%]">
                     <h6 className="mb-2 text-slate-800 text-lg font-semibold dark:text-white">
-                      {__('Activate your Sky Addons Premium', 'sky-elementor-addons')}
+                      {__('Activate your Sky Addons Premium', 'blockish')}
                     </h6>
                     <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
                       {__('Without a valid license key, you won\'t be able to access the premium features of Sky Addons.', 'sky - elementor - addons')}
@@ -232,7 +232,7 @@ const License = ({ isWizard = false }) => {
                   type="submit"
                   className="mt-6 text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-md w-full sm:w-auto px-6 py-3.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 >
-                  {__('Activate', 'sky-elementor-addons')}
+                  {__('Activate', 'blockish')}
                 </button>
               </form>
 
@@ -241,9 +241,9 @@ const License = ({ isWizard = false }) => {
               <div className="relative">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                   <caption className="pb-5 text-lg font-semibold text-left rtl:text-right text-gray-900 dark:text-white">
-                    {__('License Information', 'sky-elementor-addons')}
+                    {__('License Information', 'blockish')}
                     <p className="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-                      {__('This is your current license information.', 'sky-elementor-addons')}
+                      {__('This is your current license information.', 'blockish')}
                     </p>
                   </caption>
                   <tbody>
@@ -302,14 +302,14 @@ const License = ({ isWizard = false }) => {
                   className="mt-6 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-md w-full sm:w-auto px-6 py-3 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                   onClick={deactivateLicense}
                 >
-                  {__('Deactivate', 'sky-elementor-addons')}
+                  {__('Deactivate', 'blockish')}
                 </button>
               </div>
             )}
           </div>
           <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-              {__('How to get License Key', 'sky-elementor-addons')}
+              {__('How to get License Key', 'blockish')}
             </h3>
             <p className="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
               License Key is very important for you. Otherwise, you will not able to use premium features.

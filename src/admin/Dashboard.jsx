@@ -73,18 +73,18 @@ const Dashboard = () => {
       icon: <FontAwesomeIcon icon={faObjectGroup} className="h-5 w-5" />,
       desc: <Blocks />,
     },
-    {
-      label: __('Extensions', 'blockish'),
-      value: "extensions",
-      icon: <FontAwesomeIcon icon={faSwatchbook} className="h-5 w-5" />,
-      desc: <Extensions />,
-    },
-    {
-      label: __('3rd Party', 'blockish'),
-      value: "thirdparty",
-      icon: <FontAwesomeIcon icon={faFolder} className="h-5 w-5" />,
-      desc: <ThirdParty />,
-    },
+    // {
+    //   label: __('Extensions', 'blockish'),
+    //   value: "extensions",
+    //   icon: <FontAwesomeIcon icon={faSwatchbook} className="h-5 w-5" />,
+    //   desc: <Extensions />,
+    // },
+    // {
+    //   label: __('3rd Party', 'blockish'),
+    //   value: "thirdparty",
+    //   icon: <FontAwesomeIcon icon={faFolder} className="h-5 w-5" />,
+    //   desc: <ThirdParty />,
+    // },
     {
       label: BlockishConfig.pro_init ? __('License', 'blockish') : __('Get Pro', 'blockish'),
       value: "license",

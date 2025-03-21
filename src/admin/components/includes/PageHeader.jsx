@@ -8,10 +8,10 @@ const PageHeader = ({title, desc}) => {
       <div className="flex w-full items-center justify-between">
         <div>
           <h6 className="block antialiased tracking-normal font-sans text-base font-semibold leading-relaxed text-white mt-0 mb-1">
-            {__(title, 'sky-elementor-addons')}
+            {__(title, 'blockish')}
           </h6>
           <div className="block antialiased font-sans text-md font-normal dark:text-gray-300">
-            {__(desc, 'sky-elementor-addons')}
+            {__(desc, 'blockish')}
           </div>
         </div>
       </div>
