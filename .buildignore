@@ -26,3 +26,4 @@ blockish
 phpcs.xml
 phpunit.xml
 .vscode
+composer.lock

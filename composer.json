@@ -1,6 +1,6 @@
 {
-    "name": "noobs/blockish",
-    "description": "Best block plugin ever",
+    "name": "blockish",
+    "description": "Best Blocks plugin ever.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",
     "autoload": {
@@ -10,7 +10,7 @@
     },
     "authors": [
         {
-            "name": "noobs"
+            "name": "wowDevs"
         }
     ],
     "minimum-stability": "dev",

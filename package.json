@@ -1,12 +1,12 @@
 {
 	"name": "blockish",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"description": "Example block scaffolded with Create Block tool.",
 	"author": "The WordPress Contributors",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
-		"build": "wp-scripts build",
+		"wpbuild": "wp-scripts build",
 		"format": "wp-scripts format",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
@@ -14,7 +14,11 @@
 		"start": "wp-scripts start",
 		"start:hot": "wp-scripts start --hot",
 		"make-pot": "npx @wp-blocks/make-pot --exclude=node_modules,build,vendor,assets,src",
-    "copy-assets": "copy-folder src/imgs assets/imgs"
+    "copy-assets": "copy-folder src/imgs assets/imgs",
+    "clean": "rimraf ./assets && rimraf ./blockish",
+    "dev": "npm run clean && npm run start && npm run copy-assets",
+    "build": "npm run clean && npm run wpbuild && npm run copy-assets",
+    "zip": "npm run && npm run build && rsync -av --exclude-from=.buildignore . blockish && zip -r blockish-v.$npm_package_version.zip blockish/*"
 	},
 	"devDependencies": {
 		"@wordpress/scripts": "^30.10.0",

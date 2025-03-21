@@ -61,6 +61,6 @@ A JSON Schema for block.json [https://schemas.wp.org/trunk/block.json](https://s
 
 == Changelog ==
 
-= 1.0.0 [19th Jan 2025] =
+= 1.0.0 [22th March 2025] =
 
 * Initial release
