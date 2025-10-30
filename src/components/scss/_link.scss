@@ -1,0 +1,19 @@
+.blockish-link-control{
+    .block-editor-link-control__field{
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .block-editor-link-control{
+        min-width: 0 !important;
+
+        .block-editor-url-input{
+            min-width: 0 !important;
+        }
+
+        .block-editor-link-control__search-results-wrapper{
+            margin-block-start: 20px !important;
+            background-color: #f4f4f4 !important;
+        }
+    }
+}
