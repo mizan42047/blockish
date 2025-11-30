@@ -14,12 +14,12 @@ import textDecorations from './text-decorations';
 
 const UNITS = {
 	fontSize: {
-		px: { min: 0, max: 200, step: 1 },
+		px: { min: 0, max: 100, step: 1 },
 		em: { min: 0, max: 10, step: 0.1 },
 		rem: { min: 0, max: 10, step: 0.1 }
 	},
 	lineHeight: {
-		px: { min: 0, max: 200, step: 1 },
+		px: { min: 0, max: 100, step: 1 },
 		em: { min: 0, max: 10, step: 0.1 },
 		rem: { min: 0, max: 10, step: 0.1 }
 	},
@@ -91,7 +91,7 @@ const BlockishTypography = ({
 									aria-expanded={isOpen}
 								>
 									<div className="blockish-typography-preview" style={previewStyle}>
-										{__('Typography Preview', 'blockish')}
+										{__('Aa', 'blockish')}
 									</div>
 								</Button>
 							</BaseControl>

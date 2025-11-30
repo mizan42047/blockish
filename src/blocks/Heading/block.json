@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "blockish/heading",
+  "version": "1.0.0",
+  "title": "Heading",
+  "category": "blockish-framework",
+  "description": "Heading block for testing typography component.",
+  "example": {
+    "attributes": {
+      "preview": true
+    }
+  },
+  "attributes": {
+    "content": {
+      "type": "string",
+      "default": "Heading Text"
+    },
+    "tag": {
+      "type": "object",
+      "default": {
+        "label": "H2",
+        "value": "h2"
+      }
+    },
+    "alignment": {
+      "type": "object",
+      "default": {
+        "Desktop": "left",
+        "Tablet": "left",
+        "Mobile": "left"
+      },
+      "selectors": {
+        ".{{WRAPPER}}": "text-align: {{VALUE}};"
+      }
+    },
+    "typography": {
+      "type": "string",
+      "groupSelector": {
+        "type": "BlockishTypography",
+        "selector": ".{{WRAPPER}} .blockish-heading-text"
+      }
+    },
+    "color": {
+      "type": "string",
+      "selectors": {
+        ".{{WRAPPER}} .blockish-heading-text": "color: {{VALUE}};"
+      }
+    },
+    "hoverColor": {
+      "type": "string",
+      "selectors": {
+        ".{{WRAPPER}} .blockish-heading-text:hover": "color: {{VALUE}};"
+      }
+    }
+  },
+  "supports": {
+    "html": true,
+    "anchor": true,
+    "align": ["wide", "full"]
+  },
+  "textdomain": "blockish",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}
