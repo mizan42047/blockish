@@ -7,6 +7,7 @@ import Width from './components/width';
 import * as previews from './preview';
 import Position from './components/position';
 import Flex from './components/flex';
+import Transform from './components/transform';
 
 const BlockishBlocksAdvancedControls = createHigherOrderComponent(
     (BlockEdit) =>
@@ -36,6 +37,7 @@ const BlockishBlocksAdvancedControls = createHigherOrderComponent(
                                     <Flex {...props} />
                                 )
                             }
+                            <Transform {...props} />
                         </>
                     )
                 };

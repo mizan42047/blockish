@@ -1,9 +1,14 @@
 import { __ } from '@wordpress/i18n';
 import { rotateRight } from '@wordpress/icons';
+import {
+    __experimentalToolsPanel as ToolsPanel,
+    __experimentalToolsPanelItem as ToolsPanelItem,
+} from '@wordpress/components';
 
-const Transform = ({ attributes }) => {
+const Transform = ({ attributes, setAttributes }) => {
     const { BlockishControl, BlockishResponsiveControl } = window?.blockish?.controls;
     const { useDeviceType, getResponsiveValue } = window?.blockish?.helpers;
+    const { BlockishDropdown } = window?.blockish?.components;
     const device = useDeviceType();
     return (
         <BlockishControl type='BlockishPanelBody' title={__('Transform', 'blockish')}>
@@ -26,22 +31,13 @@ const Transform = ({ attributes }) => {
                             tabName === 'transform-normal' && (
                                 <>
                                     <BlockishControl
-                                        type="BlockishDropdown"
-                                        label={__('Rotation', 'blockish')}
-                                        icon={rotateRight}
-                                    >
-                                        <BlockishResponsiveControl
-                                            type='BlockishRangeUnit'
-                                            label={__('Rotation', 'blockish')}
-                                            slug='transformRotation'
-                                            left="55px"
-                                            splitOnAxis={true}
-                                            min="-360"
-                                            max="360"
-                                            step="15"
-                                            unit="deg"
-                                        />
-                                    </BlockishControl>
+                                        type="BlockishToolsPanel"
+                                        label={__('Transform', 'blockish')}
+                                        parentSlug="transform"
+                                        items ={[
+                                            
+                                        ]}
+                                    />
                                 </>
                             )
                         }

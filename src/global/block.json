@@ -180,7 +180,7 @@
 				".{{WRAPPER}}.wp-block": "flex-shrink: {{VALUE}};"
 			}
 		},
-		"transformRotation": {
+		"transform": {
 			"type": "object",
 			"selectors": {
 				".{{WRAPPER}}.wp-block": "transform: rotate({{VALUE}}deg);"
