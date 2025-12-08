@@ -40,7 +40,8 @@ const BlockishTypography = ({
 		BlockishFontFamily,
 		BlockishRangeUnit,
 		BlockishSelect,
-		BlockishDropdown
+		BlockishDropdown,
+		BlockishToggleGroup,
 	} = window.blockish.components;
 
 	const excludeControlsSet = new Set(excludeControls);
@@ -101,15 +102,40 @@ const BlockishTypography = ({
 			>
 				<div className="blockish-typography-popover-content">
 					<VStack spacing={3}>
-						{!excludeControlsSet.has('fontFamily') && (
-							<div className="blockish-typography-font-family">
-								<BlockishFontFamily
-									label={__('Font Family', 'blockish')}
-									value={value?.fontFamily}
-									onChange={(newValue) => handleChange('fontFamily', newValue)}
-								/>
-							</div>
-						)}
+						<div className="blockish__font-family-and-weight">
+							{!excludeControlsSet.has('fontFamily') && (
+								<div className="blockish__typography-font-family">
+									<BlockishFontFamily
+										label={__('Font Family', 'blockish')}
+										value={value?.fontFamily}
+										onChange={(newValue) => handleChange('fontFamily', newValue)}
+									/>
+								</div>
+							)}
+							{!excludeControlsSet.has('fontWeight') && (
+								<div className="blockish__typography-font-weight">
+									{value?.fontFamily?.variants && value?.fontFamily?.variants?.length > 0 ? (
+										<BlockishSelect
+											label={__('Font Weight', 'blockish')}
+											value={value?.fontFamily?.variants.find(
+												(item) => item.value === value?.fontWeight
+											)}
+											onChange={(newValue) => handleChange('fontWeight', newValue?.value)}
+											options={value.fontFamily.variants}
+											isClearable={false}
+										/>
+									) : (
+										<BlockishSelect
+											label={__('Font Weight', 'blockish')}
+											value={fontWeights?.find((item) => item.value === value?.fontWeight)}
+											onChange={(newValue) => handleChange('fontWeight', newValue?.value)}
+											options={fontWeights}
+											isClearable={false}
+										/>
+									)}
+								</div>
+							)}
+						</div>
 
 						{!excludeControlsSet.has('fontSize') && (
 							<div className="blockish-typography-font-size">
@@ -122,29 +148,7 @@ const BlockishTypography = ({
 							</div>
 						)}
 
-						{!excludeControlsSet.has('fontWeight') && (
-							<div className="blockish-typography-font-weight">
-								{value?.fontFamily?.variants && value?.fontFamily?.variants?.length > 0 ? (
-									<BlockishSelect
-										label={__('Font Weight', 'blockish')}
-										value={value?.fontFamily?.variants.find(
-											(item) => item.value === value?.fontWeight
-										)}
-										onChange={(newValue) => handleChange('fontWeight', newValue?.value)}
-										options={value.fontFamily.variants}
-										isClearable={false}
-									/>
-								) : (
-									<BlockishSelect
-										label={__('Font Weight', 'blockish')}
-										value={fontWeights?.find((item) => item.value === value?.fontWeight)}
-										onChange={(newValue) => handleChange('fontWeight', newValue?.value)}
-										options={fontWeights}
-										isClearable={false}
-									/>
-								)}
-							</div>
-						)}
+
 
 						{!excludeControlsSet.has('lineHeight') && (
 							<div className="blockish-typography-line-height">
@@ -170,12 +174,28 @@ const BlockishTypography = ({
 
 						{!excludeControlsSet.has('textTransform') && (
 							<div className="blockish-typography-text-transform">
-								<BlockishSelect
-									label={__('Text Transform', 'blockish')}
-									value={textTransforms?.find((item) => item.value === value?.textTransform)}
-									onChange={(newValue) => handleChange('textTransform', newValue?.value)}
-									options={textTransforms}
-									isClearable={false}
+								<BlockishToggleGroup
+									label={__('Transform', 'blockish')}
+									value={value?.textTransform}
+									onChange={(newValue) => handleChange('textTransform', newValue)}	
+									options={[
+										{
+											label: '—',
+											value: 'none'
+										},
+										{
+											label: 'Ab',
+											value: 'capitalize'
+										},
+										{
+											label: 'AB',
+											value: 'uppercase'
+										},
+										{
+											label: 'ab',
+											value: 'lowercase'
+										},
+									]}
 								/>
 							</div>
 						)}
@@ -196,6 +216,69 @@ const BlockishTypography = ({
 			</BlockishDropdown>
 		</div>
 	);
+};
+
+/**
+ * Static method to generate CSS from typography values
+ * Used by the style generation system for frontend rendering
+ * @param {Object} typography - Typography object with properties
+ * @param {string} selector - CSS selector (optional, defaults to empty for inline styles)
+ * @returns {string} CSS string
+ */
+BlockishTypography.generateCSS = (typography, selector = '') => {
+	if (!typography || typeof typography !== 'object') return '';
+
+	const styles = [];
+
+	// Font Family - handle both string and object formats
+	if (typography.fontFamily) {
+		if (typeof typography.fontFamily === 'object' && typography.fontFamily.value) {
+			styles.push(`font-family: ${typography.fontFamily.value};`);
+		} else if (typeof typography.fontFamily === 'string') {
+			styles.push(`font-family: ${typography.fontFamily};`);
+		}
+	}
+
+	// Font Size
+	if (typography?.fontSize) {
+		styles.push(`font-size: ${typography?.fontSize};`);
+	}
+
+	// Font Weight
+	if (typography?.fontWeight && typography?.fontWeight !== 'normal') {
+		styles.push(`font-weight: ${typography?.fontWeight};`);
+	}
+
+	// Line Height
+	if (typography?.lineHeight) {
+		styles.push(`line-height: ${typography?.lineHeight};`);
+	}
+
+	// Letter Spacing
+	if (typography?.letterSpacing) {
+		styles.push(`letter-spacing: ${typography?.letterSpacing};`);
+	}
+
+	// Text Transform
+	if (typography?.textTransform && typography?.textTransform !== 'none') {
+		styles.push(`text-transform: ${typography
+			?.textTransform};`);
+	}
+
+	// Text Decoration
+	if (typography?.textDecoration && typography?.textDecoration !== 'none') {
+		styles.push(`text-decoration: ${typography?.textDecoration};`);
+	}
+
+	if (styles.length === 0) return '';
+
+	// If selector is provided, wrap in selector block
+	if (selector) {
+		return `${selector} { ${styles.join(' ')} }`;
+	}
+
+	// Otherwise return just the properties
+	return styles.join(' ');
 };
 
 export default memo(BlockishTypography);
