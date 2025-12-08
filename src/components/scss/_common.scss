@@ -8,6 +8,7 @@
         padding: 12px !important;
 
         .blockish-control{
+            margin-bottom: calc(6px) !important;
             &:not(.blockish-background-image-section .blockish-control){
                 margin-bottom: 0 !important;
             }

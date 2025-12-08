@@ -1,5 +1,6 @@
 // Typography Component Styles - Dropdown UI
 .blockish-typography-control {
+
 	// Toggle Button
 	.blockish-typography-toggle {
 		width: 100%;
@@ -85,19 +86,6 @@
 		padding: 16px;
 		min-width: 320px;
 		max-width: 360px;
-
-		.blockish-typography-font-family,
-		.blockish-typography-font-size,
-		.blockish-typography-font-weight,
-		.blockish-typography-line-height,
-		.blockish-typography-letter-spacing,
-		.blockish-typography-text-transform,
-		.blockish-typography-text-decoration,
-		.blockish-typography-font-style,
-		.blockish-typography-text-align {
-			margin-bottom: 0;
-			width: 100%;
-		}
 
 		.blockish-typography-text-align {
 			.components-base-control__label {
@@ -227,10 +215,18 @@
 
 	.blockish__typography-font-family {
 		width: 60%;
+
+		.blockish-select-control {
+			margin-bottom: 0 !important;
+		}	
 	}
 
 	.blockish__typography-font-weight {
 		width: 40%;
+
+		.blockish-select-control {
+			margin-bottom: 0 !important;
+		}	
 	}
 }
 
@@ -248,4 +244,32 @@
 		height: 40px !important;
 		width: 100% !important;
 	}
+}
+
+.blockish-typography-font-family,
+.blockish-typography-font-size,
+.blockish-typography-font-weight,
+.blockish-typography-line-height,
+.blockish-typography-letter-spacing,
+.blockish-typography-text-transform,
+.blockish-typography-text-decoration,
+.blockish-typography-font-style,
+.blockish-typography-text-align {
+	margin-bottom: 0;
+	width: 100%;
+
+	>.blockish-range-unit {
+		margin-bottom: 0 !important;
+	}	
+
+	.blockish-toggle-group {
+		margin-bottom: 0 !important;
+	}
+
+	.components-input-control__input {
+		height: 40px !important;
+		width: 100% !important;
+	}
+
+
 }
