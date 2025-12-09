@@ -1,0 +1,11 @@
+.blockish-heading {
+	.blockish-heading-text {
+		margin: 0;
+		padding: 0;
+		outline: none;
+		
+		&:focus {
+			outline: none;
+		}
+	}
+}

@@ -35,7 +35,8 @@
       }
     },
     "typography": {
-      "type": "string",
+      "type": "object",
+      "default": {},
       "groupSelector": {
         "type": "BlockishTypography",
         "selector": ".{{WRAPPER}} .blockish-heading-text"
@@ -51,6 +52,29 @@
       "type": "string",
       "selectors": {
         ".{{WRAPPER}} .blockish-heading-text:hover": "color: {{VALUE}};"
+      }
+    },
+    "textStroke": {
+      "type": "object",
+      "default": {},
+      "groupSelector": {
+        "type": "BlockishTextStroke",
+        "selector": ".{{WRAPPER}} .blockish-heading-text"
+      }
+    },
+    "textShadow": {
+      "type": "object",
+      "default": {},
+      "groupSelector": {
+        "type": "BlockishTextShadow",
+        "selector": ".{{WRAPPER}} .blockish-heading-text"
+      }
+    },
+    "blendMode": {
+      "type": "string",
+      "default": "normal",
+      "selectors": {
+        ".{{WRAPPER}} .blockish-heading-text": "mix-blend-mode: {{VALUE}};"
       }
     }
   },

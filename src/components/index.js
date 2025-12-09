@@ -26,6 +26,7 @@ import BlockishNumber from "./number";
 import BlockishDropdown from "./dropdown";
 import BlockishTypography from "./typography";
 import BlockishFontFamily from "./font-family";
+import BlockishTextStroke from "./text-stroke";
 
 if(window?.blockish?.screen) {
     window.blockish.components = {
@@ -55,6 +56,7 @@ if(window?.blockish?.screen) {
         BlockishNumber,
         BlockishDropdown,
         BlockishTypography,
-        BlockishFontFamily
+        BlockishFontFamily,
+        BlockishTextStroke
     }
 }
