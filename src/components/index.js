@@ -24,6 +24,8 @@ import BlockishIconPicker from "./icon-picker";
 import BlockishLink from "./link";
 import BlockishNumber from "./number";
 import BlockishDropdown from "./dropdown";
+import BlockishTypography from "./typography";
+import BlockishFontFamily from "./font-family";
 
 if(window?.blockish?.screen) {
     window.blockish.components = {
@@ -51,6 +53,8 @@ if(window?.blockish?.screen) {
         BlockishIconPicker,
         BlockishLink,
         BlockishNumber,
-        BlockishDropdown
+        BlockishDropdown,
+        BlockishTypography,
+        BlockishFontFamily
     }
 }

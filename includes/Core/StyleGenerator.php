@@ -187,6 +187,12 @@ class StyleGenerator
                                 ? $css_rules[$device_slug][$selector] . $styles
                                 : $styles;
                             break;
+                        case 'BlockishTypography':
+                            $styles = Utilities::generate_typography_control_styles($value, $device_slug);
+                            $css_rules[$device_slug][$selector] = isset($css_rules[$device_slug][$selector])
+                                ? $css_rules[$device_slug][$selector] . $styles
+                                : $styles;
+                            break;
                     }
                 }
             };

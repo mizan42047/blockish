@@ -139,6 +139,69 @@ class Utilities
         return $styles;
     }
 
+    public static function generate_typography_control_styles($typography, $device = 'Desktop')
+    {
+        if (empty($typography)) {
+            return '';
+        }
+
+        // Handle both JSON string and array
+        $typography_data = $typography;
+        if (is_string($typography)) {
+            $typography_data = json_decode($typography, true);
+            if (!is_array($typography_data)) {
+                return '';
+            }
+        }
+
+        if (!is_array($typography_data)) {
+            return '';
+        }
+
+        $styles = [];
+
+        // Font Family - handle both string and object formats
+        if (!empty($typography_data['fontFamily'])) {
+            if (is_array($typography_data['fontFamily']) && !empty($typography_data['fontFamily']['value'])) {
+                $styles[] = 'font-family: ' . esc_attr($typography_data['fontFamily']['value']) . ';';
+            } elseif (is_string($typography_data['fontFamily'])) {
+                $styles[] = 'font-family: ' . esc_attr($typography_data['fontFamily']) . ';';
+            }
+        }
+
+        // Font Size
+        if (!empty($typography_data['fontSize'])) {
+            $styles[] = 'font-size: ' . esc_attr($typography_data['fontSize']) . ';';
+        }
+
+        // Font Weight
+        if (!empty($typography_data['fontWeight']) && $typography_data['fontWeight'] !== 'normal') {
+            $styles[] = 'font-weight: ' . esc_attr($typography_data['fontWeight']) . ';';
+        }
+
+        // Line Height
+        if (!empty($typography_data['lineHeight'])) {
+            $styles[] = 'line-height: ' . esc_attr($typography_data['lineHeight']) . ';';
+        }
+
+        // Letter Spacing
+        if (!empty($typography_data['letterSpacing'])) {
+            $styles[] = 'letter-spacing: ' . esc_attr($typography_data['letterSpacing']) . ';';
+        }
+
+        // Text Transform
+        if (!empty($typography_data['textTransform']) && $typography_data['textTransform'] !== 'none') {
+            $styles[] = 'text-transform: ' . esc_attr($typography_data['textTransform']) . ';';
+        }
+
+        // Text Decoration
+        if (!empty($typography_data['textDecoration']) && $typography_data['textDecoration'] !== 'none') {
+            $styles[] = 'text-decoration: ' . esc_attr($typography_data['textDecoration']) . ';';
+        }
+
+        return implode(' ', $styles);
+    }
+
     public static function generate_uniqueId($length)
     {
         return substr(bin2hex(random_bytes($length / 2)), 0, $length);
