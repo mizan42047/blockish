@@ -8,12 +8,10 @@ export default function Save({ attributes }) {
 	});
 
 	return (
-		<div {...blockProps}>
-			<RichText.Content
-				tagName={Tag}
-				className="blockish-heading-text"
-				value={content}
-			/>
-		</div>
+		<RichText.Content
+			tagName={Tag}
+			{...blockProps}
+			value={content}
+		/>
 	);
 }

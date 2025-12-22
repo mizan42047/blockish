@@ -13,15 +13,13 @@ export default function Edit({ attributes, setAttributes, advancedControls }) {
 	return (
 		<>
 			<Inspector attributes={attributes} setAttributes={setAttributes} advancedControls={advancedControls} />
-			<div {...blockProps}>
-				<RichText
-					tagName={Tag}
-					className="blockish-heading-text"
-					value={content}
-					onChange={(value) => setAttributes({ content: value })}
-					placeholder={__('Enter heading text...', 'blockish')}
-				/>
-			</div>
+			<RichText
+				tagName={Tag}
+				{...blockProps}
+				value={content}
+				onChange={(value) => setAttributes({ content: value })}
+				placeholder={__('Enter heading text...', 'blockish')}
+			/>
 		</>
 	)
 }
