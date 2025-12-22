@@ -92,20 +92,16 @@ class Utilities
 
         $styles = '';
 
-        // Loop through each border property in the JSON object
-        foreach ($json_border as $key => $value) {
-            // Check for linked border (e.g., "border")
-            if ($key === 'width' && isset($value[$device])) {
-                $style = !empty($value['style']) ? $value['style'] : 'solid';
-                $color = !empty($value['color']) ? $value['color'] : '#000';
-                $styles .= 'border: ' . $value[$device] . ' ' . $style . ' ' . $color . ';';
-            }
-
-            // Check for unlinked borders (e.g., "top", "left", "right", "bottom")
-            elseif (in_array($key, ['top', 'left', 'right', 'bottom'], true) && isset($value['width'][$device])) {
-                $style = !empty($value['style']) ? $value['style'] : 'solid';
-                $color = !empty($value['color']) ? $value['color'] : '#000';
-                $styles .= 'border-' . $key . ': ' . $value['width'][$device] . ' ' . $style . ' ' . $color . ';';
+        if (isset($json_border['width'][$device])) {
+            $style = !empty($json_border['style']) ? $json_border['style'] : 'solid';
+            $color = !empty($json_border['color']) ? $json_border['color'] : '#000';
+            $styles .= 'border: ' . $json_border['width'][$device] . ' ' . $style . ' ' . $color . ';';
+        }
+        foreach ($json_border as $position => $value) {
+            if (isset($json_border[$position]['width'][$device])) {
+                $style = !empty($json_border[$position]['style']) ? $json_border[$position]['style'] : 'solid';
+                $color = !empty($json_border[$position]['color']) ? $json_border[$position]['color'] : '#000';
+                $styles .= 'border-' . $position . ': ' . $json_border[$position]['width'][$device] . ' ' . $style . ' ' . $color . ';';
             }
         }
 
