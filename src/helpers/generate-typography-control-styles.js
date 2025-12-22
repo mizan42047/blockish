@@ -1,7 +1,7 @@
 
 const generateTypographyControlStyles = (typography, deviceSlug = 'Desktop') => {
-    if (!typography || typeof typography !== 'object') return '';
-    
+    if (!typography || typeof typography !== 'string') return '';
+    typography = JSON.parse(typography);
     const styles = [];
 
     if (typography?.fontFamily?.value) {

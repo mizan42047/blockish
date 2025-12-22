@@ -13,12 +13,7 @@ import {
 	LineHeightControl,
 	__experimentalUnitControl as UnitControl
 } from '@wordpress/block-editor';
-
-/**
- * Internal dependencies
- */
 import fontWeights from './font-weights';
-import getValue from './get-value';
 
 const UNITS = {
 	fontSize: {
@@ -43,42 +38,41 @@ const BlockishTypography = ({
 		BlockishToggleGroup,
 		BlockishResponsive
 	} = window.blockish.components;
-
 	const { useDeviceType } = window.blockish.helpers;
 	const device = useDeviceType();
-
+	
 	const excludeControlsSet = new Set(excludeControls);
 	const units = useMemo(() => {
 		let usableUnits = UNITS;
-
+		
 		if (userUnits) {
 			usableUnits = {
 				...UNITS,
 				...userUnits
 			}
 		}
-
+		
 		return usableUnits;
 	}, [userUnits]);
-
-	// Update handler
+	
+	const typographyValue = value && typeof value === 'string' ? JSON.parse(value) : value;
 	const handleChange = (key, newValue) => {
 		const updatedValue = {
-			...value,
+			...typographyValue,
 			[key]: newValue,
 		};
-		onChange(updatedValue);
+		onChange(JSON.stringify(updatedValue));
 	};
 
 	const previewStyle = {
-		fontFamily: getValue(value, 'fontFamily')?.value,
-		fontSize: getValue(value, 'fontSize')?.[device],
-		lineHeight: getValue(value, 'lineHeight')?.[device],
-		fontWeight: getValue(value, 'fontWeight'),
-		fontStyle: getValue(value, 'fontStyle'),
-		textTransform: getValue(value, 'textTransform'),
-		textDecoration: getValue(value, 'textDecoration'),
-		letterSpacing: getValue(value, 'letterSpacing')?.[device],
+		fontFamily: typographyValue?.fontFamily?.value,
+		fontSize: typographyValue?.fontSize?.[device],
+		lineHeight: typographyValue?.lineHeight?.[device],
+		fontWeight: typographyValue?.fontWeight?.value,
+		fontStyle: typographyValue?.fontStyle,
+		textTransform: typographyValue?.textTransform,
+		textDecoration: typographyValue?.textDecoration,
+		letterSpacing: typographyValue?.letterSpacing?.[device],
 	};
 
 	return (
@@ -111,27 +105,27 @@ const BlockishTypography = ({
 								<div className="blockish__typography-font-family">
 									<BlockishFontFamily
 										label={__('Font Family', 'blockish')}
-										value={value?.fontFamily}
+										value={typographyValue?.fontFamily}
 										onChange={(newValue) => handleChange('fontFamily', newValue)}
 									/>
 								</div>
 							)}
 							{!excludeControlsSet.has('fontWeight') && (
 								<div className="blockish__typography-font-weight">
-									{value?.fontFamily?.variants && value?.fontFamily?.variants?.length > 0 ? (
+									{typographyValue?.fontFamily?.variants && typographyValue?.fontFamily?.variants?.length > 0 ? (
 										<BlockishSelect
 											label={__('Font Weight', 'blockish')}
-											value={value?.fontFamily?.variants.find(
+											value={typographyValue?.fontFamily?.variants.find(
 												(item) => item.value === value?.fontWeight
 											)}
 											onChange={(newValue) => handleChange('fontWeight', newValue?.value)}
-											options={value.fontFamily.variants}
+											options={typographyValue?.fontFamily.variants}
 											isClearable={false}
 										/>
 									) : (
 										<BlockishSelect
 											label={__('Font Weight', 'blockish')}
-											value={fontWeights?.find((item) => item.value === value?.fontWeight)}
+											value={fontWeights?.find((item) => item.value === typographyValue?.fontWeight)}
 											onChange={(newValue) => handleChange('fontWeight', newValue?.value)}
 											options={fontWeights}
 											isClearable={false}
@@ -146,9 +140,9 @@ const BlockishTypography = ({
 								<BlockishResponsive left='60px'>
 									<BlockishRangeUnit
 										label={__('Font Size', 'blockish')}
-										value={value?.fontSize?.[device]}
+										value={typographyValue?.fontSize?.[device]}
 										onChange={(value) => handleChange('fontSize', {
-											...value?.fontSize,
+											...typographyValue?.fontSize,
 											[device]: value
 										})}
 										units={units?.fontSize}
@@ -164,9 +158,9 @@ const BlockishTypography = ({
 										<LineHeightControl
 											__next40pxDefaultSize
 											__unstableInputWidth="100%"
-											value={value?.lineHeight?.[device]}
+											value={typographyValue?.lineHeight?.[device]}
 											onChange={(value) => handleChange('lineHeight', {
-												...value?.lineHeight,
+												...typographyValue?.lineHeight,
 												[device]: value
 											})}
 											units={units?.lineHeight}
@@ -180,9 +174,9 @@ const BlockishTypography = ({
 									<BlockishResponsive left='95px'>
 										<UnitControl
 											label={__('Letter Spacing', 'blockish')}
-											value={value?.letterSpacing?.[device]}
+											value={typographyValue?.letterSpacing?.[device]}
 											onChange={(value) => handleChange('letterSpacing', {
-												...value?.letterSpacing,
+												...typographyValue?.letterSpacing,
 												[device]: value
 											})}
 											units={[
@@ -209,7 +203,7 @@ const BlockishTypography = ({
 							<div className="blockish-typography-text-transform">
 								<BlockishToggleGroup
 									label={__('Transform', 'blockish')}
-									value={value?.textTransform}
+									value={typographyValue?.textTransform}
 									onChange={(value) => handleChange('textTransform', value)}	
 									options={[
 										{
@@ -238,7 +232,7 @@ const BlockishTypography = ({
 								<div className="blockish-typography-font-style">
 									<BlockishToggleGroup
 										label={__('Style', 'blockish')}
-										value={value?.fontStyle}
+										value={typographyValue?.fontStyle}
 										onChange={(value) => handleChange('fontStyle', value)}
 										options={[
 											{
@@ -262,7 +256,7 @@ const BlockishTypography = ({
 								<div className="blockish-typography-text-decoration">
 									<BlockishToggleGroup
 										label={__('Decoration', 'blockish')}
-										value={value?.textDecoration}
+										value={typographyValue?.textDecoration}
 										onChange={(value) => handleChange('textDecoration', value)}
 										options={[
 											{
@@ -287,74 +281,6 @@ const BlockishTypography = ({
 			</BlockishDropdown>
 		</div>
 	);
-};
-
-/**
- * Static method to generate CSS from typography values
- * Used by the style generation system for frontend rendering
- * @param {Object} typography - Typography object with properties
- * @param {string} selector - CSS selector (optional, defaults to empty for inline styles)
- * @returns {string} CSS string
- */
-BlockishTypography.generateCSS = (typography, selector = '') => {
-	if (!typography || typeof typography !== 'object') return '';
-
-	const styles = [];
-
-	// Font Family - handle both string and object formats
-	if (typography.fontFamily) {
-		if (typeof typography.fontFamily === 'object' && typography.fontFamily.value) {
-			styles.push(`font-family: ${typography.fontFamily.value};`);
-		} else if (typeof typography.fontFamily === 'string') {
-			styles.push(`font-family: ${typography.fontFamily};`);
-		}
-	}
-
-	// Font Size
-	if (typography?.fontSize) {
-		styles.push(`font-size: ${typography?.fontSize};`);
-	}
-
-	// Font Weight
-	if (typography?.fontWeight && typography?.fontWeight !== 'normal') {
-		styles.push(`font-weight: ${typography?.fontWeight};`);
-	}
-
-	// Font Style
-	if (typography?.fontStyle && typography?.fontStyle !== 'normal') {
-		styles.push(`font-style: ${typography?.fontStyle};`);
-	}
-
-	// Line Height
-	if (typography?.lineHeight) {
-		styles.push(`line-height: ${typography?.lineHeight};`);
-	}
-
-	// Letter Spacing
-	if (typography?.letterSpacing) {
-		styles.push(`letter-spacing: ${typography?.letterSpacing};`);
-	}
-
-	// Text Transform
-	if (typography?.textTransform && typography?.textTransform !== 'none') {
-		styles.push(`text-transform: ${typography
-			?.textTransform};`);
-	}
-
-	// Text Decoration
-	if (typography?.textDecoration && typography?.textDecoration !== 'none') {
-		styles.push(`text-decoration: ${typography?.textDecoration};`);
-	}
-
-	if (styles.length === 0) return '';
-
-	// If selector is provided, wrap in selector block
-	if (selector) {
-		return `${selector} { ${styles.join(' ')} }`;
-	}
-
-	// Otherwise return just the properties
-	return styles.join(' ');
 };
 
 export default memo(BlockishTypography);

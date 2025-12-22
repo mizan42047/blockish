@@ -141,7 +141,9 @@ class Utilities
 
     public static function generate_typography_control_styles($typography, $device = 'Desktop')
     {
-        if (empty($typography) || !is_array($typography)) return '';
+        if (empty($typography) || !is_string($typography)) return '';
+
+        $typography = json_decode($typography, true);
 
         $styles = [];
         // Font Family - handle both string and object formats

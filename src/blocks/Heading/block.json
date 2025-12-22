@@ -45,19 +45,19 @@
       "type": "string",
       "groupSelector": {
         "type": "BlockishTypography",
-        "selector": ".{{WRAPPER}} .blockish-heading-text"
+        "selector": ".{{WRAPPER}}"
       }
     },
     "color": {
       "type": "string",
       "selectors": {
-        ".{{WRAPPER}} .blockish-heading-text": "color: {{VALUE}};"
+        ".{{WRAPPER}}": "color: {{VALUE}};"
       }
     },
     "hoverColor": {
       "type": "string",
       "selectors": {
-        ".{{WRAPPER}} .blockish-heading-text:hover": "color: {{VALUE}};"
+        ".{{WRAPPER}}:hover": "color: {{VALUE}};"
       }
     }
   },
