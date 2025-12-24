@@ -1,0 +1,275 @@
+// Typography Component Styles - Dropdown UI
+.blockish-typography-control {
+
+	// Toggle Button
+	.blockish-typography-toggle {
+		width: 100%;
+		padding: 0;
+		border: none !important;
+		background: transparent !important;
+		cursor: pointer;
+		min-height: 40px;
+		text-align: center;
+
+		&:hover {
+			border-color: inherit;
+			outline: none;
+			box-shadow: none;
+			background: inherit;
+		}
+
+		&:focus {
+			border-color: #007cba;
+			box-shadow: none;
+			outline: none;
+			background: inherit;
+		}
+
+		&[aria-expanded="true"] {
+			background: inherit;
+			color: #007cba;
+			outline: none;
+		}
+
+		.blockish-typography-label {
+			font-size: 11px;
+			font-weight: 500;
+			text-transform: uppercase;
+			color: #757575;
+			display: block;
+		}
+
+		.components-base-control__label {
+			text-align: left;
+		}
+
+		.blockish-typography-toggle-button {
+			font-size: 16px;
+			font-weight: 500;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-transform: capitalize;
+			color: #757575;
+			width: 100%;
+			height: 80px;
+			border: none;
+			outline: none;
+			box-shadow: none;
+			background: #f0f0f0;
+			overflow: hidden;
+
+			&:hover {
+				border-color: inherit;
+				color: #757575;
+				outline: none;
+				box-shadow: none;
+				background: #f0f0f0;
+			}
+
+			&:focus {
+				border: none;
+				box-shadow: none;
+				outline: none;
+				background: #f0f0f0;
+			}
+
+			&[aria-expanded="true"] {
+				background: #f0f0f0;
+				outline: none;
+			}
+		}
+	}
+
+	// Popover Content
+	.blockish-typography-popover-content {
+		padding: 16px;
+		min-width: 320px;
+		max-width: 360px;
+
+		.blockish-typography-text-align {
+			.components-base-control__label {
+				display: block;
+				margin-bottom: 8px;
+				font-size: 11px;
+				font-weight: 500;
+				line-height: 1.4;
+				text-transform: uppercase;
+				color: #1e1e1e;
+			}
+
+			.blockish-button-group {
+				display: flex;
+				gap: 0;
+
+				.components-button {
+					flex: 1;
+					justify-content: center;
+					border-radius: 0;
+					border-right: 0;
+
+					&:first-child {
+						border-top-left-radius: 2px;
+						border-bottom-left-radius: 2px;
+					}
+
+					&:last-child {
+						border-top-right-radius: 2px;
+						border-bottom-right-radius: 2px;
+						border-right: 1px solid #757575;
+					}
+
+					&.is-pressed {
+						background: #1e1e1e;
+						color: #fff;
+						border-color: #1e1e1e;
+
+						&:hover {
+							background: #1e1e1e;
+							color: #fff;
+						}
+					}
+
+					&:focus {
+						box-shadow: 0 0 0 1px #fff, 0 0 0 3px #007cba;
+						position: relative;
+						z-index: 1;
+					}
+				}
+			}
+		}
+	}
+}
+
+// Dropdown specific overrides
+.blockish-dropdown {
+
+	&.blockish-typography-control {
+
+		.components-popover__content {
+			border: 1px solid #e4e4e7 !important;
+
+			&::-webkit-scrollbar {
+				width: 8px !important;
+				height: 8px !important;
+			}
+
+			&::-webkit-scrollbar-track {
+				background: #f1f1f1 !important;
+				border-radius: 10px !important;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background: #888 !important;
+				border-radius: 10px !important;
+			}
+
+			&::-webkit-scrollbar-thumb:hover {
+				background: #555 !important;
+			}
+		}
+	}
+}
+.blockish-select__control,
+.blockish-select__control--is-focused,
+.blockish-select__control--is-menu-open {
+	height: 40px !important;
+	border: 1px solid #e4e4e7 !important;
+
+	&:focus {
+		border-color: #4141d5 !important;
+		outline: none !important;
+		box-shadow: none !important;
+	}
+}
+
+.blockish-dropdown-content .components-popover__content {
+	border: 1px solid #e4e4e7 !important;
+
+	&::-webkit-scrollbar {
+		width: 4px !important;
+		height: auto !important;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: #f1f1f1 !important;
+		border-radius: 10px !important;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: #c6c6c7 !important;
+		border-radius: 100px !important;
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background: #adacac !important;
+	}
+}
+
+.blockish__font-family-and-weight {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 5px;
+
+	.blockish__typography-font-family {
+		width: 60%;
+
+		.blockish-select-control {
+			margin-bottom: 0 !important;
+		}	
+	}
+
+	.blockish__typography-font-weight {
+		width: 40%;
+
+		.blockish-select-control {
+			margin-bottom: 0 !important;
+		}	
+	}
+}
+
+.blockish-typography-text-decoration,
+.blockish-typography-font-style,
+.block-editor-line-height-control,
+.blockish-typography-letter-spacing {
+	margin-bottom: 0;
+	width: 100%;
+}
+
+.blockish-typography-letter-spacing {
+
+	.components-input-control__input {
+		height: 40px !important;
+		width: 100% !important;
+	}
+}
+
+.blockish-typography-font-family,
+.blockish-typography-font-size,
+.blockish-typography-font-weight,
+.blockish-typography-line-height,
+.blockish-typography-letter-spacing,
+.blockish-typography-text-transform,
+.blockish-typography-text-decoration,
+.blockish-typography-font-style,
+.blockish-typography-text-align {
+	margin-bottom: 0;
+	width: 100%;
+
+	>.blockish-range-unit {
+		margin-bottom: 0 !important;
+	}	
+
+	.blockish-toggle-group {
+		margin-bottom: 0 !important;
+	}
+
+	.components-input-control__input {
+		height: 40px !important;
+		width: 100% !important;
+	}
+
+
+}

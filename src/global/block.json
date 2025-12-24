@@ -76,13 +76,13 @@
 		"position": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "position: {{VALUE}}; width: 100%;"
+				".{{WRAPPER}}": "position: {{VALUE}}; width: 100%;"
 			}
 		},
 		"positionTop": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "top: {{VALUE}};"
+				".{{WRAPPER}}": "top: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -97,7 +97,7 @@
 		"positionRight": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "right: {{VALUE}};"
+				".{{WRAPPER}}": "right: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -112,7 +112,7 @@
 		"positionBottom": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "bottom: {{VALUE}};"
+				".{{WRAPPER}}": "bottom: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -127,7 +127,7 @@
 		"positionLeft": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "left: {{VALUE}};"
+				".{{WRAPPER}}": "left: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -142,13 +142,13 @@
 		"alignSelf": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "align-self: {{VALUE}};"
+				".{{WRAPPER}}": "align-self: {{VALUE}};"
 			}
 		},
 		"flexOrder": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "order: {{VALUE}};"
+				".{{WRAPPER}}": "order: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -163,7 +163,7 @@
 		"flexCustomOrder": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "order: {{VALUE}};"
+				".{{WRAPPER}}": "order: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -178,19 +178,85 @@
 		"flexGrow": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "flex-grow: {{VALUE}};"
+				".{{WRAPPER}}": "flex-grow: {{VALUE}};"
 			}
 		},
 		"flexShrink": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "flex-shrink: {{VALUE}};"
+				".{{WRAPPER}}": "flex-shrink: {{VALUE}};"
 			}
 		},
 		"transform": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "transform: rotate({{VALUE}}deg);"
+				".{{WRAPPER}}": "transform: rotate({{VALUE}}deg);"
+			}
+		},
+		"background": {
+			"type": "string",
+			"groupSelector": {
+				"type": "BlockishBackground",
+				"selector": ".{{WRAPPER}}"
+			}
+		},
+		"backgroundHover": {
+			"type": "string",
+			"groupSelector": {
+				"type": "BlockishBackground",
+				"selector": ".{{WRAPPER}}:hover"
+			}
+		},
+		"backgroundHoverTransition": {
+			"type": "number",
+			"selectors": {
+				".{{WRAPPER}}": "--blockish-background-hover-transition: {{VALUE}}s;"
+			}	
+		},
+		"border": {
+			"type": "string",
+			"groupSelector": {
+				"type": "BlockishBorder",
+				"selector": ".{{WRAPPER}}"
+			}
+		},
+		"borderHover": {
+			"type": "string",
+			"groupSelector": {
+				"type": "BlockishBorder",
+				"selector": ".{{WRAPPER}}:hover"
+			}
+		},
+		"borderRadius": {
+			"type": "object",
+			"selectors": {
+				".{{WRAPPER}}": "border-radius: {{TOP_LEFT}} {{TOP_RIGHT}} {{BOTTOM_RIGHT}} {{BOTTOM_LEFT}};"
+			}
+		},
+		"borderRadiusHover": {
+			"type": "object",
+			"selectors": {
+				".{{WRAPPER}}:hover": "border-radius: {{TOP_LEFT}} {{TOP_RIGHT}} {{BOTTOM_RIGHT}} {{BOTTOM_LEFT}};"
+			}
+		},
+		"boxShadow": {
+			"type": "string",
+			"groupSelector": {
+				"type": "BlockishBoxShadow",
+				"selector": ".{{WRAPPER}}"
+			}
+		},
+		"boxShadowHover": {
+			"type": "string",
+			"groupSelector": {
+				"type": "BlockishBoxShadow",
+				"selector": ".{{WRAPPER}}:hover"
+			}
+		},
+		"borderHoverTransition": {
+			"type": "number",
+			"selectors": {
+				".{{WRAPPER}}": "--blockish-border-hover-transition: {{VALUE}}s;"
 			}
 		},
 		"preview": {

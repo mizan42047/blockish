@@ -13,6 +13,12 @@ const Inspector = ({ attributes, advancedControls, hasParent }) => {
     addFilter('blockish.advancedControl.width.exclude', 'blockish/container/exclude-width', (list) => {
         return list.add('blockish/container');
     });
+    addFilter('blockish.advancedControl.background.exclude', 'blockish/container/exclude-background', (list) => {
+        return list.add('blockish/container');
+    });
+    addFilter('blockish.advancedControl.border.exclude', 'blockish/container/exclude-border', (list) => {
+        return list.add('blockish/container');
+    });
 
     return (
         <InspectorControls>

@@ -26,35 +26,39 @@ import BlockishNumber from "./number";
 import BlockishDropdown from "./dropdown";
 import BlockishToolsPanel from "./tools-panel";
 import BlockishToggle from "./toggle";
+import BlockishTypography from "./typography";
+import BlockishFontFamily from "./font-family";
 
 if (window?.blockish?.screen) {
-    window.blockish.components = {
-        ...window?.wp?.components,
-        BlockishColor,
-        BlockishFontSizePicker,
-        BlockishPanelBody,
-        BlockishSpacingSizes,
-        BlockishStyleTag,
-        BlockishToggleGroup,
-        BlockishTab,
-        BlockishConditionalWrapper,
-        BlockishResponsive,
-        BlockishRangeControl,
-        BlockishTextareaControl,
-        BlockishSelect,
-        BlockishRangeUnit,
-        blockIcons,
-        BlockishMediaUploader,
-        BlockishBoxControl,
-        BlockishBackground,
-        BlockishBorder,
-        BlockishBorderRadius,
-        BlockishBoxShadow,
-        BlockishIconPicker,
-        BlockishLink,
-        BlockishNumber,
-        BlockishDropdown,
-        BlockishToolsPanel,
-        BlockishToggle
-    }
+        window.blockish.components = {
+                ...window?.wp?.components,
+                BlockishColor,
+                BlockishFontSizePicker,
+                BlockishPanelBody,
+                BlockishSpacingSizes,
+                BlockishStyleTag,
+                BlockishToggleGroup,
+                BlockishTab,
+                BlockishConditionalWrapper,
+                BlockishResponsive,
+                BlockishRangeControl,
+                BlockishTextareaControl,
+                BlockishSelect,
+                BlockishRangeUnit,
+                blockIcons,
+                BlockishMediaUploader,
+                BlockishBoxControl,
+                BlockishBackground,
+                BlockishBorder,
+                BlockishBorderRadius,
+                BlockishBoxShadow,
+                BlockishIconPicker,
+                BlockishLink,
+                BlockishNumber,
+                BlockishDropdown,
+                BlockishToolsPanel,
+                BlockishToggle,
+                BlockishTypography,
+                BlockishFontFamily
+        }
 }

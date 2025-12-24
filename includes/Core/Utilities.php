@@ -92,20 +92,16 @@ class Utilities
 
         $styles = '';
 
-        // Loop through each border property in the JSON object
-        foreach ($json_border as $key => $value) {
-            // Check for linked border (e.g., "border")
-            if ($key === 'width' && isset($value[$device])) {
-                $style = !empty($value['style']) ? $value['style'] : 'solid';
-                $color = !empty($value['color']) ? $value['color'] : '#000';
-                $styles .= 'border: ' . $value[$device] . ' ' . $style . ' ' . $color . ';';
-            }
-
-            // Check for unlinked borders (e.g., "top", "left", "right", "bottom")
-            elseif (in_array($key, ['top', 'left', 'right', 'bottom'], true) && isset($value['width'][$device])) {
-                $style = !empty($value['style']) ? $value['style'] : 'solid';
-                $color = !empty($value['color']) ? $value['color'] : '#000';
-                $styles .= 'border-' . $key . ': ' . $value['width'][$device] . ' ' . $style . ' ' . $color . ';';
+        if (isset($json_border['width'][$device])) {
+            $style = !empty($json_border['style']) ? $json_border['style'] : 'solid';
+            $color = !empty($json_border['color']) ? $json_border['color'] : '#000';
+            $styles .= 'border: ' . $json_border['width'][$device] . ' ' . $style . ' ' . $color . ';';
+        }
+        foreach ($json_border as $position => $value) {
+            if (isset($json_border[$position]['width'][$device])) {
+                $style = !empty($json_border[$position]['style']) ? $json_border[$position]['style'] : 'solid';
+                $color = !empty($json_border[$position]['color']) ? $json_border[$position]['color'] : '#000';
+                $styles .= 'border-' . $position . ': ' . $json_border[$position]['width'][$device] . ' ' . $style . ' ' . $color . ';';
             }
         }
 
@@ -137,6 +133,56 @@ class Utilities
         }
 
         return $styles;
+    }
+
+    public static function generate_typography_control_styles($typography, $device = 'Desktop')
+    {
+        if (empty($typography) || !is_string($typography)) return '';
+
+        $typography = json_decode($typography, true);
+
+        $styles = [];
+        // Font Family - handle both string and object formats
+        if (!empty($typography['fontFamily']['value'])) {
+            $styles[] = 'font-family: ' . $typography['fontFamily']['value'] . ';';
+        }
+        
+        // Font Weight
+        if (!empty($typography['fontWeight'])) {
+            $styles[] = 'font-weight: ' . esc_attr($typography['fontWeight']) . ';';
+        }
+        
+        // Font Size
+        if (!empty($typography['fontSize'][$device])) {
+            $styles[] = 'font-size: ' . esc_attr($typography['fontSize'][$device]) . ';';
+        }
+
+        // Line Height
+        if (!empty($typography['lineHeight'][$device])) {
+            $styles[] = 'line-height: ' . esc_attr($typography['lineHeight'][$device]) . ';';
+        }
+
+        // Letter Spacing
+        if (!empty($typography['letterSpacing'][$device])) {
+            $styles[] = 'letter-spacing: ' . esc_attr($typography['letterSpacing'][$device]) . ';';
+        }
+
+        // Text Transform
+        if (!empty($typography['textTransform'])) {
+            $styles[] = 'text-transform: ' . esc_attr($typography['textTransform']) . ';';
+        }
+
+        // Text Decoration
+        if (!empty($typography['textDecoration'])) {
+            $styles[] = 'text-decoration: ' . esc_attr($typography['textDecoration']) . ';';
+        }
+
+        // Font Style
+        if (!empty($typography['fontStyle'])) {
+            $styles[] = 'font-style: ' . esc_attr($typography['fontStyle']) . ';';
+        }
+        
+        return implode(' ', $styles);
     }
 
     public static function generate_uniqueId($length)
