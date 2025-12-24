@@ -82,6 +82,13 @@ const Transform = ({ attributes, setAttributes }) => {
                                 <BlockishToolsPanel
                                     label={__('Transform', 'blockish')}
                                     resetAll={resetAllNormal}
+                                    dropdownMenuProps={{
+                                        popoverProps: {
+                                            placement: 'left-center',
+                                            shift: true,
+                                            offset: 230
+                                        }
+                                    }}
                                     items={[
                                         {
                                             slug: 'rotate',
@@ -363,6 +370,13 @@ const Transform = ({ attributes, setAttributes }) => {
                                 <BlockishToolsPanel
                                     label={__('Transform', 'blockish')}
                                     resetAll={resetAllHover}
+                                    dropdownMenuProps={{
+                                        popoverProps: {
+                                            placement: 'left-center',
+                                            shift: true,
+                                            offset: 230
+                                        }
+                                    }}
                                     items={[
                                         {
                                             slug: 'rotateHover',
