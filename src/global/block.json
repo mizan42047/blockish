@@ -6,13 +6,6 @@
 		"styles": {
 			"type": "string"
 		},
-		"transformApply": {
-			"type": "boolean",
-			"default": true,
-			"selectors": {
-				".{{WRAPPER}}.wp-block": "transform: rotate(40deg);"
-			}
-		},
 		"padding": {
 			"type": "object",
 			"selectors": {
@@ -211,7 +204,7 @@
 			"type": "number",
 			"selectors": {
 				".{{WRAPPER}}": "--blockish-background-hover-transition: {{VALUE}}s;"
-			}	
+			}
 		},
 		"border": {
 			"type": "string",
@@ -266,13 +259,13 @@
 		"rotate": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "transform: rotate({{VALUE}}deg);"
+				".{{WRAPPER}}": "transform: rotate({{VALUE}}deg);"
 			}
 		},
 		"rotateZ": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--rotate-z: {{VALUE}}deg;"
+				".{{WRAPPER}}": "--rotate-z: {{VALUE}}deg;"
 			}
 		},
 		"rotate3D": {
@@ -281,7 +274,7 @@
 		"rotateX": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--rotate-x: {{VALUE}}deg;"
+				".{{WRAPPER}}": "--rotate-x: {{VALUE}}deg;"
 			},
 			"condition": {
 				"rules": [
@@ -296,7 +289,7 @@
 		"rotateY": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--rotate-y: {{VALUE}}deg;"
+				".{{WRAPPER}}": "--rotate-y: {{VALUE}}deg;"
 			},
 			"condition": {
 				"rules": [
@@ -311,7 +304,7 @@
 		"scale": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--scale-x: {{VALUE}}; --scale-y: {{VALUE}};"
+				".{{WRAPPER}}": "--scale-x: {{VALUE}}; --scale-y: {{VALUE}};"
 			}
 		},
 		"scaleSeparate": {
@@ -320,7 +313,7 @@
 		"scaleX": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--scale-x: {{VALUE}};"
+				".{{WRAPPER}}": "--scale-x: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -335,7 +328,7 @@
 		"scaleY": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--scale-y: {{VALUE}};"
+				".{{WRAPPER}}": "--scale-y: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -350,13 +343,13 @@
 		"translateX": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--translate-x: {{VALUE}};"
+				".{{WRAPPER}}": "--translate-x: {{VALUE}};"
 			}
 		},
 		"translateY": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--translate-y: {{VALUE}};"
+				".{{WRAPPER}}": "--translate-y: {{VALUE}};"
 			}
 		},
 		"translate3D": {
@@ -365,7 +358,7 @@
 		"translateZ": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--translate-z: {{VALUE}};"
+				".{{WRAPPER}}": "--translate-z: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -380,25 +373,25 @@
 		"skewX": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--skew-x: {{VALUE}}deg;"
+				".{{WRAPPER}}": "--skew-x: {{VALUE}}deg;"
 			}
 		},
 		"skewY": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--skew-y: {{VALUE}}deg;"
+				".{{WRAPPER}}": "--skew-y: {{VALUE}}deg;"
 			}
 		},
 		"transformOrigin": {
 			"type": "string",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "transform-origin: {{VALUE}};"
+				".{{WRAPPER}}": "transform-origin: {{VALUE}};"
 			}
 		},
 		"transformOriginX": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--transform-origin-x: {{VALUE}};"
+				".{{WRAPPER}}": "--transform-origin-x: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -413,7 +406,7 @@
 		"transformOriginY": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--transform-origin-y: {{VALUE}};"
+				".{{WRAPPER}}": "--transform-origin-y: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -428,13 +421,13 @@
 		"perspective": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--perspective: {{VALUE}}px;"
+				".{{WRAPPER}}": "--perspective: {{VALUE}}px;"
 			}
 		},
 		"rotateZHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--rotate-z-hover: {{VALUE}}deg;"
+				".{{WRAPPER}}": "--rotate-z-hover: {{VALUE}}deg;"
 			}
 		},
 		"rotate3DHover": {
@@ -443,7 +436,7 @@
 		"rotateXHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--rotate-x-hover: {{VALUE}}deg;"
+				".{{WRAPPER}}": "--rotate-x-hover: {{VALUE}}deg;"
 			},
 			"condition": {
 				"rules": [
@@ -458,7 +451,7 @@
 		"rotateYHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--rotate-y-hover: {{VALUE}}deg;"
+				".{{WRAPPER}}": "--rotate-y-hover: {{VALUE}}deg;"
 			},
 			"condition": {
 				"rules": [
@@ -473,7 +466,7 @@
 		"scaleHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--scale-x-hover: {{VALUE}}; --scale-y-hover: {{VALUE}};"
+				".{{WRAPPER}}": "--scale-x-hover: {{VALUE}}; --scale-y-hover: {{VALUE}};"
 			}
 		},
 		"scaleSeparateHover": {
@@ -482,7 +475,7 @@
 		"scaleXHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--scale-x-hover: {{VALUE}};"
+				".{{WRAPPER}}": "--scale-x-hover: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -497,7 +490,7 @@
 		"scaleYHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--scale-y-hover: {{VALUE}};"
+				".{{WRAPPER}}": "--scale-y-hover: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -512,13 +505,13 @@
 		"translateXHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--translate-x-hover: {{VALUE}};"
+				".{{WRAPPER}}": "--translate-x-hover: {{VALUE}};"
 			}
 		},
 		"translateYHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--translate-y-hover: {{VALUE}};"
+				".{{WRAPPER}}": "--translate-y-hover: {{VALUE}};"
 			}
 		},
 		"translate3DHover": {
@@ -527,7 +520,7 @@
 		"translateZHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--translate-z-hover: {{VALUE}};"
+				".{{WRAPPER}}": "--translate-z-hover: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -542,25 +535,25 @@
 		"skewXHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--skew-x-hover: {{VALUE}}deg;"
+				".{{WRAPPER}}": "--skew-x-hover: {{VALUE}}deg;"
 			}
 		},
 		"skewYHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--skew-y-hover: {{VALUE}}deg;"
+				".{{WRAPPER}}": "--skew-y-hover: {{VALUE}}deg;"
 			}
 		},
 		"transformOriginHover": {
 			"type": "string",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--transform-origin-hover: {{VALUE}};"
+				".{{WRAPPER}}": "--transform-origin-hover: {{VALUE}};"
 			}
 		},
 		"transformOriginXHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--transform-origin-x-hover: {{VALUE}};"
+				".{{WRAPPER}}": "--transform-origin-x-hover: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -575,7 +568,7 @@
 		"transformOriginYHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--transform-origin-y-hover: {{VALUE}};"
+				".{{WRAPPER}}": "--transform-origin-y-hover: {{VALUE}};"
 			},
 			"condition": {
 				"rules": [
@@ -590,34 +583,34 @@
 		"perspectiveHover": {
 			"type": "object",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "--perspective-hover: {{VALUE}}px;"
+				".{{WRAPPER}}": "--perspective-hover: {{VALUE}}px;"
 			}
 		},
 		"transformTransitionDuration": {
 			"type": "number",
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "transition: transform {{VALUE}}s ease;"
+				".{{WRAPPER}}": "transition: transform {{VALUE}}s ease;"
 			}
 		},
 		"applyTransform": {
 			"type": "boolean",
 			"default": true,
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "transform: perspective(var(--perspective, 1000px)) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) rotateZ(var(--rotate-z, 0deg)) translateX(var(--translate-x, 0px)) translateY(var(--translate-y, 0px)) translateZ(var(--translate-z, 0px)) scaleX(var(--scale-x, 1)) scaleY(var(--scale-y, 1)) skewX(var(--skew-x, 0deg)) skewY(var(--skew-y, 0deg));"
+				".{{WRAPPER}}": "transform: perspective(var(--perspective, 1000px)) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg)) rotateZ(var(--rotate-z, 0deg)) translateX(var(--translate-x, 0px)) translateY(var(--translate-y, 0px)) translateZ(var(--translate-z, 0px)) scaleX(var(--scale-x, 1)) scaleY(var(--scale-y, 1)) skewX(var(--skew-x, 0deg)) skewY(var(--skew-y, 0deg));"
 			}
 		},
 		"applyTransformHover": {
 			"type": "boolean",
 			"default": true,
 			"selectors": {
-				".{{WRAPPER}}.wp-block:hover": "transform: perspective(var(--perspective-hover, var(--perspective, 1000px))) rotateX(var(--rotate-x-hover, var(--rotate-x, 0deg))) rotateY(var(--rotate-y-hover, var(--rotate-y, 0deg))) rotateZ(var(--rotate-z-hover, var(--rotate-z, 0deg))) translateX(var(--translate-x-hover, var(--translate-x, 0px))) translateY(var(--translate-y-hover, var(--translate-y, 0px))) translateZ(var(--translate-z-hover, var(--translate-z, 0px))) scaleX(var(--scale-x-hover, var(--scale-x, 1))) scaleY(var(--scale-y-hover, var(--scale-y, 1))) skewX(var(--skew-x-hover, var(--skew-x, 0deg))) skewY(var(--skew-y-hover, var(--skew-y, 0deg)));"
+				".{{WRAPPER}}:hover": "transform: perspective(var(--perspective-hover, var(--perspective, 1000px))) rotateX(var(--rotate-x-hover, var(--rotate-x, 0deg))) rotateY(var(--rotate-y-hover, var(--rotate-y, 0deg))) rotateZ(var(--rotate-z-hover, var(--rotate-z, 0deg))) translateX(var(--translate-x-hover, var(--translate-x, 0px))) translateY(var(--translate-y-hover, var(--translate-y, 0px))) translateZ(var(--translate-z-hover, var(--translate-z, 0px))) scaleX(var(--scale-x-hover, var(--scale-x, 1))) scaleY(var(--scale-y-hover, var(--scale-y, 1))) skewX(var(--skew-x-hover, var(--skew-x, 0deg))) skewY(var(--skew-y-hover, var(--skew-y, 0deg)));"
 			}
 		},
 		"applyTransformOriginCustom": {
 			"type": "boolean",
 			"default": true,
 			"selectors": {
-				".{{WRAPPER}}.wp-block": "transform-origin: var(--transform-origin-x, 50%) var(--transform-origin-y, 50%);"
+				".{{WRAPPER}}": "transform-origin: var(--transform-origin-x, 50%) var(--transform-origin-y, 50%);"
 			},
 			"condition": {
 				"rules": [
@@ -633,7 +626,7 @@
 			"type": "boolean",
 			"default": true,
 			"selectors": {
-				".{{WRAPPER}}.wp-block:hover": "transform-origin: var(--transform-origin-x-hover, var(--transform-origin-x, 50%)) var(--transform-origin-y-hover, var(--transform-origin-y, 50%));"
+				".{{WRAPPER}}:hover": "transform-origin: var(--transform-origin-x-hover, var(--transform-origin-x, 50%)) var(--transform-origin-y-hover, var(--transform-origin-y, 50%));"
 			},
 			"condition": {
 				"rules": [
