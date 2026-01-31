@@ -1,0 +1,33 @@
+.blockish-button {
+	display: inline-block;
+
+	.blockish-button-inner {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		text-decoration: none;
+		cursor: pointer;
+		transition: all 0.3s ease;
+		border: none;
+		outline: none;
+		font-family: inherit;
+
+		span {
+			display: inline-block;
+		}
+	}
+
+	// Hover animations
+	&.hover-scale .blockish-button-inner:hover {
+		transform: scale(1.05);
+	}
+
+	&.hover-slide .blockish-button-inner:hover {
+		transform: translateY(-2px);
+	}
+
+	&.hover-lift .blockish-button-inner:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	}
+}

@@ -1,0 +1,18 @@
+.blockish-button {
+	.blockish-button-inner {
+		outline: none;
+		
+		span {
+			outline: none;
+			
+			&:focus {
+				outline: none;
+			}
+		}
+
+		&:focus {
+			outline: 2px solid #007cba;
+			outline-offset: 2px;
+		}
+	}
+}

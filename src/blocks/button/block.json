@@ -1,0 +1,171 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "blockish/button",
+  "version": "1.0.0",
+  "title": "Button",
+  "category": "blockish-framework",
+  "description": "Button block with advanced styling and link options.",
+  "icon": "button",
+  "keywords": [
+    "blockish",
+    "button",
+    "link",
+    "cta"
+  ],
+  "example": {
+    "attributes": {
+      "preview": true
+    }
+  },
+  "attributes": {
+    "text": {
+      "type": "string",
+      "default": "Click Me"
+    },
+    "link": {
+      "type": "object",
+      "default": {
+        "url": "",
+        "openInNewTab": false,
+        "nofollow": false
+      }
+    },
+    "ariaLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "htmlTag": {
+      "type": "string",
+      "default": "a"
+    },
+    "addIcon": {
+      "type": "boolean",
+      "default": false
+    },
+    "ToggleControl": {
+      "type": "boolean",
+      "default": false
+    },
+    "icon": {
+      "type": "object",
+      "default": {}
+    },
+    "iconPosition": {
+      "type": "string",
+      "default": "after"
+    },
+    "alignment": {
+      "type": "object",
+      "default": {
+        "Desktop": "left",
+        "Tablet": "left",
+        "Mobile": "left"
+      },
+      "selectors": {
+        ".{{WRAPPER}}": "text-align: {{VALUE}};"
+      }
+    },
+
+    "typography": {
+      "type": "string",
+      "groupSelector": {
+        "type": "BlockishTypography",
+        "selector": ".{{WRAPPER}} .blockish-button-inner"
+      }
+    },
+    "backgroundColor": {
+      "type": "string",
+      "selectors": {
+        ".{{WRAPPER}} .blockish-button-inner": "background-color: {{VALUE}};"
+      }
+    },
+    "textColor": {
+      "type": "string",
+      "selectors": {
+        ".{{WRAPPER}} .blockish-button-inner": "color: {{VALUE}};"
+      }
+    },
+    "backgroundHoverColor": {
+      "type": "string",
+      "selectors": {
+        ".{{WRAPPER}} .blockish-button-inner:hover": "background-color: {{VALUE}};"
+      }
+    },
+    "textHoverColor": {
+      "type": "string",
+      "selectors": {
+        ".{{WRAPPER}} .blockish-button-inner:hover": "color: {{VALUE}};"
+      }
+    },
+    "border": {
+      "type": "string",
+      "groupSelector": {
+        "type": "BlockishBorder",
+        "selector": ".{{WRAPPER}} .blockish-button-inner"
+      }
+    },
+    "borderHover": {
+      "type": "string",
+      "groupSelector": {
+        "type": "BlockishBorder",
+        "selector": ".{{WRAPPER}} .blockish-button-inner:hover"
+      }
+    },
+    "borderRadius": {
+      "type": "object",
+      "selectors": {
+        ".{{WRAPPER}} .blockish-button-inner": "border-radius: {{VALUE}};"
+      }
+    },
+    "boxShadow": {
+      "type": "string",
+      "groupSelector": {
+        "type": "BlockishBoxShadow",
+        "selector": ".{{WRAPPER}} .blockish-button-inner"
+      }
+    },
+    "boxShadowHover": {
+      "type": "string",
+      "groupSelector": {
+        "type": "BlockishBoxShadow",
+        "selector": ".{{WRAPPER}} .blockish-button-inner:hover"
+      }
+    },
+    "padding": {
+      "type": "object",
+      "default": {
+        "Desktop": {
+          "top": "12px",
+          "right": "24px",
+          "bottom": "12px",
+          "left": "24px"
+        }
+      },
+      "selectors": {
+        ".{{WRAPPER}} .blockish-button-inner": "padding: {{VALUE}};"
+      }
+    },
+    "margin": {
+      "type": "object",
+      "selectors": {
+        ".{{WRAPPER}}": "margin: {{VALUE}};"
+      }
+    },
+    "width": {
+      "type": "object",
+      "selectors": {
+        ".{{WRAPPER}} .blockish-button-inner": "width: {{VALUE}};"
+      }
+    }
+  },
+  "supports": {
+    "html": true,
+    "anchor": true,
+    "align": ["wide", "full"]
+  },
+  "textdomain": "blockish",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}
