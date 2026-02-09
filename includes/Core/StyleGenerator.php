@@ -269,7 +269,7 @@ class StyleGenerator
                 }
             } else {
                 // If no conditions, apply CSS for all breakpoints
-                if (is_array($attribute_value)) {
+                if (is_array($attribute_value) && Utilities::is_resposive_value($attribute_value, $breakpoints)) {
                     foreach ($breakpoints as $breakpoint) {
                         $device_slug = $breakpoint['slug'];
                         if (!empty($attribute_value[$device_slug])) {

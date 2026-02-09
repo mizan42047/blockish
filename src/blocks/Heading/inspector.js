@@ -74,7 +74,6 @@ const Inspector = ({ advancedControls }) => {
                                             type="BlockishTypography"
                                             label={__('Typography', 'blockish')}
                                             slug="typography"
-                                            groupSelector="{{SELECTOR}}"
                                         />
 
                                         <BlockishControl

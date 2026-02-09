@@ -356,6 +356,30 @@ const Inspector = ({ attributes, advancedControls, hasParent }) => {
                                             __nextHasNoMarginBottom={true}
                                         />
                                     </BlockishControl>
+                                    <BlockishControl
+                                        type="BlockishSelect"
+                                        label={__('Overflow', 'blockish')}
+                                        slug="overflow"
+                                        options={[
+                                            {
+                                                label: 'Visible',
+                                                value: 'visible'
+                                            },
+                                            {
+                                                label: 'Hidden',
+                                                value: 'hidden'
+                                            },
+                                            {
+                                                label: 'Scroll',
+                                                value: 'scroll'
+                                            },
+                                            {
+                                                label: 'Auto',
+                                                value: 'auto'
+                                            }
+                                        ]}
+                                        __nextHasNoMarginBottom={true}
+                                    />
                                 </>
                             )
                         }

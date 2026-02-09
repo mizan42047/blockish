@@ -86,7 +86,7 @@
     "imageOpacityNormal": {
       "type": "number",
       "selectors": {
-        ".{{WRAPPER}} .blockish-image": "opacity: {{VALUE}};"
+        ".{{WRAPPER}} .blockish-image": "opacity: {{VALUE}}%;"
       }
     },
     "imageBorderNormal": {
@@ -146,7 +146,7 @@
     "imageOpacityHover": {
       "type": "number",
       "selectors": {
-        ".{{WRAPPER}} .blockish-image:hover": "opacity: {{VALUE}};"
+        ".{{WRAPPER}} .blockish-image:hover": "opacity: {{VALUE}}%;"
       }
     },
     "imageHoverTransition": {

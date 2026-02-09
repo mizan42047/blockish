@@ -48,6 +48,11 @@ class BlocksList extends ConfigList {
                 'package' => 'free',
                 'status'  => 'active',
             ),
+            'button' => array(
+                'name'    => __('Button', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+            ),
         );
     }
 }

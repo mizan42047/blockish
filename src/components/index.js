@@ -28,6 +28,7 @@ import BlockishTypography from "./typography";
 import BlockishFontFamily from "./font-family";
 import BlockishImagePlaceholder from "./placeholder";
 import BlockishCSSFilters from "./css-filters";
+import BlockishDivider from "./divider";
 
 if(window?.blockish?.screen) {
     window.blockish.components = {
@@ -60,5 +61,6 @@ if(window?.blockish?.screen) {
         BlockishFontFamily,
         BlockishImagePlaceholder,
         BlockishCSSFilters,
+        BlockishDivider,
     }
 }

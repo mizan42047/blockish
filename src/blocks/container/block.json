@@ -23,6 +23,12 @@
 				"value": "div"
 			}
 		},
+		"overflow": {
+			"type": "object",
+			"selectors": {
+				".{{WRAPPER}}.blockish-container": "overflow: {{VALUE}};"
+			}
+		},
 		"containerWidth": {
 			"type": "string",
 			"default": "alignfull"
