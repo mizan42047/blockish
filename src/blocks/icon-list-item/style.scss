@@ -1,0 +1,29 @@
+.blockish-icon-list-item.blockish-icon-list-item {
+	--blockish-icon-list-item-icon-hover-transition: 0.2s;
+	--blockish-icon-list-item-text-hover-transition: 0.2s;
+
+	.blockish-icon-list-item-link {
+		color: inherit;
+	}
+
+	.blockish-icon-list-item-icon {
+		line-height: 1;
+		display: inline-flex;
+	}
+
+	.blockish-icon-list-item-link .blockish-icon-list-item-icon svg {
+		transition-property: fill, color;
+		transition-timing-function: ease;
+		transition-duration: var(
+			--blockish-icon-list-item-icon-hover-transition
+		);
+	}
+
+	.blockish-icon-list-item-link .blockish-icon-list-item-text {
+		transition-property: color, fill;
+		transition-timing-function: ease;
+		transition-duration: var(
+			--blockish-icon-list-item-text-hover-transition
+		);
+	}
+}

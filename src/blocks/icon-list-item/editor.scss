@@ -1,0 +1,11 @@
+.blockish-icon-list-item {
+	.blockish-icon-list-item-link {
+		pointer-events: none;
+	}
+
+	&.is-selected {
+		.blockish-icon-list-item-link {
+			pointer-events: all;
+		}
+	}
+}

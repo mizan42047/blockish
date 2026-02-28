@@ -1,0 +1,33 @@
+.blockish-icon-list {
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	list-style: none;
+
+	.blockish-icon-list-item {
+		list-style: none;
+	}
+
+	.blockish-icon-list-item-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		text-decoration: none;
+	}
+
+	.blockish-icon-list-item-icon svg,
+	.blockish-icon-list-item-text {
+		transition-property: color, fill;
+		transition-timing-function: ease;
+	}
+
+	.blockish-icon-list-item-icon svg {
+		transition-duration: var(--blockish-icon-list-icon-hover-transition, 0.2s);
+	}
+
+	.blockish-icon-list-item-text {
+		transition-duration: var(--blockish-icon-list-text-hover-transition, 0.2s);
+	}
+}

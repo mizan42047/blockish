@@ -58,6 +58,21 @@ class BlocksList extends ConfigList {
                 'package' => 'free',
                 'status'  => 'active',
             ),
+            'google-map' => array(
+                'name'    => __('Google Map', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+            ),
+            'icon-list' => array(
+                'name'    => __('Icon List', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+            ),
+            'icon-list-item' => array(
+                'name'    => __('Icon List Item', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+            ),
         );
     }
 }
