@@ -2,7 +2,7 @@ import { memo, useMemo } from '@wordpress/element';
 import { getBlockType } from '@wordpress/blocks';
 
 const BlockishStyleTag = ({ attributes, hash, name, additionalStyles = '' }) => {
-    const { useDeviceList, replaceCssPlaceholders, replaceString, generateCssString, isResponsiveValue, generateBackgroundControlStyles, generateBorderControlStyles, generateShadowControlStyles, generateTypographyControlStyles, generateCSSFilters } = window.blockish.helpers;
+    const { useDeviceList, replaceCssPlaceholders, replaceString, generateCssString, isResponsiveValue, generateBackgroundControlStyles, generateBorderControlStyles, generateShadowControlStyles, generateTypographyControlStyles, generateCSSFilters, generateTextStrokeControlStyles } = window.blockish.helpers;
 
     const deviceList = useDeviceList();
     const schemaAttributes = getBlockType(name)?.attributes || {};
@@ -48,6 +48,10 @@ const BlockishStyleTag = ({ attributes, hash, name, additionalStyles = '' }) => 
                         case 'BlockishCSSFilters':
                             let cssFilterStyles = generateCSSFilters(value);
                             cssRules[deviceSlug][selector] = (cssRules[deviceSlug][selector] || '') + cssFilterStyles;
+                            break;
+                        case 'BlockishTextStroke':
+                            let textStrokeStyles = generateTextStrokeControlStyles(value, deviceSlug);
+                            cssRules[deviceSlug][selector] = (cssRules[deviceSlug][selector] || '') + textStrokeStyles;
                             break;
                     }
                 }

@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "blockish/social-icon-item",
+	"version": "1.0.0",
+	"title": "Social Icon Item",
+	"category": "blockish-framework",
+	"description": "Child block for social icons.",
+	"icon": "share-alt2",
+	"parent": [ "blockish/social-icons" ],
+	"example": {
+		"attributes": {
+			"preview": true
+		}
+	},
+	"attributes": {
+		"network": {
+			"type": "string",
+			"default": "facebook"
+		},
+		"label": {
+			"type": "string",
+			"default": "Facebook"
+		},
+		"icon": {
+			"type": "object",
+			"default": {
+				"viewBox": [ 0, 0, 320, 512 ],
+				"path": "M279.14 288l14.22-92.66h-88.91V135.08c0-25.35 12.42-50.06 52.24-50.06H297V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"
+			}
+		},
+		"officialColor": {
+			"type": "string",
+			"default": "#1877F2"
+		},
+		"link": {
+			"type": "object"
+		}
+	},
+	"supports": {
+		"html": true,
+		"anchor": true
+	},
+	"textdomain": "blockish",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

@@ -206,6 +206,12 @@ class StyleGenerator
                                 ? $css_rules[$device_slug][$selector] . $styles
                                 : $styles;
                             break;
+                        case 'BlockishTextStroke':
+                            $styles = Utilities::generate_text_stroke_control_styles($value, $device_slug);
+                            $css_rules[$device_slug][$selector] = isset($css_rules[$device_slug][$selector])
+                                ? $css_rules[$device_slug][$selector] . $styles
+                                : $styles;
+                            break;
                     }
                 }
             };

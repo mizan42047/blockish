@@ -21,6 +21,7 @@ import BlockishIcon from "./icon";
 import getLinkProps from "./get-link-props";
 import generateTypographyControlStyles from './generate-typography-control-styles';
 import generateCSSFilters from "./generate-css-filters";
+import generateTextStrokeControlStyles from "./generate-text-stroke-control-styles";
 
 if( window?.blockish?.screen ){
     window.blockish.helpers = {
@@ -43,6 +44,7 @@ if( window?.blockish?.screen ){
         generateBorderControlStyles,
         generateShadowControlStyles,
         generateTypographyControlStyles,
+        generateTextStrokeControlStyles,
         useScrollIntoView,
         BlockishIcon,
         getLinkProps,

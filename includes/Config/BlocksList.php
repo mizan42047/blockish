@@ -73,6 +73,31 @@ class BlocksList extends ConfigList {
                 'package' => 'free',
                 'status'  => 'active',
             ),
+            'rating' => array(
+                'name'    => __('Rating', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+            ),
+            'counter' => array(
+                'name'    => __('Counter', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+            ),
+            'progress-bar' => array(
+                'name'    => __('Progress Bar', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+            ),
+            'social-icons' => array(
+                'name'    => __('Social Icons', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+            ),
+            'social-icon-item' => array(
+                'name'    => __('Social Icon Item', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+            ),
         );
     }
 }

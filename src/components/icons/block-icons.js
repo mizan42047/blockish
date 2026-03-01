@@ -4,4 +4,5 @@ export const icon = <svg width="24" height="24" viewBox="0 0 576 512" xmlns="htt
 
 export const rotate = <svg xmlns="http://www.w3.org/2000/svg" color="transparent" fill="none" viewBox="0 0 24 24"><path stroke="#464455" strokeLinecap="round" strokeLinejoin="round" d="M11.9231 19c-1.462 0-2.88651-.468-4.06931-1.3369-1.18279-.8689-2.06316-2.0941-2.51495-3.5-.45179-1.4059-.45179-2.9203 0-4.32622.45179-1.4059 1.33216-2.6311 2.51496-3.5C9.03659 5.46798 10.4611 5 11.9231 5c1.462 0 2.8865.46799 4.0693 1.33688 1.1828.8689 2.0631 2.0941 2.5149 3.5.4518 1.40592.4518 2.92032 0 4.32622M17.5 12.7778l.9615 1.5555L20 13.1667"/></svg>
 
+export const counter = <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100"><text x="50%" y="50%" fill="#333" dominant-baseline="middle" font-family="Arial, Helvetica, sans-serif" font-size="100" font-weight="bold" text-anchor="middle">123</text></svg>
 

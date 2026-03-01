@@ -235,6 +235,31 @@ class Utilities
         return 'filter: ' . trim($cssFilter) . ';';
     }
 
+    public static function generate_text_stroke_control_styles($text_stroke, $device = 'Desktop')
+    {
+        if (empty($text_stroke) || !is_string($text_stroke)) {
+            return '';
+        }
+
+        $json_text_stroke = json_decode($text_stroke, true);
+        if (!is_array($json_text_stroke)) {
+            return '';
+        }
+
+        $styles = '';
+
+        if (!empty($json_text_stroke['width'][$device])) {
+            $styles .= '-webkit-text-stroke-width: ' . esc_attr($json_text_stroke['width'][$device]) . ';';
+        }
+
+        if (!empty($json_text_stroke['color'])) {
+            $color = strpos($json_text_stroke['color'], '|') !== false ? explode('|', $json_text_stroke['color']) : $json_text_stroke['color'];
+            $styles .= '-webkit-text-stroke-color: ' . (is_array($color) ? 'var(' . esc_attr($color[0]) . ', ' . esc_attr($color[1]) . ')' : esc_attr($color)) . ';';
+        }
+
+        return $styles;
+    }
+
     public static function generate_uniqueId($length)
     {
         return substr(bin2hex(random_bytes($length / 2)), 0, $length);
