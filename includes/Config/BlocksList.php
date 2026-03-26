@@ -100,6 +100,17 @@ class BlocksList extends ConfigList {
                 'status'  => 'active',
                 'parent'  => 'social-icons',
             ),
+            'accordion' => array(
+                'name'    => __('Accordion', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+            ),
+            'accordion-item' => array(
+                'name'    => __('Accordion Item', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+                'parent'  => 'accordion',
+            ),
         );
     }
 }
