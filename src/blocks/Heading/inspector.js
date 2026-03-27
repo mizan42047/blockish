@@ -6,6 +6,7 @@ const Inspector = ({ advancedControls }) => {
     const {
         BlockishControl,
         BlockishResponsiveControl,
+        BlockishGroupControl
     } = window?.blockish?.controls;
 
     return (
@@ -74,7 +75,6 @@ const Inspector = ({ advancedControls }) => {
                                             type="BlockishTypography"
                                             label={__('Typography', 'blockish')}
                                             slug="typography"
-                                            groupSelector="{{SELECTOR}}"
                                         />
 
                                         <BlockishControl
@@ -100,6 +100,12 @@ const Inspector = ({ advancedControls }) => {
                                                                     label={__('Color', 'blockish')}
                                                                     slug="color"
                                                                 />
+                                                                <BlockishGroupControl
+                                                                    type="BlockishBoxShadow"
+                                                                    label={__('Text Shadow', 'blockish')}
+                                                                    slug="textShadow"
+                                                                    exclude={['inset', 'spread']}
+                                                                />
                                                             </>
                                                         )
                                                     }
@@ -110,6 +116,12 @@ const Inspector = ({ advancedControls }) => {
                                                                     type="BlockishColor"
                                                                     label={__('Hover Color', 'blockish')}
                                                                     slug="hoverColor"
+                                                                />
+                                                                <BlockishGroupControl
+                                                                    type="BlockishBoxShadow"
+                                                                    label={__('Text Shadow', 'blockish')}
+                                                                    slug="textShadowHover"
+                                                                    exclude={['inset', 'spread']}
                                                                 />
                                                             </>
                                                         )

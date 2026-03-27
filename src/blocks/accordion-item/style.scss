@@ -1,0 +1,9 @@
+.blockish-accordion-item {
+	.blockish-accordion-item-content-inner > :first-child {
+		margin-top: 0;
+	}
+
+	.blockish-accordion-item-content-inner > :last-child {
+		margin-bottom: 0;
+	}
+}

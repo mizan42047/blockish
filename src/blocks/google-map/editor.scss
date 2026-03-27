@@ -1,0 +1,11 @@
+.blockish-google-map-wrapper {
+	.blockish-google-map__iframe {
+		pointer-events: none;
+	}
+
+	&.is-selected {
+		.blockish-google-map__iframe {
+			pointer-events: all;
+		}
+	}
+}

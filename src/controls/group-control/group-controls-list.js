@@ -2,7 +2,9 @@ const groupControlsList = [
     'BlockishBackground',
     'BlockishBorder',
     'BlockishBoxShadow',
-    'BlockishTypography'
+    'BlockishTypography',
+    'BlockishCSSFilters',
+    'BlockishTextStroke'
 ];
 
 export default groupControlsList;

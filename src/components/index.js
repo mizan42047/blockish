@@ -28,37 +28,45 @@ import BlockishToolsPanel from "./tools-panel";
 import BlockishToggle from "./toggle";
 import BlockishTypography from "./typography";
 import BlockishFontFamily from "./font-family";
+import BlockishImagePlaceholder from "./placeholder";
+import BlockishCSSFilters from "./css-filters";
+import BlockishDivider from "./divider";
+import BlockishTextStroke from "./text-stroke";
 
 if (window?.blockish?.screen) {
-        window.blockish.components = {
-                ...window?.wp?.components,
-                BlockishColor,
-                BlockishFontSizePicker,
-                BlockishPanelBody,
-                BlockishSpacingSizes,
-                BlockishStyleTag,
-                BlockishToggleGroup,
-                BlockishTab,
-                BlockishConditionalWrapper,
-                BlockishResponsive,
-                BlockishRangeControl,
-                BlockishTextareaControl,
-                BlockishSelect,
-                BlockishRangeUnit,
-                blockIcons,
-                BlockishMediaUploader,
-                BlockishBoxControl,
-                BlockishBackground,
-                BlockishBorder,
-                BlockishBorderRadius,
-                BlockishBoxShadow,
-                BlockishIconPicker,
-                BlockishLink,
-                BlockishNumber,
-                BlockishDropdown,
-                BlockishToolsPanel,
-                BlockishToggle,
-                BlockishTypography,
-                BlockishFontFamily
-        }
+    window.blockish.components = {
+        ...window?.wp?.components,
+        BlockishColor,
+        BlockishFontSizePicker,
+        BlockishPanelBody,
+        BlockishSpacingSizes,
+        BlockishStyleTag,
+        BlockishToggleGroup,
+        BlockishTab,
+        BlockishConditionalWrapper,
+        BlockishResponsive,
+        BlockishRangeControl,
+        BlockishTextareaControl,
+        BlockishSelect,
+        BlockishRangeUnit,
+        blockIcons,
+        BlockishMediaUploader,
+        BlockishBoxControl,
+        BlockishBackground,
+        BlockishBorder,
+        BlockishBorderRadius,
+        BlockishBoxShadow,
+        BlockishIconPicker,
+        BlockishLink,
+        BlockishNumber,
+        BlockishDropdown,
+        BlockishToolsPanel,
+        BlockishToggle,
+        BlockishTypography,
+        BlockishFontFamily,
+        BlockishImagePlaceholder,
+        BlockishCSSFilters,
+        BlockishDivider,
+        BlockishTextStroke,
+    }
 }

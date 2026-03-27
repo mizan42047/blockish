@@ -1,0 +1,22 @@
+.blockish-icon-list-editor {
+	.blockish-icon-list {
+		> .block-editor-inner-blocks > .block-editor-block-list__layout {
+			display: flex;
+			flex-direction: inherit;
+			flex-wrap: wrap;
+			gap: inherit;
+		}
+	}
+
+	.blockish-icon-list-editor__appender {
+		margin-top: 12px;
+
+		.components-button {
+			width: 100%;
+			justify-content: center;
+			min-height: 38px;
+			border-radius: 10px;
+			border-style: dashed;
+		}
+	}
+}

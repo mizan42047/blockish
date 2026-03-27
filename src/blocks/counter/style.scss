@@ -1,0 +1,52 @@
+.blockish-counter {
+	--blockish-counter-title-horizontal: center;
+	--blockish-counter-title-vertical: center;
+
+	.blockish-counter__inner {
+		display: flex;
+		gap: 8px;
+	}
+
+	&.is-title-before .blockish-counter__inner {
+		flex-direction: column;
+		align-items: var(--blockish-counter-title-horizontal);
+	}
+
+	&.is-title-after .blockish-counter__inner {
+		flex-direction: column;
+		align-items: var(--blockish-counter-title-horizontal);
+	}
+
+	&.is-title-start .blockish-counter__inner {
+		flex-direction: row;
+		justify-content: var(--blockish-counter-title-horizontal);
+		align-items: var(--blockish-counter-title-vertical);
+	}
+
+	&.is-title-end .blockish-counter__inner {
+		flex-direction: row;
+		justify-content: var(--blockish-counter-title-horizontal);
+		align-items: var(--blockish-counter-title-vertical);
+	}
+
+	.blockish-counter__number,
+	.blockish-counter__title {
+		margin: 0;
+	}
+
+	.blockish-counter__number {
+		font-size: 44px;
+		font-weight: 600;
+		line-height: 1.15;
+		text-align: center;
+	}
+
+	.blockish-counter__number-value {
+		display: inline-block;
+		white-space: nowrap;
+	}
+
+	.blockish-counter__title {
+		line-height: 1.3;
+	}
+}

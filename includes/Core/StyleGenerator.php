@@ -79,6 +79,7 @@ class StyleGenerator
             $block_content = new \WP_HTML_Tag_Processor($block_content);
             $block_content->next_tag();
             $block_content->add_class($block_class);
+            $block_content->add_class('blockish-block-wrapper');
             return $block_content->get_updated_html();
         }
 
@@ -182,13 +183,32 @@ class StyleGenerator
                                 : $styles;
                             break;
                         case 'BlockishBoxShadow':
-                            $styles = Utilities::generate_box_shadow_control_styles($value, $device_slug);
+                            $styles = Utilities::generate_shadow_control_styles($value, 'box');
                             $css_rules[$device_slug][$selector] = isset($css_rules[$device_slug][$selector])
                                 ? $css_rules[$device_slug][$selector] . $styles
                                 : $styles;
                             break;
+                        case 'BlockishTextShadow':
+                            $styles = Utilities::generate_shadow_control_styles($value, 'text');
+                            $css_rules[$device_slug][$selector] = isset($css_rules[$device_slug][$selector])
+                                ? $css_rules[$device_slug][$selector] . $styles
+                                : $styles;
+                            break;
+
                         case 'BlockishTypography':
                             $styles = Utilities::generate_typography_control_styles($value, $device_slug);
+                            $css_rules[$device_slug][$selector] = isset($css_rules[$device_slug][$selector])
+                                ? $css_rules[$device_slug][$selector] . $styles
+                                : $styles;
+                            break;
+                        case 'BlockishCSSFilters':
+                            $styles = Utilities::generate_css_filters($value);
+                            $css_rules[$device_slug][$selector] = isset($css_rules[$device_slug][$selector])
+                                ? $css_rules[$device_slug][$selector] . $styles
+                                : $styles;
+                            break;
+                        case 'BlockishTextStroke':
+                            $styles = Utilities::generate_text_stroke_control_styles($value, $device_slug);
                             $css_rules[$device_slug][$selector] = isset($css_rules[$device_slug][$selector])
                                 ? $css_rules[$device_slug][$selector] . $styles
                                 : $styles;
@@ -256,7 +276,7 @@ class StyleGenerator
                 }
             } else {
                 // If no conditions, apply CSS for all breakpoints
-                if (is_array($attribute_value)) {
+                if (is_array($attribute_value) && Utilities::is_resposive_value($attribute_value, $breakpoints)) {
                     foreach ($breakpoints as $breakpoint) {
                         $device_slug = $breakpoint['slug'];
                         if (!empty($attribute_value[$device_slug])) {

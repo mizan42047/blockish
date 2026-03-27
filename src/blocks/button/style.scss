@@ -1,0 +1,20 @@
+
+.blockish-button{
+	width: 100%;
+	display: flex;
+	align-items: center;
+
+	.blockish-button-link{
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+		text-decoration: none;
+		cursor: pointer;
+		box-sizing: border-box;
+		background-color: #000;
+		color: #fff;
+		padding: 10px 20px;
+		transition: all 0.3s ease;
+	}
+}

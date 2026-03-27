@@ -9,3 +9,7 @@
             transform var(--transform-transition, 0.3s) ease-in-out;
     }
 }
+
+.blockish-block-wrapper {
+    box-sizing: border-box;
+}

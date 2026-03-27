@@ -1,0 +1,29 @@
+.blockish-text-stroke {
+	.blockish-text-stroke-button {
+		width: 100%;
+		box-shadow: none !important;
+		outline: none !important;
+		border: 1px solid #dddddd !important;
+		color: #111111 !important;
+		transition: all 0.2s ease-in-out !important;
+
+		&:hover {
+			border-color: #1677ff !important;
+			color: #1677ff !important;
+
+			.components-text {
+				color: #1677ff !important;
+			}
+		}
+
+		&:disabled {
+			opacity: 0.5 !important;
+			cursor: not-allowed !important;
+		}
+	}
+}
+
+.blockish-text-stroke-content {
+	display: grid;
+	gap: 12px;
+}
