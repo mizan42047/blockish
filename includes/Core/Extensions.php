@@ -11,49 +11,98 @@ class Extensions
     use \Blockish\Traits\SingletonTrait;
 
     /**
-     * Cached extension metadata keyed by slug.
+     * Discovered extension metadata keyed by slug.
      *
      * @var array<string, array>
      */
-    private $extensions = [];
+    private $discovered_extensions = [];
+
+    /**
+     * Active extension metadata keyed by slug.
+     *
+     * @var array<string, array>
+     */
+    private $active_extensions = [];
 
     /**
      * Constructor.
      */
     private function __construct()
     {
-        add_action('init', [$this, 'load_extensions'], 11);
+        add_action('init', [$this, 'register_extensions'], 11);
         add_action('enqueue_block_editor_assets', [$this, 'enqueue_editor_assets']);
-        add_filter('block_type_metadata', [$this, 'inject_extension_attributes'], 20);
     }
 
     /**
-     * Load active extension metadata and register their assets.
+     * Register active extensions from configured paths.
      *
      * @return void
      */
-    public function load_extensions()
+    public function register_extensions()
     {
-        $active_extensions = ExtensionList::get_instance()->get_list('active');
+        $this->discovered_extensions = [];
+        $this->active_extensions = [];
 
+        $active_extensions = ExtensionList::get_instance()->get_list('active');
         if (empty($active_extensions)) {
             return;
         }
 
         foreach ($active_extensions as $slug => $extension) {
-            $path = BLOCKISH_EXTENSIONS_DIR . $slug;
-            if (!is_dir($path)) {
-                continue;
-            }
+            $path = !empty($extension['path'])
+                ? $extension['path']
+                : trailingslashit(BLOCKISH_EXTENSIONS_DIR) . $slug;
 
-            $metadata = $this->get_extension_metadata($path);
+            $metadata = $this->blockish_register_extensions_from_metadata($path);
             if (empty($metadata)) {
                 continue;
             }
 
-            $this->extensions[$slug] = $metadata;
-            $this->register_assets($slug, $metadata, $path);
+            $this->active_extensions[$slug] = $metadata;
         }
+    }
+
+    /**
+     * Return merged extension metadata applicable for a given block.
+     *
+     * @param string $block_name Current block name.
+     * @return array
+     */
+    public function get_applicable_metadata_for_block($block_name)
+    {
+        $merged = [
+            'attributes' => [],
+            'usesContext' => [],
+            'providesContext' => [],
+        ];
+
+        if (
+            empty($block_name) ||
+            !str_starts_with($block_name, 'blockish/') ||
+            empty($this->active_extensions)
+        ) {
+            return $merged;
+        }
+
+        foreach ($this->active_extensions as $extension) {
+            if (!$this->extension_targets_block($extension, $block_name)) {
+                continue;
+            }
+
+            if (!empty($extension['attributes']) && is_array($extension['attributes'])) {
+                $merged['attributes'] = array_merge($merged['attributes'], $extension['attributes']);
+            }
+
+            if (!empty($extension['usesContext']) && is_array($extension['usesContext'])) {
+                $merged['usesContext'] = array_unique(array_merge($merged['usesContext'], $extension['usesContext']));
+            }
+
+            if (!empty($extension['providesContext']) && is_array($extension['providesContext'])) {
+                $merged['providesContext'] = array_merge($merged['providesContext'], $extension['providesContext']);
+            }
+        }
+
+        return $merged;
     }
 
     /**
@@ -63,43 +112,32 @@ class Extensions
      */
     public function enqueue_editor_assets()
     {
-        foreach ($this->extensions as $slug => $metadata) {
+        foreach ($this->active_extensions as $slug => $metadata) {
             $this->maybe_enqueue_handle($slug, 'editorScript');
             $this->maybe_enqueue_handle($slug, 'editorStyle');
         }
     }
 
     /**
-     * Inject extension attributes into selected blocks via include/exclude rules.
+     * Register one extension by directory path (block.json driven).
      *
-     * @param array $metadata Block metadata.
-     * @return array
+     * @param string $path Extension directory path.
+     * @return array|false
      */
-    public function inject_extension_attributes($metadata)
+    public function blockish_register_extensions_from_metadata($path)
     {
-        if (!isset($metadata['name']) || !is_string($metadata['name'])) {
-            return $metadata;
+        if (empty($path) || !is_dir($path)) {
+            return false;
         }
 
-        if (empty($this->extensions)) {
-            return $metadata;
+        $metadata = $this->get_extension_metadata($path);
+        if (empty($metadata)) {
+            return false;
         }
 
-        foreach ($this->extensions as $extension) {
-            if (!$this->extension_targets_block($extension, $metadata['name'])) {
-                continue;
-            }
-
-            if (empty($extension['attributes']) || !is_array($extension['attributes'])) {
-                continue;
-            }
-
-            if (!isset($metadata['attributes']) || !is_array($metadata['attributes'])) {
-                $metadata['attributes'] = [];
-            }
-
-            $metadata['attributes'] = array_merge($metadata['attributes'], $extension['attributes']);
-        }
+        $slug = basename(untrailingslashit($path));
+        $this->discovered_extensions[$slug] = $metadata;
+        $this->register_assets($slug, $metadata, $path);
 
         return $metadata;
     }
@@ -211,10 +249,10 @@ class Extensions
         }
 
         $handle = $this->get_extension_asset_handle($slug, $field_name);
-        $asset_url = plugins_url(
-            'build/extensions/' . $slug . '/' . ltrim($asset_relative_path, '/'),
-            BLOCKISH_DIR . 'blockish.php'
-        );
+        $asset_url = $this->get_asset_url_from_path($asset_absolute_path);
+        if (empty($asset_url)) {
+            return;
+        }
 
         if ($type === 'script') {
             wp_register_script(
@@ -233,6 +271,25 @@ class Extensions
             [],
             $asset_data['version'] ?? false
         );
+    }
+
+    /**
+     * Convert a filesystem asset path to URL.
+     *
+     * @param string $asset_absolute_path
+     * @return string
+     */
+    private function get_asset_url_from_path($asset_absolute_path)
+    {
+        $asset_absolute_path = wp_normalize_path($asset_absolute_path);
+        $content_dir = wp_normalize_path(WP_CONTENT_DIR);
+
+        if (!str_starts_with($asset_absolute_path, $content_dir)) {
+            return '';
+        }
+
+        $relative = ltrim(str_replace($content_dir, '', $asset_absolute_path), '/');
+        return content_url($relative);
     }
 
     /**
@@ -279,6 +336,11 @@ class Extensions
      */
     private function extension_targets_block($extension, $block_name)
     {
+        // Extensions are scoped to Blockish blocks only.
+        if (!str_starts_with($block_name, 'blockish/')) {
+            return false;
+        }
+
         $include = isset($extension['include']) && is_array($extension['include'])
             ? $extension['include']
             : [];
@@ -294,12 +356,10 @@ class Extensions
             return false;
         }
 
-        // If include is not defined, default to Blockish blocks.
         if (empty($include)) {
             return str_starts_with($block_name, 'blockish/');
         }
 
         return true;
     }
-
 }
