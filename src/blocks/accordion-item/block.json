@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Accordion Item",
 	"category": "blockish-framework",
-	"description": "Child block for accordion content.",
+	"description": "Item for the Accordion block.",
 	"icon": "excerpt-view",
 	"parent": [ "blockish/accordion" ],
 	"attributes": {

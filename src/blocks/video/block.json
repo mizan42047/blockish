@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Video",
 	"category": "blockish-framework",
-	"description": "Video block for showing self-hosted videos.",
+	"description": "Embed a video with custom controls and settings.",
 	"icon": "format-video",
 	"keywords": [ "blockish", "video", "media" ],
 	"example": {

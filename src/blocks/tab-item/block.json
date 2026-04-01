@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Tab Item",
 	"category": "blockish-framework",
-	"description": "Child block for tab content.",
+	"description": "Item for the Tab block.",
 	"icon": "excerpt-view",
 	"parent": [
 		"blockish/tab"

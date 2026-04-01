@@ -12,7 +12,7 @@
     ],
     "version": "1.0.0",
     "icon": "button",
-    "description": "A customizable button block",
+    "description": "Call-to-action button with style options.",
     "textdomain": "blockish",
     "attributes": {
         "text": {

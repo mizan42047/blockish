@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Rating",
 	"category": "blockish-framework",
-	"description": "Rating block for displaying icon-based ratings.",
+	"description": "Star rating display for reviews and scores.",
 	"icon": "star-filled",
 	"keywords": [ "blockish", "rating", "stars", "review" ],
 	"example": {

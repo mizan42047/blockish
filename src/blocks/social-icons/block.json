@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Social Icons",
 	"category": "blockish-framework",
-	"description": "Parent block for social icon items.",
+	"description": "Social icon list for profile links.",
 	"icon": "share",
 	"keywords": [ "blockish", "social", "icons" ],
 	"example": {

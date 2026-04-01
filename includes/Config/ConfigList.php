@@ -96,14 +96,15 @@ abstract class ConfigList {
      */
     private function sync_list_with_options() {
         $saved_list = get_option( 'blockish_' . $this->type . '_list', array() );
-        $updated_list = $this->list;
 
         // Iterate through the list and sync it with the saved option.
         foreach ( $this->list as $key => $item ) {
             if ( isset( $saved_list[$key] ) ) {
-                // If the saved list exists, check for differences and update.
-                if ( $saved_list[$key] !== $item ) {
-                    $saved_list[$key] = $item;
+                $saved_status = $saved_list[$key]['status'] ?? null;
+                $saved_list[$key] = $item;
+
+                if ( in_array( $saved_status, array( 'active', 'inactive' ), true ) ) {
+                    $saved_list[$key]['status'] = $saved_status;
                 }
             } else {
                 // If it's a new item, add it to the saved list.

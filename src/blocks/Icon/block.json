@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Icon",
 	"category": "blockish-framework",
-	"description": "Icon block for showing icon.",
+	"description": "Display a single icon with customizable style.",
 	"example": {
 		"attributes": {
 			"preview": true

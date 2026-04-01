@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Accordion",
 	"category": "blockish-framework",
-	"description": "Expandable accordion container for accordion items.",
+	"description": "Accordion container for collapsible content.",
 	"icon": "menu-alt3",
 	"keywords": [ "accordion", "faq", "toggle" ],
 	"example": {

@@ -16,10 +16,13 @@
  */
 
 use Blockish\Core\Blocks;
+use Blockish\Core\Dashboard;
 use Blockish\Core\Enqueue;
 use Blockish\Core\ExtenSions;
 use Blockish\Core\StyleGenerator;
 use Blockish\Hooks\WrapperLink;
+use Blockish\Routes\BlocksV1;
+use Blockish\Routes\ExtensionsV1;
 use Blockish\Routes\SVGUploaderV1;
 
 // Exit if accessed directly.
@@ -130,8 +133,11 @@ final class Blockish {
 
         // Load plugin classes.
         Blocks::get_instance();
+        Dashboard::get_instance();
         Enqueue::get_instance();
         StyleGenerator::get_instance();
+        BlocksV1::get_instance();
+        ExtensionsV1::get_instance();
         SVGUploaderV1::get_instance();
         ExtenSions::get_instance();
         WrapperLink::get_instance();

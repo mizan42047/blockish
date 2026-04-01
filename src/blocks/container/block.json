@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "Container",
 	"category": "blockish-framework",
-	"description": "Container block for help to create responsive layout for your website.",
+	"description": "Responsive container for building layouts and sections.",
 	"example": {
 		"attributes": {
 			"preview": true

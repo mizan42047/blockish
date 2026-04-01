@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "title": "Heading",
   "category": "blockish-framework",
-  "description": "Heading block for testing typography component.",
+  "description": "Flexible heading block for titles and section labels.",
   "icon": "heading",
   "keywords": [
     "blockish",

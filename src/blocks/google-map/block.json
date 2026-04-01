@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Google Map",
 	"category": "blockish-framework",
-	"description": "Google map block for showing a location with embed iframe.",
+	"description": "Embed a Google Map location on your page.",
 	"icon": "location-alt",
 	"keywords": [ "blockish", "map", "google maps", "location" ],
 	"example": {

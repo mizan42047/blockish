@@ -30,11 +30,21 @@ class ExtensionList extends ConfigList {
         $this->list = array(
             'interactions' => array(
                 'name'    => 'Interactions',
+                'description' => __('Adds interaction and animation controls.', 'blockish'),
+                'settings_schema' => array(
+                    'enableViewportAnimation' => 'boolean',
+                    'defaultDelay' => 'string',
+                ),
                 'package' => 'free',
                 'status'  => 'active',
             ),
             'wrapper-link' => array(
                 'name'    => 'Wrapper Link',
+                'description' => __('Enable wrapper links for blocks.', 'blockish'),
+                'settings_schema' => array(
+                    'openInNewTabByDefault' => 'boolean',
+                    'relAttributes' => 'string',
+                ),
                 'package' => 'free',
                 'status'  => 'active',
             ),

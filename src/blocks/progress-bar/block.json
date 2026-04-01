@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Progress Bar",
 	"category": "blockish-framework",
-	"description": "Progress bar block for showing completion percentage.",
+	"description": "Progress bar showing completion status.",
 	"icon": "chart-bar",
 	"keywords": [ "blockish", "progress", "bar" ],
 	"example": {

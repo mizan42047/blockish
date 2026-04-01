@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "title": "Image",
   "category": "blockish-framework",
-  "description": "Image block for showing image.",
+  "description": "Display an image with optional caption and styling.",
   "icon": "format-image",
   "keywords": [
     "blockish",

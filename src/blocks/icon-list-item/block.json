@@ -5,7 +5,7 @@
 	"version": "1.0.0",
 	"title": "Icon List Item",
 	"category": "blockish-framework",
-	"description": "Child block for icon list.",
+	"description": "Item for the Icon List block.",
 	"icon": "marker",
 	"parent": [ "blockish/icon-list" ],
 	"example": {
