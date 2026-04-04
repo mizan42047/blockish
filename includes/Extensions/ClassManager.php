@@ -10,7 +10,7 @@ class ClassManager {
 	use \Blockish\Traits\SingletonTrait;
 
 	/**
-	 * @var array<string, bool>
+	 * @var array<string, array{slug: string, id: int}>
 	 */
 	private $used_classes = array();
 
@@ -22,19 +22,19 @@ class ClassManager {
 
 	public function register_post_type() {
 		register_post_type(
-			'blockish-class-manager',
+			'blockish-classes',
 			array(
 				'label'                 => __( 'Class Manager', 'blockish' ),
-				'public'                => false,
-				'show_ui'               => false,
-				'show_in_menu'          => false,
-				'show_in_admin_bar'     => false,
+				'public'                => true,
+				'show_ui'               => true,
+				'show_in_menu'          => true,
+				'show_in_admin_bar'     => true,
 				'show_in_nav_menus'     => false,
 				'exclude_from_search'   => true,
 				'publicly_queryable'    => false,
 				'hierarchical'          => false,
 				'show_in_rest'          => true,
-				'rest_base'             => 'blockish-class-manager',
+				'rest_base'             => 'blockish-classes',
 				'rest_controller_class' => 'WP_REST_Posts_Controller',
 				'supports'              => array( 'title', 'editor' ),
 				'capability_type'       => 'post',
@@ -46,12 +46,12 @@ class ClassManager {
 	}
 
 	public function render_block( $block_content, $block ) {
-		if ( empty( $block['blockName'] ) || ! str_starts_with( $block['blockName'], 'blockish/' ) ) {
+		if ( empty( $block['blockName'] ) || ! $this->is_supported_block_name( $block['blockName'] ) ) {
 			return $block_content;
 		}
 
-		$classes = $block['attrs']['classManager'] ?? array();
-		if ( ! is_array( $classes ) || empty( $classes ) ) {
+		$class_items = $block['attrs']['classManager'] ?? array();
+		if ( ! is_array( $class_items ) || empty( $class_items ) ) {
 			return $block_content;
 		}
 
@@ -60,14 +60,14 @@ class ClassManager {
 			return $block_content;
 		}
 
-		foreach ( $classes as $class_slug ) {
-			$class_slug = $this->normalize_class_slug( $class_slug );
-			if ( empty( $class_slug ) ) {
+		foreach ( $class_items as $class_item ) {
+			$class_data = $this->normalize_class_item( $class_item );
+			if ( empty( $class_data['slug'] ) ) {
 				continue;
 			}
 
-			$processor->add_class( $class_slug );
-			$this->used_classes[ $class_slug ] = true;
+			$processor->add_class( $class_data['slug'] );
+			$this->used_classes[ $class_data['slug'] ] = $class_data;
 		}
 
 		return $processor->get_updated_html();
@@ -78,8 +78,7 @@ class ClassManager {
 			return;
 		}
 
-		$classes = array_keys( $this->used_classes );
-		$styles  = $this->get_styles_for_classes( $classes );
+		$styles = $this->get_styles_for_classes( $this->used_classes );
 
 		if ( empty( $styles ) ) {
 			return;
@@ -89,13 +88,13 @@ class ClassManager {
 	}
 
 	/**
-	 * @param array<int, string> $classes
+	 * @param array<string, array{slug: string, id: int}> $classes
 	 * @return string
 	 */
 	private function get_styles_for_classes( $classes ) {
 		$posts = get_posts(
 			array(
-				'post_type'      => 'blockish-class-manager',
+				'post_type'      => 'blockish-classes',
 				'post_status'    => 'publish',
 				'posts_per_page' => -1,
 			)
@@ -105,12 +104,25 @@ class ClassManager {
 			return '';
 		}
 
-		$lookup = array_fill_keys( $classes, true );
+		$lookup = array();
 		$css    = '';
+
+		foreach ( $classes as $class ) {
+			if ( empty( $class['slug'] ) ) {
+				continue;
+			}
+
+			$lookup[ $class['slug'] ] = absint( $class['id'] ?? 0 );
+		}
 
 		foreach ( $posts as $post ) {
 			$slug = $this->normalize_class_slug( $post->post_title );
 			if ( empty( $slug ) || ! isset( $lookup[ $slug ] ) ) {
+				continue;
+			}
+
+			$expected_id = absint( $lookup[ $slug ] );
+			if ( $expected_id > 0 && (int) $post->ID !== $expected_id ) {
 				continue;
 			}
 
@@ -137,6 +149,52 @@ class ClassManager {
 		}
 
 		return $css;
+	}
+
+	/**
+	 * @param mixed $class_item
+	 * @return array{slug: string, id: int}
+	 */
+	private function normalize_class_item( $class_item ) {
+		if ( is_string( $class_item ) ) {
+			return array(
+				'slug' => $this->normalize_class_slug( $class_item ),
+				'id'   => 0,
+			);
+		}
+
+		if ( ! is_array( $class_item ) ) {
+			return array(
+				'slug' => '',
+				'id'   => 0,
+			);
+		}
+
+		$title = '';
+		if ( isset( $class_item['title'] ) && is_string( $class_item['title'] ) ) {
+			$title = $class_item['title'];
+		}
+
+		if ( '' === $title && isset( $class_item['slug'] ) && is_string( $class_item['slug'] ) ) {
+			$title = $class_item['slug'];
+		}
+
+		return array(
+			'slug' => $this->normalize_class_slug( $title ),
+			'id'   => absint( $class_item['id'] ?? 0 ),
+		);
+	}
+
+	/**
+	 * @param string $block_name
+	 * @return bool
+	 */
+	private function is_supported_block_name( $block_name ) {
+		if ( ! is_string( $block_name ) || '' === $block_name ) {
+			return false;
+		}
+
+		return str_starts_with( $block_name, 'blockish/' );
 	}
 
 	private function normalize_class_slug( $value ) {
