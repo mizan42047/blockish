@@ -3,333 +3,252 @@ import generateBorderControlStyles from '../../helpers/generate-border-control-s
 import generateShadowControlStyles from '../../helpers/generate-box-shadow-control-styles';
 import generateTextStrokeControlStyles from '../../helpers/generate-text-stroke-control-styles';
 import generateCSSFilters from '../../helpers/generate-css-filters';
+import generateCSS from '../../helpers/generate-css';
+import { generateClassSelector } from './utils';
 
-const DEVICES = ['Desktop', 'Tablet', 'Mobile'];
-const DEVICE_QUERY = {
-    Tablet: '@media screen and (max-width: 1024px)',
-    Mobile: '@media screen and (max-width: 767px)',
-};
-
-const isObject = (value) => value && typeof value === 'object' && !Array.isArray(value);
-
-const getResponsiveValue = (value, device = 'Desktop') => {
-    if (value === undefined || value === null) {
-        return '';
-    }
-
-    if (!isObject(value)) {
-        return value;
-    }
-
-    if (Object.prototype.hasOwnProperty.call(value, device)) {
-        return value[device];
-    }
-
-    return value;
-};
-
-const normalizeColorValue = (value) => {
-    if (!value || typeof value !== 'string') {
-        return '';
-    }
-
-    if (value.includes('|')) {
-        const [cssVar, fallback] = value.split('|');
-        if (cssVar && fallback) {
-            return `var(${cssVar}, ${fallback})`;
+const toStyleObject = (value) => {
+    if (!value) return {};
+    if (typeof value === 'object') return value;
+    if (typeof value === 'string') {
+        try {
+            return JSON.parse(value);
+        } catch (error) {
+            return {};
         }
     }
-
-    return value;
+    return {};
 };
 
-const appendRule = (rules, property, value) => {
-    if (value === undefined || value === null || value === '') {
-        return;
-    }
-
-    rules.push(`${property}: ${value};`);
+const normalizeColor = (value) => {
+    if (!value || typeof value !== 'string') return '';
+    if (!value.includes('|')) return value;
+    const [cssVar, fallback] = value.split('|');
+    if (!cssVar || !fallback) return value;
+    return `var(${cssVar}, ${fallback})`;
 };
 
-const stringifyLengthValue = (value) => {
-    if (value === undefined || value === null || value === '') {
-        return '';
-    }
-
+const toLength = (value) => {
+    if (value === undefined || value === null || value === '') return '';
     if (typeof value === 'string' || typeof value === 'number') {
-        return String(value);
+        const raw = String(value);
+        if (raw.includes('var:preset|spacing')) {
+            return `var(${raw.replace(/var:|[|]/g, (m) => (m === 'var:' ? '--wp--' : '--'))})`;
+        }
+        return raw;
     }
-
-    if (isObject(value) && value.value !== undefined && value.value !== null) {
+    if (typeof value === 'object' && value.value !== undefined && value.value !== null) {
         return `${value.value}${value.unit || ''}`;
     }
-
     return '';
 };
 
-const buildTransform = (styles, device) => {
-    const transforms = [];
+const toSpacingShorthand = (value) => {
+    if (value === undefined || value === null || value === '') return '';
+    if (typeof value === 'string' || typeof value === 'number') return toLength(value);
+    if (typeof value !== 'object' || Array.isArray(value)) return '';
 
-    const tx = stringifyLengthValue(getResponsiveValue(styles?.translateX, device));
-    const ty = stringifyLengthValue(getResponsiveValue(styles?.translateY, device));
-    const tz = stringifyLengthValue(getResponsiveValue(styles?.translateZ, device));
-    const rotate = getResponsiveValue(styles?.rotate, device);
-    const rotateX = getResponsiveValue(styles?.rotateX, device);
-    const rotateY = getResponsiveValue(styles?.rotateY, device);
-    const rotateZ = getResponsiveValue(styles?.rotateZ, device);
-    const scale = getResponsiveValue(styles?.scale, device);
-    const scaleX3d = getResponsiveValue(styles?.scale3DX, device);
-    const scaleY3d = getResponsiveValue(styles?.scale3DY, device);
-    const scaleZ3d = getResponsiveValue(styles?.scale3DZ, device);
-    const skewX = getResponsiveValue(styles?.skewX, device);
-    const skewY = getResponsiveValue(styles?.skewY, device);
+    const top = toLength(value.top ?? value.TOP);
+    const right = toLength(value.right ?? value.RIGHT);
+    const bottom = toLength(value.bottom ?? value.BOTTOM);
+    const left = toLength(value.left ?? value.LEFT);
 
-    if (tx) transforms.push(`translateX(${tx})`);
-    if (ty) transforms.push(`translateY(${ty})`);
-    if (tz) transforms.push(`translateZ(${tz})`);
-    if (rotate !== '' && rotate !== undefined && rotate !== null) transforms.push(`rotate(${rotate}deg)`);
-    if (rotateX !== '' && rotateX !== undefined && rotateX !== null) transforms.push(`rotateX(${rotateX}deg)`);
-    if (rotateY !== '' && rotateY !== undefined && rotateY !== null) transforms.push(`rotateY(${rotateY}deg)`);
-    if (rotateZ !== '' && rotateZ !== undefined && rotateZ !== null) transforms.push(`rotateZ(${rotateZ}deg)`);
-    if (scale !== '' && scale !== undefined && scale !== null) transforms.push(`scale(${scale})`);
-
-    if (
-        (scaleX3d !== '' && scaleX3d !== undefined && scaleX3d !== null) ||
-        (scaleY3d !== '' && scaleY3d !== undefined && scaleY3d !== null) ||
-        (scaleZ3d !== '' && scaleZ3d !== undefined && scaleZ3d !== null)
-    ) {
-        transforms.push(`scale3d(${scaleX3d || 1}, ${scaleY3d || 1}, ${scaleZ3d || 1})`);
+    if (!top && !right && !bottom && !left) {
+        return '';
     }
 
-    if (skewX !== '' && skewX !== undefined && skewX !== null) transforms.push(`skewX(${skewX}deg)`);
-    if (skewY !== '' && skewY !== undefined && skewY !== null) transforms.push(`skewY(${skewY}deg)`);
+    return `${top || 0} ${right || 0} ${bottom || 0} ${left || 0}`;
+};
 
-    return transforms.join(' ');
+const isResponsiveValueShape = (value) => {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+    const deviceKeys = ['Desktop', 'Tablet', 'Mobile'];
+    return Object.keys(value).some((key) => deviceKeys.includes(key) && value[key] !== undefined);
+};
+
+const buildTransform = (styles, device) => {
+    const transform = [];
+
+    const translateX = generateCSS({ attributes: styles, key: 'translateX', device, getValue: toLength });
+    const translateY = generateCSS({ attributes: styles, key: 'translateY', device, getValue: toLength });
+    const translateZ = generateCSS({ attributes: styles, key: 'translateZ', device, getValue: toLength });
+    const rotate = generateCSS({ attributes: styles, key: 'rotate', device });
+    const rotateX = generateCSS({ attributes: styles, key: 'rotateX', device });
+    const rotateY = generateCSS({ attributes: styles, key: 'rotateY', device });
+    const rotateZ = generateCSS({ attributes: styles, key: 'rotateZ', device });
+    const scale = generateCSS({ attributes: styles, key: 'scale', device });
+    const scale3DX = generateCSS({ attributes: styles, key: 'scale3DX', device });
+    const scale3DY = generateCSS({ attributes: styles, key: 'scale3DY', device });
+    const scale3DZ = generateCSS({ attributes: styles, key: 'scale3DZ', device });
+    const skewX = generateCSS({ attributes: styles, key: 'skewX', device });
+    const skewY = generateCSS({ attributes: styles, key: 'skewY', device });
+
+    if (translateX) transform.push(`translateX(${translateX})`);
+    if (translateY) transform.push(`translateY(${translateY})`);
+    if (translateZ) transform.push(`translateZ(${translateZ})`);
+    if (rotate !== '') transform.push(`rotate(${rotate}deg)`);
+    if (rotateX !== '') transform.push(`rotateX(${rotateX}deg)`);
+    if (rotateY !== '') transform.push(`rotateY(${rotateY}deg)`);
+    if (rotateZ !== '') transform.push(`rotateZ(${rotateZ}deg)`);
+    if (scale !== '') transform.push(`scale(${scale})`);
+
+    if (scale3DX !== '' || scale3DY !== '' || scale3DZ !== '') {
+        transform.push(`scale3d(${scale3DX || 1}, ${scale3DY || 1}, ${scale3DZ || 1})`);
+    }
+
+    if (skewX !== '') transform.push(`skewX(${skewX}deg)`);
+    if (skewY !== '') transform.push(`skewY(${skewY}deg)`);
+
+    return transform.join(' ');
 };
 
 const buildTransformOrigin = (styles, device) => {
-    const origin = getResponsiveValue(styles?.transformOrigin, device);
-    if (!origin) {
-        return '';
-    }
+    const origin = generateCSS({ attributes: styles, key: 'transformOrigin', device });
+    if (!origin) return '';
+    if (origin !== 'custom') return origin;
 
-    if (origin !== 'custom') {
-        return origin;
-    }
-
-    const originX = stringifyLengthValue(getResponsiveValue(styles?.transformOriginX, device));
-    const originY = stringifyLengthValue(getResponsiveValue(styles?.transformOriginY, device));
-
-    if (!originX && !originY) {
-        return '';
-    }
-
+    const originX = generateCSS({ attributes: styles, key: 'transformOriginX', device, getValue: toLength });
+    const originY = generateCSS({ attributes: styles, key: 'transformOriginY', device, getValue: toLength });
+    if (!originX && !originY) return '';
     return `${originX || 'center'} ${originY || 'center'}`;
 };
 
 const buildTransition = (styles, device) => {
-    const property = getResponsiveValue(styles?.transitionProperty, device) || 'all';
-    const duration = getResponsiveValue(styles?.transitionDuration, device);
-    const timing = getResponsiveValue(styles?.transitionTimingFunction, device) || 'ease';
-    const delay = getResponsiveValue(styles?.transitionDelay, device);
+    const property = generateCSS({ attributes: styles, key: 'transitionProperty', device }) || 'all';
+    const duration = generateCSS({ attributes: styles, key: 'transitionDuration', device });
+    const delay = generateCSS({ attributes: styles, key: 'transitionDelay', device });
+    const timing = generateCSS({ attributes: styles, key: 'transitionTimingFunction', device }) || 'ease';
 
-    if ((duration === '' || duration === undefined || duration === null) && (delay === '' || delay === undefined || delay === null)) {
-        return '';
-    }
-
-    const usableDuration = duration === '' || duration === undefined || duration === null ? 0.2 : duration;
-    const usableDelay = delay === '' || delay === undefined || delay === null ? 0 : delay;
-
-    return `${property} ${usableDuration}s ${timing} ${usableDelay}s`;
+    if (duration === '' && delay === '') return '';
+    return `${property} ${duration === '' ? 0.2 : duration}s ${timing} ${delay === '' ? 0 : delay}s`;
 };
 
-const safeGenerate = (generator, value, device, mutate = null) => {
-    try {
-        const output = generator(value, device);
-        if (!output || typeof output !== 'string') {
-            return '';
-        }
-
-        if (typeof mutate === 'function') {
-            return mutate(output);
-        }
-
-        return output;
-    } catch (error) {
-        return '';
-    }
-};
-
-const buildRulesForDevice = (styles, device) => {
-    if (!styles || typeof styles !== 'object') {
-        return '';
-    }
-
-    const rules = [];
-
-    appendRule(rules, 'display', getResponsiveValue(styles?.display, device));
-    appendRule(rules, 'flex-direction', getResponsiveValue(styles?.flexDirection, device));
-    appendRule(rules, 'flex-wrap', getResponsiveValue(styles?.flexWrap, device));
-    appendRule(rules, 'justify-content', getResponsiveValue(styles?.justifyContent, device));
-    appendRule(rules, 'align-items', getResponsiveValue(styles?.alignItems, device));
-    appendRule(rules, 'column-gap', stringifyLengthValue(getResponsiveValue(styles?.columnGap, device)));
-    appendRule(rules, 'row-gap', stringifyLengthValue(getResponsiveValue(styles?.rowGap, device)));
-
-    const layoutType = getResponsiveValue(styles?.gridLayoutType, device);
-    const gridCols = getResponsiveValue(styles?.gridColumns, device);
-    const gridRows = getResponsiveValue(styles?.gridRows, device);
-    const autoGridWidth = stringifyLengthValue(getResponsiveValue(styles?.autoGridWidth, device));
-    const autoGridHeight = stringifyLengthValue(getResponsiveValue(styles?.autoGridHeight, device));
-
-    if (layoutType === 'fixed') {
-        if (gridCols) {
-            appendRule(rules, 'grid-template-columns', `repeat(${gridCols}, minmax(0, 1fr))`);
-        }
-        if (gridRows) {
-            appendRule(rules, 'grid-template-rows', `repeat(${gridRows}, minmax(0, 1fr))`);
-        }
-    }
-
-    if (layoutType === 'auto') {
-        if (autoGridWidth) {
-            appendRule(rules, 'grid-template-columns', `repeat(auto-fill, minmax(min(${autoGridWidth}, 100%), 1fr))`);
-        }
-        if (autoGridHeight) {
-            appendRule(rules, 'grid-auto-rows', autoGridHeight);
-        }
-    }
-
-    appendRule(rules, 'padding', stringifyLengthValue(getResponsiveValue(styles?.padding, device)));
-    appendRule(rules, 'margin', stringifyLengthValue(getResponsiveValue(styles?.margin, device)));
-
-    appendRule(rules, 'width', stringifyLengthValue(getResponsiveValue(styles?.width, device)));
-    appendRule(rules, 'height', stringifyLengthValue(getResponsiveValue(styles?.height, device)));
-    appendRule(rules, 'min-width', stringifyLengthValue(getResponsiveValue(styles?.minWidth, device)));
-    appendRule(rules, 'min-height', stringifyLengthValue(getResponsiveValue(styles?.minHeight, device)));
-    appendRule(rules, 'max-width', stringifyLengthValue(getResponsiveValue(styles?.maxWidth, device)));
-    appendRule(rules, 'max-height', stringifyLengthValue(getResponsiveValue(styles?.maxHeight, device)));
-    appendRule(rules, 'overflow', getResponsiveValue(styles?.overflow, device));
-    appendRule(rules, 'aspect-ratio', getResponsiveValue(styles?.aspectRatio, device));
-    appendRule(rules, 'object-fit', getResponsiveValue(styles?.objectFit, device));
-
-    appendRule(rules, 'position', getResponsiveValue(styles?.position, device));
-    appendRule(rules, 'top', stringifyLengthValue(getResponsiveValue(styles?.top, device)));
-    appendRule(rules, 'right', stringifyLengthValue(getResponsiveValue(styles?.right, device)));
-    appendRule(rules, 'bottom', stringifyLengthValue(getResponsiveValue(styles?.bottom, device)));
-    appendRule(rules, 'left', stringifyLengthValue(getResponsiveValue(styles?.left, device)));
-    appendRule(rules, 'z-index', getResponsiveValue(styles?.zIndex, device));
-    appendRule(rules, 'scroll-margin-top', stringifyLengthValue(getResponsiveValue(styles?.anchorOffset, device)));
-
-    const fontFamily = styles?.fontFamily?.value;
-    if (fontFamily) {
-        appendRule(rules, 'font-family', fontFamily);
-    }
-
-    appendRule(rules, 'font-weight', getResponsiveValue(styles?.fontWeight, device));
-    appendRule(rules, 'font-size', stringifyLengthValue(getResponsiveValue(styles?.fontSize, device)));
-    appendRule(rules, 'text-align', getResponsiveValue(styles?.textAlign, device));
-    appendRule(rules, 'line-height', stringifyLengthValue(getResponsiveValue(styles?.lineHeight, device)));
-    appendRule(rules, 'letter-spacing', stringifyLengthValue(getResponsiveValue(styles?.letterSpacing, device)));
-    appendRule(rules, 'word-spacing', stringifyLengthValue(getResponsiveValue(styles?.wordSpacing, device)));
-    appendRule(rules, 'column-count', getResponsiveValue(styles?.columnCount, device));
-    appendRule(rules, 'text-decoration', getResponsiveValue(styles?.textDecoration, device));
-    appendRule(rules, 'text-transform', getResponsiveValue(styles?.textTransform, device));
-    appendRule(rules, 'direction', getResponsiveValue(styles?.direction, device));
-    appendRule(rules, 'font-style', getResponsiveValue(styles?.fontStyle, device));
-    appendRule(rules, 'text-overflow', getResponsiveValue(styles?.textOverflow, device));
-
-    const color = normalizeColorValue(styles?.color);
-    if (color) {
-        appendRule(rules, 'color', color);
-    }
-
-    const backgroundCss = safeGenerate(generateBackgroundControlStyles, styles?.background, device);
-    if (backgroundCss) {
-        rules.push(backgroundCss);
-    }
-
-    appendRule(rules, 'mix-blend-mode', getResponsiveValue(styles?.blendMode, device));
-    appendRule(rules, 'background-clip', getResponsiveValue(styles?.backgroundClip, device));
-
-    const textStrokeCss = safeGenerate(generateTextStrokeControlStyles, styles?.textStroke, device);
-    if (textStrokeCss) {
-        rules.push(textStrokeCss);
-    }
-
-    const borderCss = safeGenerate(generateBorderControlStyles, styles?.border, device);
-    if (borderCss) {
-        rules.push(borderCss);
-    }
-
-    appendRule(rules, 'border-radius', stringifyLengthValue(getResponsiveValue(styles?.borderRadius, device)));
-
-    const boxShadowCss = safeGenerate(generateShadowControlStyles, styles?.boxShadow, 'box');
-    if (boxShadowCss) {
-        rules.push(boxShadowCss);
-    }
-
-    const textShadowCss = safeGenerate(generateShadowControlStyles, styles?.textShadow, 'text');
-    if (textShadowCss) {
-        rules.push(textShadowCss);
-    }
-
-    appendRule(rules, 'opacity', getResponsiveValue(styles?.opacity, device));
-
-    const perspective = stringifyLengthValue(getResponsiveValue(styles?.perspective, device));
-    if (perspective) {
-        appendRule(rules, 'perspective', perspective);
-    }
+const generateRuleSet = (styles, device) => {
+    const desktopStyles = [];
+    const responsiveValue = [];
+    const pushRule = (css, responsive = false) => {
+        if (!css) return;
+        if (responsive) responsiveValue.push(css);
+        else desktopStyles.push(css);
+    };
+    const isResponsiveKey = (key) => {
+        if (['background', 'border', 'textStroke'].includes(key)) return true;
+        return isResponsiveValueShape(styles?.[key]);
+    };
+    const addRule = (key, css) => pushRule(css, isResponsiveKey(key));
 
     const transform = buildTransform(styles, device);
-    if (transform) {
-        appendRule(rules, 'transform', transform);
-    }
-
     const transformOrigin = buildTransformOrigin(styles, device);
-    if (transformOrigin) {
-        appendRule(rules, 'transform-origin', transformOrigin);
-    }
-
     const transition = buildTransition(styles, device);
-    if (transition) {
-        appendRule(rules, 'transition', transition);
+    const background = generateBackgroundControlStyles(styles?.background, device);
+    const border = generateBorderControlStyles(styles?.border, device);
+    const boxShadow = generateShadowControlStyles(styles?.boxShadow, 'box');
+    const textShadow = generateShadowControlStyles(styles?.textShadow, 'text');
+    const textStroke = generateTextStrokeControlStyles(styles?.textStroke, device);
+    const filters = generateCSSFilters(styles?.filters);
+    const backdropFilters = generateCSSFilters(styles?.backgroundFilters)?.replace('filter:', 'backdrop-filter:');
+    const color = normalizeColor(styles?.color);
+
+    const layoutType = generateCSS({ attributes: styles, key: 'gridLayoutType', device });
+    const gridCols = generateCSS({ attributes: styles, key: 'gridColumns', device });
+    const gridRows = generateCSS({ attributes: styles, key: 'gridRows', device });
+    const autoGridWidth = generateCSS({ attributes: styles, key: 'autoGridWidth', device, getValue: toLength });
+    const autoGridHeight = generateCSS({ attributes: styles, key: 'autoGridHeight', device, getValue: toLength });
+
+    addRule('display', generateCSS({ attributes: styles, key: 'display', device, getValue: (v) => `display: ${v};` }));
+    addRule('flexDirection', generateCSS({ attributes: styles, key: 'flexDirection', device, getValue: (v) => `flex-direction: ${v};` }));
+    addRule('flexWrap', generateCSS({ attributes: styles, key: 'flexWrap', device, getValue: (v) => `flex-wrap: ${v};` }));
+    addRule('justifyContent', generateCSS({ attributes: styles, key: 'justifyContent', device, getValue: (v) => `justify-content: ${v};` }));
+    addRule('alignItems', generateCSS({ attributes: styles, key: 'alignItems', device, getValue: (v) => `align-items: ${v};` }));
+    addRule('columnGap', generateCSS({ attributes: styles, key: 'columnGap', device, getValue: (v) => `column-gap: ${toLength(v)};` }));
+    addRule('rowGap', generateCSS({ attributes: styles, key: 'rowGap', device, getValue: (v) => `row-gap: ${toLength(v)};` }));
+
+    if (layoutType === 'fixed' && gridCols) pushRule(`grid-template-columns: repeat(${gridCols}, minmax(0, 1fr));`, true);
+    if (layoutType === 'fixed' && gridRows) pushRule(`grid-template-rows: repeat(${gridRows}, minmax(0, 1fr));`, true);
+    if (layoutType === 'auto' && autoGridWidth) {
+        pushRule(`grid-template-columns: repeat(auto-fill, minmax(min(${autoGridWidth}, 100%), 1fr));`, true);
+    }
+    if (layoutType === 'auto' && autoGridHeight) pushRule(`grid-auto-rows: ${autoGridHeight};`, true);
+
+    addRule('padding', generateCSS({ attributes: styles, key: 'padding', device, getValue: (v) => `padding: ${toSpacingShorthand(v)};` }));
+    addRule('margin', generateCSS({ attributes: styles, key: 'margin', device, getValue: (v) => `margin: ${toSpacingShorthand(v)};` }));
+    addRule('width', generateCSS({ attributes: styles, key: 'width', device, getValue: (v) => `width: ${toLength(v)};` }));
+    addRule('height', generateCSS({ attributes: styles, key: 'height', device, getValue: (v) => `height: ${toLength(v)};` }));
+    addRule('minWidth', generateCSS({ attributes: styles, key: 'minWidth', device, getValue: (v) => `min-width: ${toLength(v)};` }));
+    addRule('minHeight', generateCSS({ attributes: styles, key: 'minHeight', device, getValue: (v) => `min-height: ${toLength(v)};` }));
+    addRule('maxWidth', generateCSS({ attributes: styles, key: 'maxWidth', device, getValue: (v) => `max-width: ${toLength(v)};` }));
+    addRule('maxHeight', generateCSS({ attributes: styles, key: 'maxHeight', device, getValue: (v) => `max-height: ${toLength(v)};` }));
+    addRule('overflow', generateCSS({ attributes: styles, key: 'overflow', device, getValue: (v) => `overflow: ${v};` }));
+    addRule('aspectRatio', generateCSS({ attributes: styles, key: 'aspectRatio', device, getValue: (v) => `aspect-ratio: ${v};` }));
+    addRule('objectFit', generateCSS({ attributes: styles, key: 'objectFit', device, getValue: (v) => `object-fit: ${v};` }));
+
+    addRule('position', generateCSS({ attributes: styles, key: 'position', device, getValue: (v) => `position: ${v};` }));
+    addRule('top', generateCSS({ attributes: styles, key: 'top', device, getValue: (v) => `top: ${toLength(v)};` }));
+    addRule('right', generateCSS({ attributes: styles, key: 'right', device, getValue: (v) => `right: ${toLength(v)};` }));
+    addRule('bottom', generateCSS({ attributes: styles, key: 'bottom', device, getValue: (v) => `bottom: ${toLength(v)};` }));
+    addRule('left', generateCSS({ attributes: styles, key: 'left', device, getValue: (v) => `left: ${toLength(v)};` }));
+    addRule('zIndex', generateCSS({ attributes: styles, key: 'zIndex', device, getValue: (v) => `z-index: ${v};` }));
+    addRule('anchorOffset', generateCSS({ attributes: styles, key: 'anchorOffset', device, getValue: (v) => `scroll-margin-top: ${toLength(v)};` }));
+
+    pushRule(styles?.fontFamily?.value ? `font-family: ${styles.fontFamily.value};` : '', false);
+    addRule('fontWeight', generateCSS({ attributes: styles, key: 'fontWeight', device, getValue: (v) => `font-weight: ${v};` }));
+    addRule('fontSize', generateCSS({ attributes: styles, key: 'fontSize', device, getValue: (v) => `font-size: ${toLength(v)};` }));
+    addRule('textAlign', generateCSS({ attributes: styles, key: 'textAlign', device, getValue: (v) => `text-align: ${v};` }));
+    addRule('lineHeight', generateCSS({ attributes: styles, key: 'lineHeight', device, getValue: (v) => `line-height: ${toLength(v)};` }));
+    addRule('letterSpacing', generateCSS({ attributes: styles, key: 'letterSpacing', device, getValue: (v) => `letter-spacing: ${toLength(v)};` }));
+    addRule('wordSpacing', generateCSS({ attributes: styles, key: 'wordSpacing', device, getValue: (v) => `word-spacing: ${toLength(v)};` }));
+    addRule('columnCount', generateCSS({ attributes: styles, key: 'columnCount', device, getValue: (v) => `column-count: ${v};` }));
+    addRule('textDecoration', generateCSS({ attributes: styles, key: 'textDecoration', device, getValue: (v) => `text-decoration: ${v};` }));
+    addRule('textTransform', generateCSS({ attributes: styles, key: 'textTransform', device, getValue: (v) => `text-transform: ${v};` }));
+    addRule('direction', generateCSS({ attributes: styles, key: 'direction', device, getValue: (v) => `direction: ${v};` }));
+    addRule('fontStyle', generateCSS({ attributes: styles, key: 'fontStyle', device, getValue: (v) => `font-style: ${v};` }));
+    addRule('textOverflow', generateCSS({ attributes: styles, key: 'textOverflow', device, getValue: (v) => `text-overflow: ${v};` }));
+    pushRule(color ? `color: ${color};` : '', false);
+
+    pushRule(background, true);
+    addRule('blendMode', generateCSS({ attributes: styles, key: 'blendMode', device, getValue: (v) => `mix-blend-mode: ${v};` }));
+    addRule('backgroundClip', generateCSS({ attributes: styles, key: 'backgroundClip', device, getValue: (v) => `background-clip: ${v};` }));
+    pushRule(textStroke, true);
+    pushRule(border, true);
+    addRule('borderRadius', generateCSS({ attributes: styles, key: 'borderRadius', device, getValue: (v) => `border-radius: ${toLength(v)};` }));
+
+    pushRule(boxShadow, false);
+    pushRule(textShadow, false);
+    addRule('opacity', generateCSS({ attributes: styles, key: 'opacity', device, getValue: (v) => `opacity: ${v};` }));
+    addRule('perspective', generateCSS({ attributes: styles, key: 'perspective', device, getValue: (v) => `perspective: ${toLength(v)};` }));
+    pushRule(transform ? `transform: ${transform};` : '', true);
+    pushRule(transformOrigin ? `transform-origin: ${transformOrigin};` : '', true);
+    pushRule(transition ? `transition: ${transition};` : '', true);
+    pushRule(filters, false);
+    pushRule(backdropFilters || '', false);
+
+    const baseCss = desktopStyles.join(' ').replace(/\s+/g, ' ').trim();
+    const responsiveCss = responsiveValue.join(' ').replace(/\s+/g, ' ').trim();
+
+    if (device === 'Desktop') {
+        return `${baseCss} ${responsiveCss}`.replace(/\s+/g, ' ').trim();
     }
 
-    const filtersCss = safeGenerate(generateCSSFilters, styles?.filters);
-    if (filtersCss) {
-        rules.push(filtersCss);
-    }
-
-    const backdropFiltersCss = safeGenerate(generateCSSFilters, styles?.backgroundFilters, null, (css) => css.replace('filter:', 'backdrop-filter:'));
-    if (backdropFiltersCss) {
-        rules.push(backdropFiltersCss);
-    }
-
-    return rules.join(' ');
+    return responsiveCss;
 };
 
-const generateClassManagerStyles = (styles, selector) => {
-    if (!styles || typeof styles !== 'object' || !selector) {
-        return '';
+const generateClassManagerStyles = (styles = [], device = 'Desktop') => {
+    if (!Array.isArray(styles) || !styles.length) {
+        return { [device]: '' };
     }
 
-    const desktopRules = buildRulesForDevice(styles, 'Desktop');
-    if (!desktopRules) {
-        return '';
-    }
+    let finalCss = '';
+    styles.forEach((item) => {
+        const selector = generateClassSelector(item?.id, item?.title, item?.parent);
+        if (!selector) return;
 
-    let css = `${selector} { ${desktopRules} }`;
+        const styleObject = toStyleObject(item?.style);
+        const rules = generateRuleSet(styleObject, device);
+        if (!rules) return;
 
-    DEVICES.filter((device) => device !== 'Desktop').forEach((device) => {
-        const rules = buildRulesForDevice(styles, device);
-        if (!rules || rules === desktopRules) {
-            return;
-        }
-
-        css += `${DEVICE_QUERY[device]} { ${selector} { ${rules} } }`;
+        finalCss += `${selector} { ${rules} }`;
     });
 
-    return css;
+    return { [device]: finalCss };
 };
 
 export default generateClassManagerStyles;

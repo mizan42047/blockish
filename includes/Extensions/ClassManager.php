@@ -188,6 +188,7 @@ class ClassManager {
 
 		$styles = $this->get_styles_for_classes();
 
+
 		if ( '' === $styles ) {
 			return;
 		}
@@ -199,19 +200,16 @@ class ClassManager {
 			return;
 		}
 
-		$handle = 'blockish-block-styles';
+		$handle = 'blockish-class-manager-inline';
 		if ( ! wp_style_is( $handle, 'registered' ) ) {
 			wp_register_style( $handle, false, array(), null );
 		}
 		wp_enqueue_style( $handle );
-
-		if ( wp_style_is( $handle, 'enqueued' ) ) {
-			wp_add_inline_style( $handle, $styles );
-			if ( $print_now ) {
-				wp_print_styles( array( $handle ) );
-			}
-			$this->styles_enqueued = true;
+		wp_add_inline_style( $handle, $styles );
+		if ( $print_now ) {
+			wp_print_styles( array( $handle ) );
 		}
+		$this->styles_enqueued = true;
 	}
 
 	private function get_styles_for_classes() {
@@ -223,7 +221,6 @@ class ClassManager {
 		$css = '';
 		foreach ( $post_ids as $post_id ) {
 			$meta_css = trim( (string) get_post_meta( $post_id, self::CSS_META_KEY, true ) );
-			error_log( print_r( $meta_css, true ) );
 			if ( '' === $meta_css ) {
 				continue;
 			}

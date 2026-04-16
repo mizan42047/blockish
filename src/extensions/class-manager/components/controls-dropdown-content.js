@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from '@wordpress/element';
+import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { Button, Dropdown, Flex, FlexItem, __experimentalText as Text, __experimentalVStack as VStack, TextControl } from '@wordpress/components';
 import { closeSmall, pencil, plus, seen, trash, unseen } from '@wordpress/icons';
@@ -11,6 +11,7 @@ import { getEntityTitle, isValidCssClass, removeClassById } from '../utils';
 const CLASS_POST_TYPE = 'blockish-classes';
 
 const EMPTY_STYLE = {};
+const EMPTY_ARRAY = [];
 
 const getEntityContent = (content) => {
     if (typeof content === 'string') {
@@ -57,13 +58,23 @@ const ControlsDropdownContent = ({
 }) => {
     const classId = selectedClass?.id;
     const subSelectorId = selectedSubSelector?.id;
+    const selectCacheRef = useRef({
+        key: '',
+        value: {
+            selectedClassRecord: null,
+            selectedClassEdited: null,
+            subSelectorsRaw: EMPTY_ARRAY,
+            subSelectorsEditedById: {},
+            subSelectorEdited: null,
+        },
+    });
 
     const { selectedClassRecord, selectedClassEdited, subSelectorsRaw, subSelectorsEditedById, subSelectorEdited } = useSelect(
         (select) => {
             const core = select('core');
             const subSelectors = classId
-                ? (core.getEntityRecords('postType', CLASS_POST_TYPE, { per_page: -1, parent: classId }) || [])
-                : [];
+                ? (core.getEntityRecords('postType', CLASS_POST_TYPE, { per_page: -1, parent: classId }) || EMPTY_ARRAY)
+                : EMPTY_ARRAY;
 
             const subSelectorsEdited = subSelectors.reduce((acc, item) => {
                 const id = item?.id;
@@ -75,7 +86,7 @@ const ControlsDropdownContent = ({
                 return acc;
             }, {});
 
-            return {
+            const nextValue = {
                 selectedClassRecord: classId ? core.getEntityRecord('postType', CLASS_POST_TYPE, classId) : null,
                 selectedClassEdited: classId ? core.getEditedEntityRecord('postType', CLASS_POST_TYPE, classId) : null,
                 subSelectorsRaw: subSelectors,
@@ -84,6 +95,29 @@ const ControlsDropdownContent = ({
                     ? core.getEditedEntityRecord('postType', CLASS_POST_TYPE, subSelectorId)
                     : null,
             };
+
+            const cacheKey = JSON.stringify({
+                classId,
+                subSelectorId,
+                selectedClassRecordId: nextValue.selectedClassRecord?.id || null,
+                selectedClassEditedContent: getEntityContent(nextValue.selectedClassEdited?.content),
+                subSelectorsRawIds: subSelectors.map((item) => item?.id).filter(Boolean),
+                subSelectorsEditedContent: Object.entries(subSelectorsEdited).map(([id, entity]) => [
+                    id,
+                    entity?.parent || null,
+                    getEntityTitle(entity?.title || ''),
+                    getEntityContent(entity?.content),
+                ]),
+                subSelectorEditedContent: getEntityContent(nextValue.subSelectorEdited?.content),
+            });
+
+            if (selectCacheRef.current.key === cacheKey) {
+                return selectCacheRef.current.value;
+            }
+
+            selectCacheRef.current.key = cacheKey;
+            selectCacheRef.current.value = nextValue;
+            return nextValue;
         },
         [classId, subSelectorId]
     );

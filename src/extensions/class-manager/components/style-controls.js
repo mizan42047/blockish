@@ -24,14 +24,11 @@ import {
     TRANSITION_TIMING_OPTIONS,
 } from '../utils';
 
-const toSelectedOption = (options, currentValue) => {
-    return options.find((item) => item.value === currentValue);
-};
-
 const StyleControls = ({ value = {}, onChange }) => {
     const {
         BlockishPanelBody,
         BlockishResponsive,
+        BlockishSpacingSizes,
         BlockishSelect,
         BlockishRangeUnit,
         BlockishDropdown,
@@ -52,11 +49,10 @@ const StyleControls = ({ value = {}, onChange }) => {
     const { useDeviceType } = window.blockish.helpers;
 
     const device = useDeviceType();
-    const displayValue = value?.display?.[device];
+    const displayValue = value?.display?.[device]?.value;
     const isFlexDisplay = displayValue === 'flex' || displayValue === 'inline-flex';
     const isGridDisplay = displayValue === 'grid' || displayValue === 'inline-grid';
-
-    const updateDeviceValue = (key, nextValue) => {
+    const onChangeResponsiveValue = (key, nextValue) => {
         onChange({
             ...value,
             [key]: {
@@ -96,19 +92,19 @@ const StyleControls = ({ value = {}, onChange }) => {
                 <BlockishSelect
                     label={__('Display', 'blockish')}
                     options={DISPLAY_OPTIONS}
-                    value={toSelectedOption(DISPLAY_OPTIONS, value?.display?.[device])}
-                    onChange={(next) => updateDeviceValue('display', next?.value || '')}
+                    value={value?.display?.[device]}
+                    onChange={(next) => onChangeResponsiveValue('display', next)}
                 />
             </BlockishResponsive>
 
             {isFlexDisplay && (
                 <>
-                    <BlockishResponsive left="70px">
+                    <BlockishResponsive left="92px">
                         <BlockishSelect
                             label={__('Flex Direction', 'blockish')}
                             options={FLEX_DIRECTION_OPTIONS}
-                            value={toSelectedOption(FLEX_DIRECTION_OPTIONS, value?.flexDirection?.[device])}
-                            onChange={(next) => updateDeviceValue('flexDirection', next?.value || '')}
+                            value={value?.flexDirection?.[device]}
+                            onChange={(next) => onChangeResponsiveValue('flexDirection', next)}
                         />
                     </BlockishResponsive>
 
@@ -116,8 +112,8 @@ const StyleControls = ({ value = {}, onChange }) => {
                         <BlockishSelect
                             label={__('Flex Wrap', 'blockish')}
                             options={FLEX_WRAP_OPTIONS}
-                            value={toSelectedOption(FLEX_WRAP_OPTIONS, value?.flexWrap?.[device])}
-                            onChange={(next) => updateDeviceValue('flexWrap', next?.value || '')}
+                            value={value?.flexWrap?.[device]}
+                            onChange={(next) => onChangeResponsiveValue('flexWrap', next)}
                         />
                     </BlockishResponsive>
 
@@ -125,8 +121,8 @@ const StyleControls = ({ value = {}, onChange }) => {
                         <BlockishSelect
                             label={__('Justify Content', 'blockish')}
                             options={JUSTIFY_CONTENT_OPTIONS}
-                            value={toSelectedOption(JUSTIFY_CONTENT_OPTIONS, value?.justifyContent?.[device])}
-                            onChange={(next) => updateDeviceValue('justifyContent', next?.value || '')}
+                            value={value?.justifyContent?.[device]}
+                            onChange={(next) => onChangeResponsiveValue('justifyContent', next)}
                         />
                     </BlockishResponsive>
 
@@ -134,8 +130,8 @@ const StyleControls = ({ value = {}, onChange }) => {
                         <BlockishSelect
                             label={__('Align Items', 'blockish')}
                             options={ALIGN_ITEMS_OPTIONS}
-                            value={toSelectedOption(ALIGN_ITEMS_OPTIONS, value?.alignItems?.[device])}
-                            onChange={(next) => updateDeviceValue('alignItems', next?.value || '')}
+                            value={value?.alignItems?.[device]}
+                            onChange={(next) => onChangeResponsiveValue('alignItems', next)}
                         />
                     </BlockishResponsive>
 
@@ -148,8 +144,8 @@ const StyleControls = ({ value = {}, onChange }) => {
                         <BlockishSelect
                             label={__('Grid Layout', 'blockish')}
                             options={GRID_LAYOUT_OPTIONS}
-                            value={toSelectedOption(GRID_LAYOUT_OPTIONS, value?.gridLayoutType?.[device])}
-                            onChange={(next) => updateDeviceValue('gridLayoutType', next?.value || '')}
+                            value={value?.gridLayoutType?.[device]}
+                            onChange={(next) => onChangeResponsiveValue('gridLayoutType', next)}
                         />
                     </BlockishResponsive>
 
@@ -159,7 +155,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 <BlockishRangeUnit
                                     label={__('Columns', 'blockish')}
                                     value={value?.gridColumns?.[device]}
-                                    onChange={(next) => updateDeviceValue('gridColumns', next)}
+                                    onChange={(next) => onChangeResponsiveValue('gridColumns', next)}
                                     units={{
                                         px: { min: 1, max: 12, step: 1 },
                                     }}
@@ -169,7 +165,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 <BlockishRangeUnit
                                     label={__('Rows', 'blockish')}
                                     value={value?.gridRows?.[device]}
-                                    onChange={(next) => updateDeviceValue('gridRows', next)}
+                                    onChange={(next) => onChangeResponsiveValue('gridRows', next)}
                                     units={{
                                         px: { min: 1, max: 12, step: 1 },
                                     }}
@@ -184,14 +180,14 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 <BlockishRangeUnit
                                     label={__('Grid Width', 'blockish')}
                                     value={value?.autoGridWidth?.[device]}
-                                    onChange={(next) => updateDeviceValue('autoGridWidth', next)}
+                                    onChange={(next) => onChangeResponsiveValue('autoGridWidth', next)}
                                 />
                             </BlockishResponsive>
                             <BlockishResponsive left="72px">
                                 <BlockishRangeUnit
                                     label={__('Grid Height', 'blockish')}
                                     value={value?.autoGridHeight?.[device]}
-                                    onChange={(next) => updateDeviceValue('autoGridHeight', next)}
+                                    onChange={(next) => onChangeResponsiveValue('autoGridHeight', next)}
                                 />
                             </BlockishResponsive>
                         </>
@@ -205,14 +201,14 @@ const StyleControls = ({ value = {}, onChange }) => {
                         <BlockishRangeUnit
                             label={__('Column Gap', 'blockish')}
                             value={value?.columnGap?.[device]}
-                            onChange={(next) => updateDeviceValue('columnGap', next)}
+                            onChange={(next) => onChangeResponsiveValue('columnGap', next)}
                         />
                     </BlockishResponsive>
                     <BlockishResponsive left="54px">
                         <BlockishRangeUnit
                             label={__('Row Gap', 'blockish')}
                             value={value?.rowGap?.[device]}
-                            onChange={(next) => updateDeviceValue('rowGap', next)}
+                            onChange={(next) => onChangeResponsiveValue('rowGap', next)}
                         />
                     </BlockishResponsive>
                 </>
@@ -220,45 +216,45 @@ const StyleControls = ({ value = {}, onChange }) => {
         </BlockishPanelBody>
 
         <BlockishPanelBody title={__('Spacing', 'blockish')} initialOpen={false}>
-            <BlockishResponsive left="60px">
-                <BlockishRangeUnit
+            <BlockishResponsive left="52px">
+                <BlockishSpacingSizes
                     label={__('Padding', 'blockish')}
                     value={value?.padding?.[device]}
-                    onChange={(next) => updateDeviceValue('padding', next)}
+                    onChange={(next) => onChangeResponsiveValue('padding', next)}
                 />
             </BlockishResponsive>
 
-            <BlockishResponsive left="55px">
-                <BlockishRangeUnit
+            <BlockishResponsive left="46px">
+                <BlockishSpacingSizes
                     label={__('Margin', 'blockish')}
                     value={value?.margin?.[device]}
-                    onChange={(next) => updateDeviceValue('margin', next)}
+                    onChange={(next) => onChangeResponsiveValue('margin', next)}
                 />
             </BlockishResponsive>
         </BlockishPanelBody>
 
         <BlockishPanelBody title={__('Size', 'blockish')} initialOpen={false}>
-            <BlockishResponsive left="50px">
+            <BlockishResponsive left="40px">
                 <BlockishRangeUnit
                     label={__('Width', 'blockish')}
                     value={value?.width?.[device]}
-                    onChange={(next) => updateDeviceValue('width', next)}
+                    onChange={(next) => onChangeResponsiveValue('width', next)}
                 />
             </BlockishResponsive>
 
-            <BlockishResponsive left="55px">
+            <BlockishResponsive left="43px">
                 <BlockishRangeUnit
                     label={__('Height', 'blockish')}
                     value={value?.height?.[device]}
-                    onChange={(next) => updateDeviceValue('height', next)}
+                    onChange={(next) => onChangeResponsiveValue('height', next)}
                 />
             </BlockishResponsive>
 
-            <BlockishResponsive left="70px">
+            <BlockishResponsive left="63px">
                 <BlockishRangeUnit
                     label={__('Min Width', 'blockish')}
                     value={value?.minWidth?.[device]}
-                    onChange={(next) => updateDeviceValue('minWidth', next)}
+                    onChange={(next) => onChangeResponsiveValue('minWidth', next)}
                 />
             </BlockishResponsive>
 
@@ -266,15 +262,15 @@ const StyleControls = ({ value = {}, onChange }) => {
                 <BlockishRangeUnit
                     label={__('Min Height', 'blockish')}
                     value={value?.minHeight?.[device]}
-                    onChange={(next) => updateDeviceValue('minHeight', next)}
+                    onChange={(next) => onChangeResponsiveValue('minHeight', next)}
                 />
             </BlockishResponsive>
 
-            <BlockishResponsive left="72px">
+            <BlockishResponsive left="68px">
                 <BlockishRangeUnit
                     label={__('Max Width', 'blockish')}
                     value={value?.maxWidth?.[device]}
-                    onChange={(next) => updateDeviceValue('maxWidth', next)}
+                    onChange={(next) => onChangeResponsiveValue('maxWidth', next)}
                 />
             </BlockishResponsive>
 
@@ -282,7 +278,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                 <BlockishRangeUnit
                     label={__('Max Height', 'blockish')}
                     value={value?.maxHeight?.[device]}
-                    onChange={(next) => updateDeviceValue('maxHeight', next)}
+                    onChange={(next) => onChangeResponsiveValue('maxHeight', next)}
                 />
             </BlockishResponsive>
 
@@ -290,17 +286,17 @@ const StyleControls = ({ value = {}, onChange }) => {
                 <BlockishSelect
                     label={__('Overflow', 'blockish')}
                     options={OVERFLOW_OPTIONS}
-                    value={toSelectedOption(OVERFLOW_OPTIONS, value?.overflow?.[device])}
-                    onChange={(next) => updateDeviceValue('overflow', next?.value || '')}
+                    value={value?.overflow?.[device]}
+                    onChange={(next) => onChangeResponsiveValue('overflow', next)}
                 />
             </BlockishResponsive>
 
-            <BlockishResponsive left="86px">
+            <BlockishResponsive left="82px">
                 <BlockishSelect
                     label={__('Aspect Ratio', 'blockish')}
                     options={ASPECT_RATIO_OPTIONS}
-                    value={toSelectedOption(ASPECT_RATIO_OPTIONS, value?.aspectRatio?.[device])}
-                    onChange={(next) => updateDeviceValue('aspectRatio', next?.value || '')}
+                    value={value?.aspectRatio?.[device]}
+                    onChange={(next) => onChangeResponsiveValue('aspectRatio', next)}
                 />
             </BlockishResponsive>
 
@@ -308,19 +304,19 @@ const StyleControls = ({ value = {}, onChange }) => {
                 <BlockishSelect
                     label={__('Object Fit', 'blockish')}
                     options={OBJECT_FIT_OPTIONS}
-                    value={toSelectedOption(OBJECT_FIT_OPTIONS, value?.objectFit?.[device])}
-                    onChange={(next) => updateDeviceValue('objectFit', next?.value || '')}
+                    value={value?.objectFit?.[device]}
+                    onChange={(next) => onChangeResponsiveValue('objectFit', next)}
                 />
             </BlockishResponsive>
         </BlockishPanelBody>
 
         <BlockishPanelBody title={__('Position', 'blockish')} initialOpen={false}>
-            <BlockishResponsive left="62px">
+            <BlockishResponsive left="56px">
                 <BlockishSelect
                     label={__('Position', 'blockish')}
                     options={POSITION_OPTIONS}
-                    value={toSelectedOption(POSITION_OPTIONS, value?.position?.[device])}
-                    onChange={(next) => updateDeviceValue('position', next?.value || '')}
+                    value={value?.position?.[device]}
+                    onChange={(next) => onChangeResponsiveValue('position', next)}
                 />
             </BlockishResponsive>
 
@@ -330,7 +326,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                         <BlockishRangeUnit
                             label={__('Top', 'blockish')}
                             value={value?.top?.[device]}
-                            onChange={(next) => updateDeviceValue('top', next)}
+                            onChange={(next) => onChangeResponsiveValue('top', next)}
                             units={{
                                 px: { min: -2000, max: 2000, step: 1 },
                                 '%': { min: -100, max: 100, step: 1 },
@@ -345,7 +341,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                         <BlockishRangeUnit
                             label={__('Left', 'blockish')}
                             value={value?.left?.[device]}
-                            onChange={(next) => updateDeviceValue('left', next)}
+                            onChange={(next) => onChangeResponsiveValue('left', next)}
                             units={{
                                 px: { min: -2000, max: 2000, step: 1 },
                                 '%': { min: -100, max: 100, step: 1 },
@@ -360,7 +356,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                         <BlockishRangeUnit
                             label={__('Right', 'blockish')}
                             value={value?.right?.[device]}
-                            onChange={(next) => updateDeviceValue('right', next)}
+                            onChange={(next) => onChangeResponsiveValue('right', next)}
                             units={{
                                 px: { min: -2000, max: 2000, step: 1 },
                                 '%': { min: -100, max: 100, step: 1 },
@@ -375,7 +371,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                         <BlockishRangeUnit
                             label={__('Bottom', 'blockish')}
                             value={value?.bottom?.[device]}
-                            onChange={(next) => updateDeviceValue('bottom', next)}
+                            onChange={(next) => onChangeResponsiveValue('bottom', next)}
                             units={{
                                 px: { min: -2000, max: 2000, step: 1 },
                                 '%': { min: -100, max: 100, step: 1 },
@@ -393,7 +389,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                 <BlockishRangeUnit
                     label={__('Z-Index', 'blockish')}
                     value={value?.zIndex?.[device]}
-                    onChange={(next) => updateDeviceValue('zIndex', next)}
+                    onChange={(next) => onChangeResponsiveValue('zIndex', next)}
                     units={{
                         px: { min: -999, max: 999, step: 1 },
                     }}
@@ -404,7 +400,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                 <BlockishRangeUnit
                     label={__('Anchor Offset', 'blockish')}
                     value={value?.anchorOffset?.[device]}
-                    onChange={(next) => updateDeviceValue('anchorOffset', next)}
+                    onChange={(next) => onChangeResponsiveValue('anchorOffset', next)}
                     units={{
                         px: { min: -2000, max: 2000, step: 1 },
                         '%': { min: -100, max: 100, step: 1 },
@@ -427,8 +423,8 @@ const StyleControls = ({ value = {}, onChange }) => {
             <BlockishSelect
                 label={__('Font Weight', 'blockish')}
                 options={FONT_WEIGHT_OPTIONS}
-                value={toSelectedOption(FONT_WEIGHT_OPTIONS, value?.fontWeight?.[device])}
-                onChange={(next) => updateDeviceValue('fontWeight', next?.value || '')}
+                value={value?.fontWeight?.[device]}
+                onChange={(next) => onChangeResponsiveValue('fontWeight', next)}
             />
 
             <BlockishColor
@@ -441,57 +437,59 @@ const StyleControls = ({ value = {}, onChange }) => {
                 <BlockishRangeUnit
                     label={__('Font Size', 'blockish')}
                     value={value?.fontSize?.[device]}
-                    onChange={(next) => updateDeviceValue('fontSize', next)}
+                    onChange={(next) => onChangeResponsiveValue('fontSize', next)}
+                />
+            </BlockishResponsive>
+
+            <BlockishResponsive left="66px">
+                <BlockishSelect
+                    label={__('Text Align', 'blockish')}
+                    options={TEXT_ALIGN_OPTIONS}
+                    value={value?.textAlign?.[device]}
+                    onChange={(next) => onChangeResponsiveValue('textAlign', next)}
                 />
             </BlockishResponsive>
 
             <BlockishSelect
-                label={__('Text Align', 'blockish')}
-                options={TEXT_ALIGN_OPTIONS}
-                value={toSelectedOption(TEXT_ALIGN_OPTIONS, value?.textAlign?.[device])}
-                onChange={(next) => updateDeviceValue('textAlign', next?.value || '')}
-            />
-
-            <BlockishSelect
                 label={__('Text Decoration', 'blockish')}
                 options={TEXT_DECORATION_OPTIONS}
-                value={toSelectedOption(TEXT_DECORATION_OPTIONS, value?.textDecoration?.[device])}
-                onChange={(next) => updateDeviceValue('textDecoration', next?.value || '')}
+                value={value?.textDecoration?.[device]}
+                onChange={(next) => onChangeResponsiveValue('textDecoration', next)}
             />
 
             <BlockishSelect
                 label={__('Text Transform', 'blockish')}
                 options={TEXT_TRANSFORM_OPTIONS}
-                value={toSelectedOption(TEXT_TRANSFORM_OPTIONS, value?.textTransform?.[device])}
-                onChange={(next) => updateDeviceValue('textTransform', next?.value || '')}
+                value={value?.textTransform?.[device]}
+                onChange={(next) => onChangeResponsiveValue('textTransform', next)}
             />
 
             <BlockishSelect
                 label={__('Direction', 'blockish')}
                 options={DIRECTION_OPTIONS}
-                value={toSelectedOption(DIRECTION_OPTIONS, value?.direction?.[device])}
-                onChange={(next) => updateDeviceValue('direction', next?.value || '')}
+                value={value?.direction?.[device]}
+                onChange={(next) => onChangeResponsiveValue('direction', next)}
             />
 
             <BlockishSelect
                 label={__('Font Style', 'blockish')}
                 options={FONT_STYLE_OPTIONS}
-                value={toSelectedOption(FONT_STYLE_OPTIONS, value?.fontStyle?.[device])}
-                onChange={(next) => updateDeviceValue('fontStyle', next?.value || '')}
+                value={value?.fontStyle?.[device]}
+                onChange={(next) => onChangeResponsiveValue('fontStyle', next)}
             />
 
             <BlockishSelect
                 label={__('Text Overflow', 'blockish')}
                 options={TEXT_OVERFLOW_OPTIONS}
-                value={toSelectedOption(TEXT_OVERFLOW_OPTIONS, value?.textOverflow?.[device])}
-                onChange={(next) => updateDeviceValue('textOverflow', next?.value || '')}
+                value={value?.textOverflow?.[device]}
+                onChange={(next) => onChangeResponsiveValue('textOverflow', next)}
             />
 
-            <BlockishResponsive left="78px">
+            <BlockishResponsive left="72px">
                 <BlockishRangeUnit
                     label={__('Line Height', 'blockish')}
                     value={value?.lineHeight?.[device]}
-                    onChange={(next) => updateDeviceValue('lineHeight', next)}
+                    onChange={(next) => onChangeResponsiveValue('lineHeight', next)}
                 />
             </BlockishResponsive>
 
@@ -499,7 +497,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                 <BlockishRangeUnit
                     label={__('Letter Spacing', 'blockish')}
                     value={value?.letterSpacing?.[device]}
-                    onChange={(next) => updateDeviceValue('letterSpacing', next)}
+                    onChange={(next) => onChangeResponsiveValue('letterSpacing', next)}
                 />
             </BlockishResponsive>
 
@@ -507,15 +505,15 @@ const StyleControls = ({ value = {}, onChange }) => {
                 <BlockishRangeUnit
                     label={__('Word Spacing', 'blockish')}
                     value={value?.wordSpacing?.[device]}
-                    onChange={(next) => updateDeviceValue('wordSpacing', next)}
+                    onChange={(next) => onChangeResponsiveValue('wordSpacing', next)}
                 />
             </BlockishResponsive>
 
-            <BlockishResponsive left="58px">
+            <BlockishResponsive left="50px">
                 <BlockishRangeUnit
                     label={__('Column', 'blockish')}
                     value={value?.columnCount?.[device]}
-                    onChange={(next) => updateDeviceValue('columnCount', next)}
+                    onChange={(next) => onChangeResponsiveValue('columnCount', next)}
                     units={{
                         px: { min: 1, max: 12, step: 1 },
                     }}
@@ -557,20 +555,20 @@ const StyleControls = ({ value = {}, onChange }) => {
                 value={value?.background}
                 onChange={(next) => onChange({ ...value, background: next })}
             />
-            <BlockishResponsive left="54px">
+            <BlockishResponsive left="75px">
                 <BlockishSelect
                     label={__('Blend Mode', 'blockish')}
                     options={BLEND_MODE_OPTIONS}
-                    value={toSelectedOption(BLEND_MODE_OPTIONS, value?.blendMode?.[device])}
-                    onChange={(next) => updateDeviceValue('blendMode', next?.value || '')}
+                    value={value?.blendMode?.[device]}
+                    onChange={(next) => onChangeResponsiveValue('blendMode', next)}
                 />
             </BlockishResponsive>
-            <BlockishResponsive left="62px">
+            <BlockishResponsive left="108px">
                 <BlockishSelect
                     label={__('Background Clip', 'blockish')}
                     options={BACKGROUND_CLIP_OPTIONS}
-                    value={toSelectedOption(BACKGROUND_CLIP_OPTIONS, value?.backgroundClip?.[device])}
-                    onChange={(next) => updateDeviceValue('backgroundClip', next?.value || '')}
+                    value={value?.backgroundClip?.[device]}
+                    onChange={(next) => onChangeResponsiveValue('backgroundClip', next)}
                 />
             </BlockishResponsive>
             <BlockishCSSFilters
@@ -588,7 +586,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                     __nextHasNoMarginBottom
                     label={__('Opacity', 'blockish')}
                     value={typeof value?.opacity?.[device] === 'number' ? value?.opacity?.[device] : 1}
-                    onChange={(next) => updateDeviceValue('opacity', next)}
+                    onChange={(next) => onChangeResponsiveValue('opacity', next)}
                     min={0}
                     max={1}
                     step={0.01}
@@ -608,21 +606,21 @@ const StyleControls = ({ value = {}, onChange }) => {
                             <BlockishRangeUnit
                                 label={__('Translate X', 'blockish')}
                                 value={value?.translateX?.[device]}
-                                onChange={(next) => updateDeviceValue('translateX', next)}
+                                onChange={(next) => onChangeResponsiveValue('translateX', next)}
                             />
                         </BlockishResponsive>
                         <BlockishResponsive left="77px">
                             <BlockishRangeUnit
                                 label={__('Translate Y', 'blockish')}
                                 value={value?.translateY?.[device]}
-                                onChange={(next) => updateDeviceValue('translateY', next)}
+                                onChange={(next) => onChangeResponsiveValue('translateY', next)}
                             />
                         </BlockishResponsive>
                         <BlockishResponsive left="77px">
                             <BlockishRangeUnit
                                 label={__('Translate Z', 'blockish')}
                                 value={value?.translateZ?.[device]}
-                                onChange={(next) => updateDeviceValue('translateZ', next)}
+                                onChange={(next) => onChangeResponsiveValue('translateZ', next)}
                                 units={{
                                     px: { min: -1000, max: 1000, step: 1 },
                                     em: { min: -50, max: 50, step: 0.1 },
@@ -636,7 +634,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 __nextHasNoMarginBottom
                                 label={__('Rotate', 'blockish')}
                                 value={typeof value?.rotate?.[device] === 'number' ? value?.rotate?.[device] : 0}
-                                onChange={(next) => updateDeviceValue('rotate', next)}
+                                onChange={(next) => onChangeResponsiveValue('rotate', next)}
                                 min={-360}
                                 max={360}
                                 step={1}
@@ -648,7 +646,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 __nextHasNoMarginBottom
                                 label={__('Rotate X', 'blockish')}
                                 value={typeof value?.rotateX?.[device] === 'number' ? value?.rotateX?.[device] : 0}
-                                onChange={(next) => updateDeviceValue('rotateX', next)}
+                                onChange={(next) => onChangeResponsiveValue('rotateX', next)}
                                 min={-360}
                                 max={360}
                                 step={1}
@@ -660,19 +658,19 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 __nextHasNoMarginBottom
                                 label={__('Rotate Y', 'blockish')}
                                 value={typeof value?.rotateY?.[device] === 'number' ? value?.rotateY?.[device] : 0}
-                                onChange={(next) => updateDeviceValue('rotateY', next)}
+                                onChange={(next) => onChangeResponsiveValue('rotateY', next)}
                                 min={-360}
                                 max={360}
                                 step={1}
                             />
                         </BlockishResponsive>
-                        <BlockishResponsive left="44px">
+                        <BlockishResponsive left="55px">
                             <RangeControl
                                 __next40pxDefaultSize
                                 __nextHasNoMarginBottom
                                 label={__('Rotate Z', 'blockish')}
                                 value={typeof value?.rotateZ?.[device] === 'number' ? value?.rotateZ?.[device] : 0}
-                                onChange={(next) => updateDeviceValue('rotateZ', next)}
+                                onChange={(next) => onChangeResponsiveValue('rotateZ', next)}
                                 min={-360}
                                 max={360}
                                 step={1}
@@ -684,7 +682,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 __nextHasNoMarginBottom
                                 label={__('Scale', 'blockish')}
                                 value={typeof value?.scale?.[device] === 'number' ? value?.scale?.[device] : 1}
-                                onChange={(next) => updateDeviceValue('scale', next)}
+                                onChange={(next) => onChangeResponsiveValue('scale', next)}
                                 min={0}
                                 max={3}
                                 step={0.01}
@@ -696,7 +694,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 __nextHasNoMarginBottom
                                 label={__('Scale X (3D)', 'blockish')}
                                 value={typeof value?.scale3DX?.[device] === 'number' ? value?.scale3DX?.[device] : 1}
-                                onChange={(next) => updateDeviceValue('scale3DX', next)}
+                                onChange={(next) => onChangeResponsiveValue('scale3DX', next)}
                                 min={0.1}
                                 max={3}
                                 step={0.01}
@@ -708,7 +706,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 __nextHasNoMarginBottom
                                 label={__('Scale Y (3D)', 'blockish')}
                                 value={typeof value?.scale3DY?.[device] === 'number' ? value?.scale3DY?.[device] : 1}
-                                onChange={(next) => updateDeviceValue('scale3DY', next)}
+                                onChange={(next) => onChangeResponsiveValue('scale3DY', next)}
                                 min={0.1}
                                 max={3}
                                 step={0.01}
@@ -720,7 +718,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 __nextHasNoMarginBottom
                                 label={__('Scale Z (3D)', 'blockish')}
                                 value={typeof value?.scale3DZ?.[device] === 'number' ? value?.scale3DZ?.[device] : 1}
-                                onChange={(next) => updateDeviceValue('scale3DZ', next)}
+                                onChange={(next) => onChangeResponsiveValue('scale3DZ', next)}
                                 min={0.1}
                                 max={3}
                                 step={0.01}
@@ -732,7 +730,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 __nextHasNoMarginBottom
                                 label={__('Skew X', 'blockish')}
                                 value={typeof value?.skewX?.[device] === 'number' ? value?.skewX?.[device] : 0}
-                                onChange={(next) => updateDeviceValue('skewX', next)}
+                                onChange={(next) => onChangeResponsiveValue('skewX', next)}
                                 min={-60}
                                 max={60}
                                 step={1}
@@ -744,7 +742,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                                 __nextHasNoMarginBottom
                                 label={__('Skew Y', 'blockish')}
                                 value={typeof value?.skewY?.[device] === 'number' ? value?.skewY?.[device] : 0}
-                                onChange={(next) => updateDeviceValue('skewY', next)}
+                                onChange={(next) => onChangeResponsiveValue('skewY', next)}
                                 min={-60}
                                 max={60}
                                 step={1}
@@ -754,7 +752,7 @@ const StyleControls = ({ value = {}, onChange }) => {
                             <BlockishRangeUnit
                                 label={__('Perspective', 'blockish')}
                                 value={value?.perspective?.[device]}
-                                onChange={(next) => updateDeviceValue('perspective', next)}
+                                onChange={(next) => onChangeResponsiveValue('perspective', next)}
                                 units={{
                                     px: { min: 0, max: 2000, step: 10 },
                                 }}
@@ -764,8 +762,8 @@ const StyleControls = ({ value = {}, onChange }) => {
                         <BlockishSelect
                             label={__('Transform Origin', 'blockish')}
                             options={TRANSFORM_ORIGIN_OPTIONS}
-                            value={toSelectedOption(TRANSFORM_ORIGIN_OPTIONS, value?.transformOrigin?.[device])}
-                            onChange={(next) => updateDeviceValue('transformOrigin', next?.value || '')}
+                            value={value?.transformOrigin?.[device]}
+                            onChange={(next) => onChangeResponsiveValue('transformOrigin', next)}
                         />
 
                         {value?.transformOrigin?.[device] === 'custom' && (
@@ -774,14 +772,14 @@ const StyleControls = ({ value = {}, onChange }) => {
                                     <BlockishRangeUnit
                                         label={__('Origin X', 'blockish')}
                                         value={value?.transformOriginX?.[device]}
-                                        onChange={(next) => updateDeviceValue('transformOriginX', next)}
+                                        onChange={(next) => onChangeResponsiveValue('transformOriginX', next)}
                                     />
                                 </BlockishResponsive>
                                 <BlockishResponsive left="52px">
                                     <BlockishRangeUnit
                                         label={__('Origin Y', 'blockish')}
                                         value={value?.transformOriginY?.[device]}
-                                        onChange={(next) => updateDeviceValue('transformOriginY', next)}
+                                        onChange={(next) => onChangeResponsiveValue('transformOriginY', next)}
                                     />
                                 </BlockishResponsive>
                             </>
@@ -805,39 +803,39 @@ const StyleControls = ({ value = {}, onChange }) => {
                     <TextControl
                         label={__('Transition Property', 'blockish')}
                         value={value?.transitionProperty?.[device] || 'all'}
-                        onChange={(next) => updateDeviceValue('transitionProperty', next)}
+                        onChange={(next) => onChangeResponsiveValue('transitionProperty', next)}
                         help={__('Example: all, opacity, transform', 'blockish')}
                     />
-                    <BlockishResponsive left="80px">
+                    <BlockishResponsive left="148px">
                         <RangeControl
                             __next40pxDefaultSize
                             __nextHasNoMarginBottom
                             label={__('Transition Duration (s)', 'blockish')}
                             value={typeof value?.transitionDuration?.[device] === 'number' ? value?.transitionDuration?.[device] : 0.2}
-                            onChange={(next) => updateDeviceValue('transitionDuration', next)}
+                            onChange={(next) => onChangeResponsiveValue('transitionDuration', next)}
                             min={0}
                             max={10}
                             step={0.1}
                         />
                     </BlockishResponsive>
-                    <BlockishResponsive left="63px">
+                    <BlockishResponsive left="126px">
                         <RangeControl
                             __next40pxDefaultSize
                             __nextHasNoMarginBottom
                             label={__('Transition Delay (s)', 'blockish')}
                             value={typeof value?.transitionDelay?.[device] === 'number' ? value?.transitionDelay?.[device] : 0}
-                            onChange={(next) => updateDeviceValue('transitionDelay', next)}
+                            onChange={(next) => onChangeResponsiveValue('transitionDelay', next)}
                             min={0}
                             max={10}
                             step={0.1}
                         />
                     </BlockishResponsive>
-                    <BlockishResponsive left="98px">
+                    <BlockishResponsive left="112px">
                         <BlockishSelect
                             label={__('Transition Timing', 'blockish')}
                             options={TRANSITION_TIMING_OPTIONS}
-                            value={toSelectedOption(TRANSITION_TIMING_OPTIONS, value?.transitionTimingFunction?.[device])}
-                            onChange={(next) => updateDeviceValue('transitionTimingFunction', next?.value || '')}
+                            value={value?.transitionTimingFunction?.[device]}
+                            onChange={(next) => onChangeResponsiveValue('transitionTimingFunction', next)}
                         />
                     </BlockishResponsive>
                 </div>

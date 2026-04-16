@@ -289,46 +289,10 @@ export function isValidCssClass(className) {
     return regex.test(className.trim());
 }
 
-export const safeParseClassManagerJSON = (value, fallback = null) => {
-    if (!value || typeof value !== 'string') {
-        return fallback;
-    }
+export const generateClassSelector = (id, title, parent) => {
+    if (!title) return '';
 
-    try {
-        return JSON.parse(value);
-    } catch (error) {
-        return fallback;
-    }
-};
+    if (!parent) return `.${title}`;
 
-export const buildClassManagerSelector = ({ item, parent }) => {
-    if (!item?.title) {
-        return '';
-    }
-
-    if (!parent?.title) {
-        return `.${item.title}`;
-    }
-
-    return item?.title?.startsWith(':')
-        ? `.${parent.title}.blockish-cm-${item.id}${item.title}`
-        : `.${parent.title}.blockish-cm-${item.id} ${item.title}`;
-};
-
-export const generateClassManagerItemStyle = ({ item, parent, generateStyles }) => {
-    if (!item?.title || !item?.content || typeof generateStyles !== 'function') {
-        return '';
-    }
-
-    const styleObject = safeParseClassManagerJSON(item.content, null);
-    if (!styleObject || typeof styleObject !== 'object' || Object.keys(styleObject).length === 0) {
-        return '';
-    }
-
-    const selector = buildClassManagerSelector({ item, parent });
-    if (!selector) {
-        return '';
-    }
-
-    return generateStyles(styleObject, selector);
+    return title?.startsWith(':') ? `.${parent}.blockish-cm-${id}${title}` : `.${parent}.blockish-cm-${id} ${title}`;
 };

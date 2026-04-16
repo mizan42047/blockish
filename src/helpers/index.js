@@ -23,7 +23,8 @@ import generateTypographyControlStyles from './generate-typography-control-style
 import generateCSSFilters from "./generate-css-filters";
 import generateTextStrokeControlStyles from "./generate-text-stroke-control-styles";
 import useExtensionsAttributes from "./use-extensions-attributes";
-import generateCSS, { safeParseJSON } from "./generate-css";
+import generateCSS from "./generate-css";
+import deviceList from "./device-list";
 
 if( window?.blockish?.screen ){
     window.blockish.helpers = {
@@ -33,6 +34,7 @@ if( window?.blockish?.screen ){
         blockNameCamelcase,
         useDeviceType,
         setDeviceType,
+        deviceList,
         useDeviceList,
         getResponsiveValue,
         setResponsiveValue,
@@ -52,7 +54,6 @@ if( window?.blockish?.screen ){
         getLinkProps,
         generateCSSFilters,
         useExtensionsAttributes,
-        generateCSS,
-        safeParseJSON,
+        generateCSS
     }
 }
