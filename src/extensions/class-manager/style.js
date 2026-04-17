@@ -1,9 +1,3 @@
-import generateBackgroundControlStyles from '../../helpers/generate-background-control-styles';
-import generateBorderControlStyles from '../../helpers/generate-border-control-styles';
-import generateShadowControlStyles from '../../helpers/generate-box-shadow-control-styles';
-import generateTextStrokeControlStyles from '../../helpers/generate-text-stroke-control-styles';
-import generateCSSFilters from '../../helpers/generate-css-filters';
-import generateCSS from '../../helpers/generate-css';
 import { generateClassSelector } from './utils';
 
 const toStyleObject = (value) => {
@@ -65,7 +59,7 @@ const isResponsiveValueShape = (value) => {
     return Object.keys(value).some((key) => deviceKeys.includes(key) && value[key] !== undefined);
 };
 
-const buildTransform = (styles, device) => {
+const buildTransform = (styles, device, generateCSS) => {
     const transform = [];
 
     const translateX = generateCSS({ attributes: styles, key: 'translateX', device, getValue: toLength });
@@ -101,7 +95,7 @@ const buildTransform = (styles, device) => {
     return transform.join(' ');
 };
 
-const buildTransformOrigin = (styles, device) => {
+const buildTransformOrigin = (styles, device, generateCSS) => {
     const origin = generateCSS({ attributes: styles, key: 'transformOrigin', device });
     if (!origin) return '';
     if (origin !== 'custom') return origin;
@@ -112,7 +106,7 @@ const buildTransformOrigin = (styles, device) => {
     return `${originX || 'center'} ${originY || 'center'}`;
 };
 
-const buildTransition = (styles, device) => {
+const buildTransition = (styles, device, generateCSS) => {
     const property = generateCSS({ attributes: styles, key: 'transitionProperty', device }) || 'all';
     const duration = generateCSS({ attributes: styles, key: 'transitionDuration', device });
     const delay = generateCSS({ attributes: styles, key: 'transitionDelay', device });
@@ -123,6 +117,26 @@ const buildTransition = (styles, device) => {
 };
 
 const generateRuleSet = (styles, device) => {
+    const {
+        generateBackgroundControlStyles,
+        generateBorderControlStyles,
+        generateShadowControlStyles,
+        generateTextStrokeControlStyles,
+        generateCSSFilters,
+        generateCSS,
+    } = window?.blockish?.helpers || {};
+
+    if (
+        typeof generateBackgroundControlStyles !== 'function' ||
+        typeof generateBorderControlStyles !== 'function' ||
+        typeof generateShadowControlStyles !== 'function' ||
+        typeof generateTextStrokeControlStyles !== 'function' ||
+        typeof generateCSSFilters !== 'function' ||
+        typeof generateCSS !== 'function'
+    ) {
+        return '';
+    }
+
     const desktopStyles = [];
     const responsiveValue = [];
     const pushRule = (css, responsive = false) => {
@@ -136,9 +150,9 @@ const generateRuleSet = (styles, device) => {
     };
     const addRule = (key, css) => pushRule(css, isResponsiveKey(key));
 
-    const transform = buildTransform(styles, device);
-    const transformOrigin = buildTransformOrigin(styles, device);
-    const transition = buildTransition(styles, device);
+    const transform = buildTransform(styles, device, generateCSS);
+    const transformOrigin = buildTransformOrigin(styles, device, generateCSS);
+    const transition = buildTransition(styles, device, generateCSS);
     const background = generateBackgroundControlStyles(styles?.background, device);
     const border = generateBorderControlStyles(styles?.border, device);
     const boxShadow = generateShadowControlStyles(styles?.boxShadow, 'box');

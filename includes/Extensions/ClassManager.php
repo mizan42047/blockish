@@ -16,8 +16,26 @@ class ClassManager {
 	private function __construct() {
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_filter( 'render_block', array( $this, 'render_block' ), 10, 2 );
-		add_action( 'wp_footer', array( $this, 'print_used_class_styles' ), 99 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_used_class_styles' ), 9 );
 		add_action( 'before_delete_post', array( $this, 'delete_child_classes_on_parent_delete' ) );
+	}
+
+	public function enqueue_used_class_styles() {
+		if ( $this->styles_enqueued ) {
+			return;
+		}
+
+		$this->collect_used_post_ids_from_current_post();
+		if ( empty( $this->used_post_ids ) ) {
+			return;
+		}
+
+		$styles = $this->get_styles_for_classes();
+		if ( '' === $styles ) {
+			return;
+		}
+
+		$this->enqueue_inline_styles( $styles, false );
 	}
 
 	public function register_post_type() {
@@ -193,6 +211,74 @@ class ClassManager {
 			return;
 		}
 		$this->enqueue_inline_styles( $styles, true );
+	}
+
+	private function collect_used_post_ids_from_current_post() {
+		$post_id = get_queried_object_id();
+		if ( ! $post_id ) {
+			return;
+		}
+
+		$post = get_post( $post_id );
+		if ( ! $post || ! is_string( $post->post_content ) || '' === $post->post_content ) {
+			return;
+		}
+
+		$blocks = parse_blocks( $post->post_content );
+		if ( empty( $blocks ) ) {
+			return;
+		}
+
+		$this->collect_used_post_ids_from_blocks( $blocks );
+	}
+
+	private function collect_used_post_ids_from_blocks( $blocks ) {
+		if ( ! is_array( $blocks ) ) {
+			return;
+		}
+
+		foreach ( $blocks as $block ) {
+			if ( ! is_array( $block ) ) {
+				continue;
+			}
+
+			$attrs = $block['attrs'] ?? array();
+			$class_items = $attrs['classManager'] ?? array();
+			$subselector_items = $attrs['classManagerSubselector'] ?? array();
+
+			if ( is_array( $class_items ) ) {
+				foreach ( $class_items as $class_item ) {
+					if ( ! is_array( $class_item ) ) {
+						continue;
+					}
+					$class_id = absint( $class_item['id'] ?? 0 );
+					if ( $class_id > 0 ) {
+						$this->used_post_ids[ $class_id ] = true;
+					}
+				}
+			}
+
+			if ( is_array( $subselector_items ) ) {
+				foreach ( $subselector_items as $selector_item ) {
+					if ( ! is_array( $selector_item ) ) {
+						continue;
+					}
+					$selector_id = absint( $selector_item['id'] ?? 0 );
+					$parent_id   = absint( $selector_item['parent'] ?? 0 );
+					if ( $selector_id > 0 ) {
+						$this->used_post_ids[ $selector_id ] = true;
+					}
+					if ( $parent_id > 0 ) {
+						$this->used_post_ids[ $parent_id ] = true;
+					}
+				}
+			}
+
+			$inner_blocks = $block['innerBlocks'] ?? array();
+			if ( ! empty( $inner_blocks ) ) {
+				$this->collect_used_post_ids_from_blocks( $inner_blocks );
+			}
+		}
 	}
 
 	private function enqueue_inline_styles( $styles, $print_now = false ) {
