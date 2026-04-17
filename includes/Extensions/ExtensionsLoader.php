@@ -2,7 +2,6 @@
 
 namespace Blockish\Extensions;
 
-use Blockish\Config\ExtensionList;
 use Blockish\Core\Extensions;
 
 defined('ABSPATH') || exit;
@@ -18,12 +17,12 @@ class ExtensionsLoader
     }
 
     /**
-     * Bootstrap PHP services for active extensions.
+     * Bootstrap PHP services for active extensions.a
      *
      * @return void
      */
     private function load_active_extensions()
     {
-        ClassManager::get_instance();
+        \Blockish\Extensions\ClassManager::get_instance();
     }
 }
