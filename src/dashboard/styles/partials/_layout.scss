@@ -1,0 +1,77 @@
+.blockish-dashboard-layout {
+	min-height: calc(100vh - 32px);
+	background: var(--color-gray-50);
+}
+
+.blockish-sidebar {
+	width: 260px;
+	border-right: 1px solid var(--color-gray-200);
+	background: var(--color-white);
+	padding: 20px 14px;
+}
+
+.blockish-sidebar-brand {
+	margin-bottom: 16px;
+	padding: 6px 10px 16px;
+	border-bottom: 1px solid var(--color-gray-200);
+
+	.components-heading {
+		margin: 0;
+		color: var(--color-gray-900);
+	}
+
+	.components-text {
+		margin-top: 4px;
+	}
+}
+
+.blockish-sidebar-nav {
+	display: grid;
+	gap: 6px;
+
+	button {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		border: 1px solid transparent;
+		background: transparent;
+		border-radius: 10px;
+		padding: 9px 10px;
+		cursor: pointer;
+		text-align: left;
+	}
+
+	button .components-text {
+		margin: 0;
+	}
+
+	button:hover {
+		background: var(--color-gray-50);
+	}
+
+	button.is-active {
+		background: var(--color-blue-50);
+		color: var(--color-blue-700);
+
+		.components-text {
+			color: currentColor !important;
+		}
+	}
+}
+
+.blockish-main-content {
+	padding: 28px 32px;
+}
+
+.blockish-page-header {
+	.components-heading {
+		margin: 0;
+		color: var(--color-gray-900);
+	}
+
+	.components-text {
+		margin-top: 8px;
+		color: var(--color-gray-600);
+	}
+}

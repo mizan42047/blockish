@@ -21,6 +21,7 @@ use Blockish\Core\Enqueue;
 use Blockish\Core\StyleGenerator;
 use Blockish\Extensions\ExtensionsLoader;
 use Blockish\Routes\BlocksV1;
+use Blockish\Routes\DashboardToolsV1;
 use Blockish\Routes\ExtensionsV1;
 use Blockish\Routes\SVGUploaderV1;
 
@@ -136,6 +137,7 @@ final class Blockish {
         StyleGenerator::get_instance();
         BlocksV1::get_instance();
         ExtensionsV1::get_instance();
+        DashboardToolsV1::get_instance();
         SVGUploaderV1::get_instance();
         Blocks::get_instance();
         ExtensionsLoader::get_instance();

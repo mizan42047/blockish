@@ -9,6 +9,7 @@ defined('ABSPATH') || exit;
 class Extensions
 {
     use \Blockish\Traits\SingletonTrait;
+    private const SCHEMA_REGISTRY_OPTION = 'blockish_extension_schema_registry';
 
     /**
      * Discovered extension metadata keyed by slug.
@@ -61,6 +62,7 @@ class Extensions
             }
 
             $this->active_extensions[$slug] = $metadata;
+            $this->persist_extension_schema($slug, $metadata, $extension['name'] ?? $slug);
         }
     }
 
@@ -83,16 +85,21 @@ class Extensions
             $this->register_extensions();
         }
         
-        if (
-            empty($block_name) ||
-            !str_starts_with($block_name, 'blockish') ||
-            empty($this->active_extensions)
-        ) {
+        if (empty($block_name) || !str_starts_with($block_name, 'blockish')) {
             return $merged;
         }
 
+        $saved_registry = $this->get_saved_extension_schemas();
+        $all_extensions = $saved_registry;
+        foreach ($this->active_extensions as $slug => $extension) {
+            $all_extensions[$slug] = $extension;
+        }
 
-        foreach ($this->active_extensions as $extension) {
+        if (empty($all_extensions)) {
+            return $merged;
+        }
+
+        foreach ($all_extensions as $extension) {
             if (!$this->extension_targets_block($extension, $block_name)) {
                 continue;
             }
@@ -111,6 +118,70 @@ class Extensions
         }
 
         return $merged;
+    }
+
+    /**
+     * Persist extension schema so attributes survive when extension is disabled.
+     *
+     * @param string $slug
+     * @param array  $metadata
+     * @param string $display_name
+     * @return void
+     */
+    private function persist_extension_schema($slug, $metadata, $display_name)
+    {
+        if (empty($slug) || !is_array($metadata)) {
+            return;
+        }
+
+        $registry = $this->get_saved_extension_schemas();
+        $next_payload = [
+            'name' => $display_name,
+            'include' => isset($metadata['include']) && is_array($metadata['include']) ? $metadata['include'] : [],
+            'exclude' => isset($metadata['exclude']) && is_array($metadata['exclude']) ? $metadata['exclude'] : [],
+            'attributes' => isset($metadata['attributes']) && is_array($metadata['attributes']) ? $metadata['attributes'] : [],
+            'usesContext' => isset($metadata['usesContext']) && is_array($metadata['usesContext']) ? $metadata['usesContext'] : [],
+            'providesContext' => isset($metadata['providesContext']) && is_array($metadata['providesContext']) ? $metadata['providesContext'] : [],
+        ];
+
+        $current_payload = isset($registry[$slug]) && is_array($registry[$slug]) ? $registry[$slug] : null;
+        if ($current_payload === $next_payload) {
+            return;
+        }
+
+        $registry[$slug] = $next_payload;
+        update_option(self::SCHEMA_REGISTRY_OPTION, $registry, false);
+    }
+
+    /**
+     * Return saved extension schemas keyed by extension slug.
+     *
+     * @return array<string, array>
+     */
+    private function get_saved_extension_schemas()
+    {
+        $saved = get_option(self::SCHEMA_REGISTRY_OPTION, []);
+        if (!is_array($saved)) {
+            return [];
+        }
+
+        $clean = [];
+        foreach ($saved as $slug => $schema) {
+            if (!is_string($slug) || $slug === '' || !is_array($schema)) {
+                continue;
+            }
+
+            $clean[$slug] = [
+                'name' => isset($schema['name']) && is_string($schema['name']) ? $schema['name'] : $slug,
+                'include' => isset($schema['include']) && is_array($schema['include']) ? $schema['include'] : [],
+                'exclude' => isset($schema['exclude']) && is_array($schema['exclude']) ? $schema['exclude'] : [],
+                'attributes' => isset($schema['attributes']) && is_array($schema['attributes']) ? $schema['attributes'] : [],
+                'usesContext' => isset($schema['usesContext']) && is_array($schema['usesContext']) ? $schema['usesContext'] : [],
+                'providesContext' => isset($schema['providesContext']) && is_array($schema['providesContext']) ? $schema['providesContext'] : [],
+            ];
+        }
+
+        return $clean;
     }
 
     /**

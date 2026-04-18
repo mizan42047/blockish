@@ -1,0 +1,107 @@
+.blockish-toast-container {
+	position: fixed;
+	top: 24px;
+	right: 24px;
+	z-index: 9999;
+	pointer-events: none;
+}
+
+.blockish-toast {
+	background: var(--color-white);
+	border: 1px solid var(--color-gray-200);
+	border-radius: 16px;
+	box-shadow: 0 16px 30px rgba(15, 23, 42, 0.15);
+	padding: 16px 18px;
+	min-width: 280px;
+	max-width: 380px;
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	gap: 14px;
+	align-items: start;
+}
+
+.blockish-toast-icon {
+	width: 36px;
+	height: 36px;
+	border-radius: 999px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--color-green-50);
+	color: var(--color-green-700);
+}
+
+.blockish-toast-icon svg {
+	width: 18px;
+	height: 18px;
+}
+
+.blockish-toast-body {
+	display: grid;
+	gap: 6px;
+}
+
+.blockish-toast-title {
+	font-size: var(--text-base);
+	font-weight: var(--font-weight-semibold);
+	color: var(--color-gray-900);
+}
+
+.blockish-toast-message.components-text {
+	margin: 0;
+	color: var(--color-gray-600);
+	line-height: 1.5;
+}
+
+.blockish-toast--success {
+	border-color: var(--color-green-200);
+	background: var(--color-green-50);
+}
+
+.blockish-toast--success .blockish-toast-icon {
+	background: var(--color-green-100);
+	color: var(--color-green-700);
+}
+
+.blockish-toast--error {
+	border-color: var(--color-red-600);
+	background: var(--color-red-50);
+}
+
+.blockish-toast--error .blockish-toast-icon {
+	background: var(--color-red-50);
+	color: var(--color-red-700);
+}
+
+.blockish-toast--info {
+	border-color: var(--color-blue-200);
+	background: var(--color-blue-50);
+}
+
+.blockish-toast--info .blockish-toast-icon {
+	background: var(--color-blue-50);
+	color: var(--color-blue-700);
+}
+
+.blockish-toast-close {
+	border: none;
+	background: transparent;
+	color: var(--color-gray-400);
+	cursor: pointer;
+	width: 28px;
+	height: 28px;
+	border-radius: 999px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.blockish-toast-close:hover {
+	background: var(--color-gray-100);
+	color: var(--color-gray-700);
+}
+
+.blockish-toast-close svg {
+	width: 16px;
+	height: 16px;
+}

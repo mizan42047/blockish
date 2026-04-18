@@ -1,0 +1,137 @@
+.toplevel_page_blockish-dashboard #wpcontent {
+	padding-left: 0;
+}
+
+.toplevel_page_blockish-dashboard,
+#blockish-dashboard-root {
+	--font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+		"Segoe UI Symbol", "Noto Color Emoji";
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+		"Courier New", monospace;
+	--color-red-50: oklch(97.1% 0.013 17.38);
+	--color-red-600: oklch(57.7% 0.245 27.325);
+	--color-red-700: oklch(50.5% 0.213 27.518);
+	--color-yellow-50: oklch(98.7% 0.026 102.212);
+	--color-yellow-700: oklch(55.4% 0.135 66.442);
+	--color-green-50: oklch(98.2% 0.018 155.826);
+	--color-green-100: oklch(96.2% 0.044 156.743);
+	--color-green-200: oklch(92.5% 0.084 155.995);
+	--color-green-600: oklch(62.7% 0.194 149.214);
+	--color-green-700: oklch(52.7% 0.154 150.069);
+	--color-blue-50: oklch(97% 0.014 254.604);
+	--color-blue-200: oklch(88.2% 0.059 254.128);
+	--color-blue-500: oklch(62.3% 0.214 259.815);
+	--color-blue-600: oklch(54.6% 0.245 262.881);
+	--color-blue-700: oklch(48.8% 0.243 264.376);
+	--color-purple-50: oklch(97.7% 0.014 308.299);
+	--color-purple-600: oklch(55.8% 0.288 302.321);
+	--color-gray-50: oklch(98.5% 0.002 247.839);
+	--color-gray-100: oklch(96.7% 0.003 264.542);
+	--color-gray-200: oklch(92.8% 0.006 264.531);
+	--color-gray-300: oklch(87.2% 0.01 258.338);
+	--color-gray-400: oklch(70.7% 0.022 261.325);
+	--color-gray-500: oklch(55.1% 0.027 264.364);
+	--color-gray-600: oklch(44.6% 0.03 256.802);
+	--color-gray-700: oklch(37.3% 0.034 259.733);
+	--color-gray-900: oklch(21% .034 264.665);
+	--color-black: #000;
+	--color-white: #fff;
+	--text-xs: 0.75rem;
+	--text-sm: 0.875rem;
+	--text-base: 1rem;
+	--text-lg: 1.125rem;
+	--text-xl: 1.25rem;
+	--text-2xl: 1.5rem;
+	--text-3xl: 1.875rem;
+	--font-weight-normal: 400;
+	--font-weight-medium: 500;
+	--font-weight-semibold: 600;
+	--tracking-tight: -0.025em;
+	--tracking-widest: 0.1em;
+	--leading-relaxed: 1.625;
+	--radius-xs: 0.125rem;
+	--ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+	--default-transition-duration: 0.15s;
+	--default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	--default-font-family: var(--font-sans);
+	--default-mono-font-family: var(--font-mono);
+}
+
+#blockish-dashboard-root {
+	margin: -10px -20px 0 -2px;
+}
+
+.blockish-heading-primary {
+	font-size: var(--text-2xl);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.3;
+	color: var(--color-gray-900);
+}
+
+.blockish-heading-secondary {
+	font-size: var(--text-xl);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.4;
+	color: var(--color-gray-900);
+}
+
+.blockish-heading-tertiary {
+	font-size: var(--text-lg);
+	font-weight: var(--font-weight-semibold);
+	line-height: 1.4;
+	color: var(--color-gray-900);
+}
+
+.blockish-text-muted {
+	color: var(--color-gray-600);
+}
+
+.blockish-button-base.components-button {
+	height: 42px;
+	border-radius: 8px;
+	padding: 0 16px;
+	font-weight: 500;
+	box-shadow: none !important;
+	outline: none !important;
+}
+
+.blockish-button-primary.components-button {
+	background: var(--color-blue-600);
+	border-color: var(--color-blue-600);
+	color: var(--color-white);
+}
+
+.blockish-button-primary {
+	background: var(--color-blue-600);
+	border-color: var(--color-blue-600);
+	color: var(--color-white);
+}
+
+.blockish-button-primary.components-button:hover,
+.blockish-button-primary:hover {
+	background: var(--color-blue-700) !important;
+	border-color: var(--color-blue-700) !important;
+	color: var(--color-white) !important;
+}
+
+.blockish-button-secondary.components-button {
+	color: var(--color-gray-700);
+	background: var(--color-white);
+	border: 1px solid var(--color-gray-200);
+}
+
+.blockish-button-secondary.components-button:hover {
+	background: var(--color-gray-50) !important;
+	color: var(--color-gray-900) !important;
+}
+
+.blockish-loader {
+	min-height: 220px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.blockish-error {
+	color: var(--color-red-700);
+}

@@ -4,10 +4,7 @@ import {
 	Button,
 	Flex,
 	FlexBlock,
-	Modal,
 	SearchControl,
-	TextControl,
-	ToggleControl,
 	__experimentalHeading as Heading,
 	__experimentalHStack as HStack,
 	__experimentalText as Text,
@@ -15,6 +12,7 @@ import {
 } from '@wordpress/components';
 import { EXTENSION_CONTROL_MAP, EXTENSION_FILTERS, getExtensionCategoryKey } from '../utils';
 import ExtensionCard from './extension-card';
+import { getExtensionSettingsComponent } from './settings';
 
 function humanizeSlug(slug) {
 	return (slug || '')
@@ -43,12 +41,7 @@ export default function ExtensionsPage({
 }) {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [activeFilter, setActiveFilter] = useState('all');
-	const [isGlobalModalOpen, setIsGlobalModalOpen] = useState(false);
 	const [selectedExtensionSlug, setSelectedExtensionSlug] = useState(null);
-	const [globalControls, setGlobalControls] = useState({
-		enableSafeMode: true,
-		autoEnableOnInstall: false,
-	});
 	const [extensionSettings, setExtensionSettings] = useState({});
 
 	const allExtensions = useMemo(() => {
@@ -62,7 +55,7 @@ export default function ExtensionsPage({
 				categoryLabel:
 					categoryKey === 'animation' ? __('Animation', 'blockish') : __('General', 'blockish'),
 				description: item?.description || __('Extension module', 'blockish'),
-				hasSpecialControls: Boolean(EXTENSION_CONTROL_MAP[slug]),
+				hasSpecialControls: Boolean(EXTENSION_CONTROL_MAP[slug]) || slug === 'class-manager',
 			};
 		});
 	}, [extensions]);
@@ -88,17 +81,12 @@ export default function ExtensionsPage({
 
 	const selectedSchema = selectedExtensionSlug ? EXTENSION_CONTROL_MAP[selectedExtensionSlug] : null;
 	const selectedExtension = selectedExtensionSlug ? extensions?.[selectedExtensionSlug] : null;
-	const savedSettings = selectedExtension?.settings || {};
-	const selectedValues =
+	const selectedDraft =
 		(selectedExtensionSlug && extensionSettings[selectedExtensionSlug]) ||
 		getExtensionSettingsInitialState(selectedExtensionSlug);
-
-	const updateGlobalControl = (key, value) => {
-		setGlobalControls((prev) => ({
-			...prev,
-			[key]: value,
-		}));
-	};
+	const SettingsComponent = selectedExtensionSlug
+		? getExtensionSettingsComponent(selectedExtensionSlug)
+		: null;
 
 	const updateExtensionControl = (slug, key, value) => {
 		setExtensionSettings((prev) => ({
@@ -116,7 +104,7 @@ export default function ExtensionsPage({
 			return;
 		}
 		const payload = {
-			...(savedSettings || {}),
+			...(selectedExtension?.settings || {}),
 			...(extensionSettings[selectedExtensionSlug] || {}),
 		};
 		onSaveExtensionSettings?.(selectedExtensionSlug, payload);
@@ -201,77 +189,20 @@ export default function ExtensionsPage({
 				</section>
 			)}
 
-			{isGlobalModalOpen && (
-				<Modal
-					title={__('Global Extension Controls', 'blockish')}
-					onRequestClose={() => setIsGlobalModalOpen(false)}
-				>
-					<VStack className="blockish-modal-controls" spacing={4}>
-						<ToggleControl
-							className="blockish-toggle-control"
-							label={__('Enable Safe Mode', 'blockish')}
-							checked={Boolean(globalControls.enableSafeMode)}
-							onChange={(value) => updateGlobalControl('enableSafeMode', value)}
-						/>
-						<ToggleControl
-							className="blockish-toggle-control"
-							label={__('Auto-enable on install', 'blockish')}
-							checked={Boolean(globalControls.autoEnableOnInstall)}
-							onChange={(value) => updateGlobalControl('autoEnableOnInstall', value)}
-						/>
-						<Text variant="muted">
-							{__('These global controls are prepared for central settings wiring.', 'blockish')}
-						</Text>
-					</VStack>
-				</Modal>
+			{SettingsComponent && selectedExtensionSlug === 'class-manager' && (
+				<SettingsComponent isOpen onRequestClose={() => setSelectedExtensionSlug(null)} />
 			)}
 
-			{selectedSchema && (
-				<Modal
-					title={__(selectedSchema.title, 'blockish')}
-					className="blockish-configure-modal"
+			{SettingsComponent && selectedExtensionSlug !== 'class-manager' && selectedSchema && (
+				<SettingsComponent
+					slug={selectedExtensionSlug}
+					schema={selectedSchema}
+					extension={selectedExtension}
+					extensionDraft={selectedDraft}
+					onChange={updateExtensionControl}
+					onSave={handleSaveSettings}
 					onRequestClose={() => setSelectedExtensionSlug(null)}
-				>
-					<VStack className="blockish-modal-controls" spacing={4}>
-						{selectedSchema.controls.map((control) => {
-							const value = selectedValues[control.key];
-							if (control.type === 'toggle') {
-								return (
-									<ToggleControl
-										key={control.key}
-										className="blockish-toggle-control"
-										label={__(control.label, 'blockish')}
-										checked={Boolean(value ?? savedSettings[control.key])}
-										onChange={(next) =>
-											updateExtensionControl(selectedExtensionSlug, control.key, next)
-										}
-									/>
-								);
-							}
-
-							return (
-								<TextControl
-									key={control.key}
-									label={__(control.label, 'blockish')}
-									value={(value ?? savedSettings[control.key]) || ''}
-									onChange={(next) =>
-										updateExtensionControl(selectedExtensionSlug, control.key, next)
-									}
-								/>
-							);
-						})}
-						<Text variant="muted">
-							{__('Special extension controls are ready and can be persisted when API fields are added.', 'blockish')}
-						</Text>
-						<Button
-							className="blockish-action-button is-primary blockish-button-base blockish-button-primary"
-							variant="primary"
-							onClick={handleSaveSettings}
-						>
-							{__('Save Settings', 'blockish')}
-						</Button>
-					</VStack>
-				</Modal>
+				/>
 			)}
 		</VStack>
 	);

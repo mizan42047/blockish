@@ -2,6 +2,8 @@
 
 namespace Blockish\Extensions;
 
+use Blockish\Config\ExtensionList;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -15,9 +17,22 @@ class ClassManager {
 
 	private function __construct() {
 		add_action( 'init', array( $this, 'register_post_type' ) );
+		add_action( 'init', array( $this, 'register_runtime_hooks' ), 20 );
+		add_action( 'before_delete_post', array( $this, 'delete_child_classes_on_parent_delete' ) );
+	}
+
+	public function register_runtime_hooks() {
+		if ( ! $this->is_extension_enabled() ) {
+			return;
+		}
+
 		add_filter( 'render_block', array( $this, 'render_block' ), 10, 2 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_used_class_styles' ), 9 );
-		add_action( 'before_delete_post', array( $this, 'delete_child_classes_on_parent_delete' ) );
+	}
+
+	private function is_extension_enabled() {
+		$active_extensions = ExtensionList::get_instance()->get_list( 'active' );
+		return ! empty( $active_extensions['class-manager'] );
 	}
 
 	public function enqueue_used_class_styles() {

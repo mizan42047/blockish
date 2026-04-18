@@ -107,6 +107,7 @@ abstract class ConfigList {
      */
     private function sync_list_with_options() {
         $saved_list = get_option( 'blockish_' . $this->type . '_list', array() );
+        $current_keys = array_keys( $this->list );
 
         // Iterate through the list and sync it with the saved option.
         foreach ( $this->list as $key => $item ) {
@@ -133,6 +134,13 @@ abstract class ConfigList {
             $parent_status = $saved_list[ $parent ]['status'] ?? null;
             if ( in_array( $parent_status, array( 'active', 'inactive' ), true ) ) {
                 $saved_list[ $key ]['status'] = $parent_status;
+            }
+        }
+
+        // Remove legacy keys that are no longer defined in the source list.
+        foreach ( array_keys( $saved_list ) as $saved_key ) {
+            if ( ! in_array( $saved_key, $current_keys, true ) ) {
+                unset( $saved_list[ $saved_key ] );
             }
         }
 

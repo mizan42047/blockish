@@ -1,0 +1,137 @@
+.blockish-integrations-page {
+	width: 100%;
+}
+
+.blockish-integrations-filter-wrap {
+	padding: 14px;
+}
+
+.blockish-integrations-filters {
+	gap: 8px !important;
+	flex-wrap: wrap;
+}
+
+.blockish-integrations-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(260px, 1fr));
+	gap: 14px;
+}
+
+.blockish-integration-card {
+	background: var(--color-white);
+	border: 1px solid var(--color-gray-200);
+	border-radius: 12px;
+	padding: 18px;
+}
+
+.blockish-integration-card.is-connected {
+	border-color: #baeac8;
+}
+
+.blockish-integration-head {
+	gap: 10px;
+}
+
+.blockish-integration-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	font-size: 21px;
+	line-height: 1;
+}
+
+.blockish-integration-title.components-heading {
+	margin: 0;
+}
+
+.blockish-integration-category.components-text {
+	margin-top: 2px;
+	font-size: var(--text-sm);
+}
+
+.blockish-integration-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	background: #d1f2de;
+	color: #0c8a45;
+	padding: 4px 10px;
+	font-size: 13px;
+	font-weight: var(--font-weight-medium);
+	white-space: nowrap;
+}
+
+.blockish-integration-badge::before {
+	content: "✓";
+	margin-right: 6px;
+}
+
+.blockish-integration-description.components-text {
+	margin-top: 14px;
+	line-height: 1.5;
+	min-height: 48px;
+}
+
+.blockish-integration-actions {
+	margin-top: 12px;
+	border-top: 1px solid var(--color-gray-200);
+	padding-top: 12px;
+}
+
+.blockish-integration-premium {
+	display: inline-flex;
+	align-items: center;
+	height: 22px;
+	padding: 0 8px;
+	border-radius: 6px;
+	background: #fcebc2;
+	color: #9c6d00;
+	font-size: 13px;
+	margin-bottom: 10px;
+}
+
+.blockish-integration-actions-row .components-button {
+	flex: 1;
+}
+
+.blockish-integration-disconnect {
+	border: none;
+	background: transparent;
+	color: #e1192d;
+	font-size: 30px;
+	line-height: 1;
+	width: 28px;
+	height: 28px;
+	cursor: pointer;
+}
+
+.blockish-integrations-help {
+	border: 1px solid #bed7ff;
+	background: #edf4ff;
+	border-radius: 12px;
+	padding: 22px 20px;
+}
+
+.blockish-integrations-help .components-heading {
+	margin: 0;
+}
+
+.blockish-integrations-help .components-text {
+	margin-top: 8px;
+}
+
+.blockish-integrations-help-links {
+	margin-top: 6px;
+}
+
+.blockish-integrations-help-link {
+	color: var(--color-blue-600) !important;
+	text-decoration: none;
+}
+
+.blockish-integrations-help-link:hover {
+	text-decoration: underline;
+}
