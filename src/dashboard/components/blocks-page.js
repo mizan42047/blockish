@@ -47,6 +47,7 @@ export default function BlocksPage({ blocks = {}, isSaving, onSave, onToggleBloc
 					category,
 					categoryLabel,
 					description: buildDescription(item, categoryLabel),
+					sourceName: item?.addon_name || item?.source_name || 'Blockish',
 				};
 			});
 	}, [blocks]);

@@ -141,5 +141,7 @@ class BlocksList extends ConfigList {
                 'parent'  => 'tab',
             ),
         );
+
+        $this->list = apply_filters( 'blockish/blocks/list', $this->list );
     }
 }

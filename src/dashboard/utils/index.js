@@ -10,9 +10,9 @@ export const SIDEBAR_MENUS = [
 	{ key: 'dashboard', label: 'Dashboard', icon: layoutDashboard },
 	{ key: 'blocks', label: 'Blocks', icon: blocksIcon },
 	{ key: 'extensions', label: 'Extensions', icon: plugIcon },
+	{ key: 'addons', label: 'Addons', icon: plugIcon },
 	{ key: 'settings', label: 'Settings', icon: settingsIcon },
 	// { key: 'integrations', label: 'Integrations', icon: plugIcon },
-	// { key: 'addons', label: 'Addons', icon: packageIcon },
 	// { key: 'license', label: 'License', icon: keyIcon },
 ];
 

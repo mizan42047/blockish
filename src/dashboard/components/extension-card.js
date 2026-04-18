@@ -45,9 +45,12 @@ export default function ExtensionCard({ extension, isSaving, onToggle, onOpenSet
 						{extension.description}
 					</Text>
 					<Flex justify="space-between" align="center">
-						<Text className={`blockish-extension-category-tag is-${extension.categoryKey || 'general'}`}>
-							{extension.categoryLabel}
-						</Text>
+						<Flex align="center" expanded={false} className="blockish-card-meta-left">
+							<Text className={`blockish-extension-category-tag is-${extension.categoryKey || 'general'}`}>
+								{extension.categoryLabel}
+							</Text>
+							<Text className="blockish-addon-badge">{extension.sourceName || __('Blockish', 'blockish')}</Text>
+						</Flex>
 						<Text className={`blockish-status-badge ${isActive ? 'is-active' : 'is-inactive'}`}>
 							{isActive ? __('Active', 'blockish') : __('Inactive', 'blockish')}
 						</Text>

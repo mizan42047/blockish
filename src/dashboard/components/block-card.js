@@ -28,7 +28,10 @@ export default function BlockCard({ block, isSaving, onToggle }) {
 					</Flex>
 					<Text className="blockish-block-card-description blockish-text-muted">{block.description}</Text>
 					<Flex justify="space-between" align="center">
-						<Text variant="muted">{block.categoryLabel}</Text>
+						<Flex align="center" expanded={false} className="blockish-card-meta-left">
+							<Text variant="muted">{block.categoryLabel}</Text>
+							<Text className="blockish-addon-badge">{block.sourceName || __('Blockish', 'blockish')}</Text>
+						</Flex>
 						<Text className={`blockish-status-badge ${isActive ? 'is-active' : 'is-inactive'}`}>
 							{isActive ? __('Active', 'blockish') : __('Inactive', 'blockish')}
 						</Text>

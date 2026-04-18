@@ -56,6 +56,7 @@ export default function ExtensionsPage({
 					categoryKey === 'animation' ? __('Animation', 'blockish') : __('General', 'blockish'),
 				description: item?.description || __('Extension module', 'blockish'),
 				hasSpecialControls: Boolean(EXTENSION_CONTROL_MAP[slug]) || slug === 'class-manager',
+				sourceName: item?.addon_name || item?.source_name || 'Blockish',
 			};
 		});
 	}, [extensions]);

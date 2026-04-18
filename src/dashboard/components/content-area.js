@@ -5,6 +5,7 @@ import ExtensionsPage from './extensions-page';
 import PlaceholderSection from './placeholder-section';
 import SettingsPage from './settings-page';
 import IntegrationsPage from './integrations-page';
+import AddonsPage from './addons-page';
 
 export default function ContentArea({
 	activeMenu,
@@ -53,12 +54,7 @@ export default function ContentArea({
 	}
 
 	if (activeMenu === 'addons') {
-		return (
-			<PlaceholderSection
-				title={__('Addons', 'blockish')}
-				description={__('Browse and activate additional modules for Blockish.', 'blockish')}
-			/>
-		);
+		return <AddonsPage blocks={data?.blocks} extensions={data?.extensions} />;
 	}
 
 	return (

@@ -37,6 +37,8 @@ class ExtensionList extends ConfigList {
                 'status'      => 'active',
             ),
         );
+
+        $this->list = apply_filters( 'blockish/extensions/list', $this->list );
     }
 
     /**
