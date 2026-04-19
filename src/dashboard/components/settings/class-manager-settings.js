@@ -58,6 +58,8 @@ function normalizeClassSlug(value) {
 }
 
 export default function ClassManagerSettings({ isOpen, onRequestClose }) {
+	const DEFAULT_CUSTOM_CSS = '{{SELECTOR}}{}';
+	const normalizeTemplateCss = (css = '') => String(css).replace(/\s+/g, '');
 	const [isLoading, setIsLoading] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
 	const [isCreating, setIsCreating] = useState(false);
@@ -136,17 +138,19 @@ export default function ClassManagerSettings({ isOpen, onRequestClose }) {
 		setDraft({
 			title: item.title || '',
 			attributes: attributesJson,
-			customCss: attributes?.customCss || '',
+			customCss: attributes?.customCss || DEFAULT_CUSTOM_CSS,
 		});
 	};
 
 	const cancelEdit = () => {
 		setEditingId(null);
-		setDraft({ title: '', attributes: '{}', customCss: '' });
+		setDraft({ title: '', attributes: '{}', customCss: DEFAULT_CUSTOM_CSS });
 	};
 
 	const updateCustomCss = (nextCss) => {
-		const safeCss = nextCss || '';
+		const incomingCss = nextCss || '';
+		const safeCss =
+			normalizeTemplateCss(incomingCss) === normalizeTemplateCss(DEFAULT_CUSTOM_CSS) ? '' : incomingCss;
 		setDraft((prev) => {
 			let nextAttributes = {};
 			try {
@@ -212,7 +216,10 @@ export default function ClassManagerSettings({ isOpen, onRequestClose }) {
 				return;
 			}
 
-			parsedAttributes.customCss = draft.customCss || '';
+			parsedAttributes.customCss =
+				normalizeTemplateCss(draft.customCss || '') === normalizeTemplateCss(DEFAULT_CUSTOM_CSS)
+					? ''
+					: draft.customCss || '';
 
 			const updated = await apiFetch({
 				path: `/wp/v2/blockish-classes/${id}`,
@@ -350,11 +357,10 @@ export default function ClassManagerSettings({ isOpen, onRequestClose }) {
 									<BlockishCodeEditor
 										label={__('Custom CSS', 'blockish')}
 										help={__('Use {{SELECTOR}} to target this class selector.', 'blockish')}
-										value={draft.customCss}
+										value={draft.customCss || DEFAULT_CUSTOM_CSS}
 										onChange={updateCustomCss}
 										settings={{ mode: 'css', lineWrapping: true }}
 										rows={10}
-										placeholder={'{{SELECTOR}} {\n\n}'}
 									/>
 									<TextareaControl
 										className="blockish-class-manager-css-field"

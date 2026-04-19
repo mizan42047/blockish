@@ -36,6 +36,23 @@ const BlockishCodeEditor = ( {
             CodeMirrorGlobal?.hint?.css ||
             CodeMirrorGlobal?.hint?.anyword ||
             null;
+        const repositionHintDropdown = () => {
+            const hintLists = document.querySelectorAll( '.CodeMirror-hints' );
+            const hintEl = hintLists?.[ hintLists.length - 1 ];
+            if ( !hintEl ) {
+                return;
+            }
+
+            const rect = hintEl.getBoundingClientRect();
+            const viewportPadding = 8;
+
+            // If popup overflows to the right, open it to the opposite side.
+            if ( rect.right > window.innerWidth - viewportPadding ) {
+                const currentLeft = Number.parseFloat( hintEl.style.left || `${ rect.left }` );
+                const flippedLeft = currentLeft - rect.width - 12;
+                hintEl.style.left = `${ Math.max( viewportPadding, flippedLeft ) }px`;
+            }
+        };
         const autocompleteKeyHandler = (instance) => {
             if ( !instance?.showHint ) {
                 return;
@@ -45,6 +62,8 @@ const BlockishCodeEditor = ( {
                 hint: resolvedHintProvider || undefined,
                 completeSingle: false,
             } );
+
+            requestAnimationFrame( repositionHintDropdown );
         };
 
         const editor = window.wp.codeEditor.initialize( textareaRef.current, {
@@ -72,26 +91,6 @@ const BlockishCodeEditor = ( {
         }
 
         editorRef.current = editor;
-
-        const canShowHints = Boolean(
-            codeMirror?.showHint &&
-            resolvedHintProvider
-        );
-
-        if ( canShowHints ) {
-            codeMirror.on( 'inputRead', ( instance, changeObj ) => {
-                const input = changeObj?.text?.join( '' ) || '';
-                const isLikelyCssInput = /^[a-zA-Z\-:._#@$]$/.test( input );
-                if ( !isLikelyCssInput || instance.state.completionActive ) {
-                    return;
-                }
-
-                instance.showHint( {
-                    hint: resolvedHintProvider,
-                    completeSingle: false,
-                } );
-            } );
-        }
 
         codeMirror.on( 'change', ( instance ) => {
             const nextValue = instance.getValue();

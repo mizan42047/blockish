@@ -11,6 +11,7 @@ import Grid from './components/grid';
 import Transform from './components/transform';
 import Background from './components/background';
 import Border from './components/border';
+import CustomCss from './components/custom-css';
 
 const BlockishBlocksAdvancedControls = createHigherOrderComponent(
     (BlockEdit) =>
@@ -48,6 +49,7 @@ const BlockishBlocksAdvancedControls = createHigherOrderComponent(
                             <Transform {...props} />
                             <Background {...props} />
                             <Border {...props} />
+                            <CustomCss {...props} />
                         </>
                     )
                 };
@@ -61,6 +63,27 @@ const BlockishBlocksAdvancedControls = createHigherOrderComponent(
 
             return <BlockEdit {...props} />;
         }), 'BlockishBlocksAdvancedControls');
+
+addFilter(
+    'blocks.registerBlockType',
+    'blockish/addCustomCssAttribute',
+    (settings, name) => {
+        if (!name?.includes('blockish/')) {
+            return settings;
+        }
+
+        return {
+            ...settings,
+            attributes: {
+                ...(settings?.attributes || {}),
+                customCss: {
+                    type: 'string',
+                    default: '{{SELECTOR}}{}',
+                },
+            },
+        };
+    }
+);
 
 addFilter(
     'editor.BlockEdit',

@@ -115,7 +115,14 @@ const BlockishStyleTag = ({ attributes, hash, name, additionalStyles = '' }) => 
             }
         }
 
-        return generateCssString(cssRules, deviceList);
+        const generatedStyles = generateCssString(cssRules, deviceList);
+        const rawCustomCss = attributes?.customCss || '';
+        const isTemplateCss = String(rawCustomCss).replace(/\s+/g, '') === '{{SELECTOR}}{}';
+        const customCss = (isTemplateCss ? '' : rawCustomCss)
+            .replace(/\{\{\s*SELECTOR\s*\}\}/g, `.bb-${hash}`)
+            .replace(/\bSELECTOR\b/g, `.bb-${hash}`);
+
+        return `${generatedStyles}${customCss}`;
     }, [attributes, hash, deviceList]);
 
     return <style>{styles + additionalStyles}</style>;

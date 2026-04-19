@@ -86,7 +86,8 @@ const StyleControls = ({ value = {}, onChange, currentSelector = '' }) => {
         });
     };
 
-    const customCssExample = `{{SELECTOR}} {}`;
+    const customCssExample = `{{SELECTOR}}{}`;
+    const normalizeTemplateCss = (css = '') => String(css).replace(/\s+/g, '');
 
     return (
         <>
@@ -856,7 +857,15 @@ const StyleControls = ({ value = {}, onChange, currentSelector = '' }) => {
             <BlockishCodeEditor
                 label={__('Custom CSS', 'blockish')}
                 value={value?.customCss || customCssExample}
-                onChange={(next) => onChange({ ...value, customCss: next })}
+                onChange={(next) =>
+                    onChange({
+                        ...value,
+                        customCss:
+                            normalizeTemplateCss(next) === normalizeTemplateCss(customCssExample)
+                                ? ''
+                                : next,
+                    })
+                }
                 settings={{ mode: 'css', lineWrapping: true }}
                 rows={10}
                 help={__('Use {{SELECTOR}} to target the current class selector.', 'blockish')}

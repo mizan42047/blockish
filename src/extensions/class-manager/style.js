@@ -18,6 +18,7 @@ const buildCustomCss = (customCss, selector) => {
 
     const trimmedCss = customCss.trim();
     if (!trimmedCss) return '';
+    if (trimmedCss.replace(/\s+/g, '') === '{{SELECTOR}}{}') return '';
 
     if (!selector) return trimmedCss;
 

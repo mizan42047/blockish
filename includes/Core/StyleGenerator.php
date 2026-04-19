@@ -298,6 +298,20 @@ class StyleGenerator
 
         // Generate final CSS and append
         $final_css = Utilities::generate_css_string($css_rules, $breakpoints);
+
+        // Append custom CSS (global advanced control) for frontend output.
+        $custom_css = $attributes['customCss'] ?? '';
+        if ( is_string( $custom_css ) && ! empty( trim( $custom_css ) ) ) {
+            if ( '{{SELECTOR}}{}' === preg_replace( '/\s+/', '', $custom_css ) ) {
+                $custom_css = '';
+            }
+
+            $selector   = '.' . $block_class;
+            $custom_css = preg_replace( '/\{\{\s*SELECTOR\s*\}\}/', $selector, $custom_css );
+            $custom_css = preg_replace( '/\bSELECTOR\b/', $selector, $custom_css );
+            $final_css .= $custom_css;
+        }
+
         $cached_css_data = [
             'blockName' => $block_data['blockName'],
             'blockClass' => $block_class,
