@@ -48,6 +48,13 @@ const RenderClassManagerStyles = () => {
         return nextValue;
     }, []);
 
+    const editedClassIds = useSelect((select) => {
+        const { hasEditsForEntityRecord } = select('core');
+        return classStyles
+            .map((item) => item?.id)
+            .filter((id) => id && hasEditsForEntityRecord('postType', POST_TYPE, id));
+    }, [classStyles]);
+
     const cssByClassId = useMemo(() => {
         const byId = {};
         classStyles.forEach((item) => {
@@ -81,9 +88,11 @@ const RenderClassManagerStyles = () => {
         return styles;
     }, [cssByClassId]);
 
-    const updateStyles = async (nextCssByClassId) => {
+    const updateStyles = async (nextCssByClassId, idsToUpdate = []) => {
+        const idsSet = new Set(idsToUpdate);
         for (let item of classStyles) {
             if (!item?.id) continue;
+            if (!idsSet.has(item.id)) continue;
             const css = nextCssByClassId?.[item.id] || '';
             await editEntityRecord('postType', POST_TYPE, item?.id, {
                 meta: {
@@ -94,6 +103,7 @@ const RenderClassManagerStyles = () => {
     };
 
     const classStylesRef = useRef({});
+    const hasClassStylesInitialized = useRef(false);
     useEffect(() => {
         const styleIndex = editorSettings?.styles?.findIndex((style) => style?.__unstableType === 'blockish-classes-styles');
         if (styleIndex === -1) {
@@ -125,12 +135,20 @@ const RenderClassManagerStyles = () => {
 
         const nextMap = JSON.stringify(cssByClassId);
         const prevMap = JSON.stringify(classStylesRef.current);
-        if (nextMap !== prevMap) {
-            updateStyles(cssByClassId);
+
+        // Skip initial update to avoid marking entities as dirty on page load.
+        if (!hasClassStylesInitialized.current) {
+            classStylesRef.current = cssByClassId;
+            hasClassStylesInitialized.current = true;
+            return;
+        }
+
+        if (nextMap !== prevMap && editedClassIds.length > 0) {
+            updateStyles(cssByClassId, editedClassIds);
             classStylesRef.current = cssByClassId;
         }
 
-    }, [generateStyles, cssByClassId, classStyles]);
+    }, [generateStyles, cssByClassId, classStyles, editedClassIds]);
 
     return <></>;
 };
