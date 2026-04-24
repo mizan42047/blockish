@@ -5,8 +5,8 @@
  * Requires at least: 6.1
  * Requires PHP:      7.4
  * Version:           1.0.3
- * Author:            bdkoder
- * Author URI:        https://github.com/bdkoder
+ * Author:            wowdevs
+ * Author URI:        https://wowdevs.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       blockish

@@ -1,5 +1,5 @@
 === Blockish ===
-Contributors: bdkoder
+Contributors: bdkoder, mizan42047
 Donate link: https://github.com/bdkoder
 Tags: blocks, builder, designs
 Tested up to: 6.7.2
