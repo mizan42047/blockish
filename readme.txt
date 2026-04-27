@@ -1,12 +1,13 @@
 === Blockish ===
-Version: 1.0.3
 Author: wowdevs
 Author URI: https://wowdevs.com/
 Contributors: bdkoder, mizan42047
 Donate link: https://wowdevs.com/
 Tags: blocks, builder, designs
-Tested up to: 6.7.2
+Tested up to: 6.9
 Stable tag: 1.0.3
+Requires at least: 6.1
+Requires PHP: 7.4
 License: GPL-2.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +64,23 @@ A JSON Schema for block.json [https://schemas.wp.org/trunk/block.json](https://s
 9. Creative Video Block
 
 == Changelog ==
+
+= 1.0.3 [27th April 2026] =
+
+* Accordion block added
+* Button block added
+* Counter block added
+* Google Map block added
+* Heading block added
+* Icon block added
+* Image block added
+* List block added
+* Progress Bar block added
+* Rating block added
+* Social Icons block added
+* Tab block added
+* Video block added
+* Improved: System improved
 
 = 1.0.0 [19th Jan 2025] =
 

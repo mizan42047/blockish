@@ -14,6 +14,8 @@ node_modules
 *zip
 package.json
 package-lock.json
+composer.lock
+webpack.config.js
 phpcs.xml
 CLAUDE.md
 RELEASE.md

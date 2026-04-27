@@ -32,10 +32,10 @@ yellow "==> Releasing version $NEW_VERSION"
 # ── 1. Consistency check: all version strings must match NEW_VERSION ──────────
 yellow "--> Checking version consistency..."
 
-PHP_VERSION=$(grep -m1 '^ \* Version:' blockish.php | awk '{print $NF}')
-README_VERSION=$(grep -m1 '^Version:' readme.txt | awk '{print $NF}' 2>/dev/null || echo "")
-STABLE_TAG=$(grep -m1 '^Stable tag:' readme.txt | awk '{print $NF}')
-PKG_VERSION=$(node -p "require('./package.json').version")
+PHP_VERSION=$(grep -m1 '^ \* Version:' blockish.php | awk '{print $NF}' | tr -d '\r')
+README_VERSION=$(grep -m1 '^Version:' readme.txt | awk '{print $NF}' | tr -d '\r' 2>/dev/null || echo "")
+STABLE_TAG=$(grep -m1 '^Stable tag:' readme.txt | awk '{print $NF}' | tr -d '\r')
+PKG_VERSION=$(node -p "require('./package.json').version" | tr -d '\r')
 
 MISMATCH=0
 check_version() {
@@ -56,8 +56,8 @@ check_version "readme.txt Stable tag:" "$STABLE_TAG"
 
 # ── 2. Requires PHP consistency ──────────────────────────────────────────────
 yellow "--> Checking Requires PHP consistency..."
-PHP_HEADER_REQ=$(grep -m1 '^ \* Requires PHP:' blockish.php | awk '{print $NF}')
-PHP_README_REQ=$(grep -m1 '^Requires PHP:' readme.txt | awk '{print $NF}')
+PHP_HEADER_REQ=$(grep -m1 '^ \* Requires PHP:' blockish.php | awk '{print $NF}' | tr -d '\r')
+PHP_README_REQ=$(grep -m1 '^Requires PHP:' readme.txt | awk '{print $NF}' | tr -d '\r')
 if [[ "$PHP_HEADER_REQ" != "$PHP_README_REQ" ]]; then
   die "Requires PHP mismatch: plugin header=$PHP_HEADER_REQ, readme.txt=$PHP_README_REQ"
 fi
@@ -65,8 +65,8 @@ green "  ✓ Requires PHP: $PHP_HEADER_REQ (consistent)"
 
 # ── 3. Requires WP consistency ───────────────────────────────────────────────
 yellow "--> Checking Requires at least consistency..."
-WP_HEADER_REQ=$(grep -m1 '^ \* Requires at least:' blockish.php | awk '{print $NF}')
-WP_README_REQ=$(grep -m1 '^Requires at least:' readme.txt | awk '{print $NF}')
+WP_HEADER_REQ=$(grep -m1 '^ \* Requires at least:' blockish.php | awk '{print $NF}' | tr -d '\r')
+WP_README_REQ=$(grep -m1 '^Requires at least:' readme.txt | awk '{print $NF}' | tr -d '\r')
 if [[ "$WP_HEADER_REQ" != "$WP_README_REQ" ]]; then
   die "Requires at least mismatch: plugin header=$WP_HEADER_REQ, readme.txt=$WP_README_REQ"
 fi
