@@ -1,28 +1,16 @@
 import { __ } from '@wordpress/i18n';
-import { useEffect, useMemo, useRef, useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
+import { useDispatch } from '@wordpress/data';
 import { Button, Flex, Icon, __experimentalText as Text } from '@wordpress/components';
-import { addCard, timeToRead } from '@wordpress/icons';
-import { search } from '@wordpress/icons';
+import { addCard, timeToRead, trash, search } from '@wordpress/icons';
+import { CHAT_POST_TYPE, useChats } from '../utils/use-chats';
 
-export default function AssistantHeader({
-	onResetChat,
-	chatSessions,
-	activeSessionId,
-	onSelectSession,
-	currentTitle,
-}) {
+export default function AssistantHeader({ title }) {
 	const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const containerRef = useRef(null);
-
-	const filteredSessions = useMemo(() => {
-		const keyword = searchTerm.trim().toLowerCase();
-		if (!keyword) {
-			return chatSessions;
-		}
-
-		return chatSessions.filter((session) => session.title.toLowerCase().includes(keyword));
-	}, [chatSessions, searchTerm]);
+	const chatHistory = useChats(searchTerm);
+	const { deleteEntityRecord } = useDispatch( 'core' );
 
 	useEffect(() => {
 		const handleOutsideClick = (event) => {
@@ -41,16 +29,23 @@ export default function AssistantHeader({
 		};
 	}, []);
 
-	const handleSelect = (sessionId) => {
-		onSelectSession(sessionId);
+	const handleSelect = () => {
 		setIsHistoryOpen(false);
+	};
+
+	const deleteChat = async (id) => {
+		try {
+			await deleteEntityRecord('postType', CHAT_POST_TYPE, id);
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
 		<div className="blockish-ai-assistant-sidebar-header" ref={containerRef}>
 			<Flex justify="space-between" align="center">
 				<Text className="blockish-ai-assistant-sidebar-header-title">
-					{currentTitle || __('AI Design Assistant', 'blockish')}
+					{__('AI Design Assistant', 'blockish')}
 				</Text>
 				<Flex align="center" expanded={false} gap={0}>
 					<Button
@@ -64,7 +59,6 @@ export default function AssistantHeader({
 						className="blockish-ai-assistant-sidebar-header-icon"
 						variant="tertiary"
 						icon={addCard}
-						onClick={onResetChat}
 						label={__('Create new chat', 'blockish')}
 					/>
 				</Flex>
@@ -85,16 +79,30 @@ export default function AssistantHeader({
 						/>
 					</div>
 					<div className="blockish-ai-assistant-history-list">
-						{filteredSessions.length > 0 ? (
-							filteredSessions.map((session) => (
-								<button
-									key={session.id}
-									type="button"
-									className={`blockish-ai-assistant-history-item ${session.id === activeSessionId ? 'is-active' : ''}`}
-									onClick={() => handleSelect(session.id)}
+						{chatHistory.length > 0 ? (
+							chatHistory.map((chat) => (
+								<Flex 
+									key={chat?.id}
+									className="blockish-ai-assistant-history-item"
+									justify="space-between"
+									align="center"
+									onClick={() => handleSelect(chat?.id)}
+									tabIndex={0}
 								>
-									{session.title}
-								</button>
+									<Text className="blockish-ai-assistant-history-item-title">
+										{chat?.title}
+									</Text>
+									<Button
+										className="blockish-ai-assistant-history-item-delete"
+										variant="tertiary"
+										icon={trash}
+										label={__('Delete', 'blockish')}
+										onClick={(event) => {
+											event.stopPropagation();
+											deleteChat(chat?.id);
+										}}
+									/>
+								</Flex>
 							))
 						) : (
 							<div className="blockish-ai-assistant-history-empty">

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import './editor.scss';
 import { PLUGIN_NAME } from './constants';
-import { INITIAL_MESSAGES, getAssistantReply, getChatTitle } from './utils/chat';
+import { INITIAL_MESSAGES, getAssistantReply } from './utils/chat';
 import { getProviderLabel } from './utils/provider';
 import useSidebarHeight from './hooks/use-sidebar-height';
 import useProvider from './hooks/use-provider';
@@ -12,20 +12,10 @@ import AssistantHeader from './components/header';
 import AssistantMessages from './components/messages';
 import AssistantComposer from './components/composer';
 
-const buildSession = (id, sessionMessages) => ({
-	id,
-	title: getChatTitle(sessionMessages),
-	messages: sessionMessages,
-	updatedAt: Date.now(),
-});
-
 function AIDesignAssistantSidebar() {
 	const sidebarIcon =
 		window?.blockish?.components?.blockIcons?.aiDesignAssistantIcon || 'admin-customizer';
-	const initialSessionId = `session-${Date.now()}`;
 	const [messages, setMessages] = useState(INITIAL_MESSAGES);
-	const [chatSessions, setChatSessions] = useState([buildSession(initialSessionId, INITIAL_MESSAGES)]);
-	const [activeSessionId, setActiveSessionId] = useState(initialSessionId);
 	const [input, setInput] = useState('');
 	const [isTyping, setIsTyping] = useState(false);
 	const chatBodyRef = useRef(null);
@@ -47,56 +37,14 @@ function AIDesignAssistantSidebar() {
 		};
 	}, []);
 
-	useEffect(() => {
-		if (!activeSessionId) {
-			return;
-		}
-
-		setChatSessions((prev) =>
-			prev.map((session) =>
-				session.id === activeSessionId
-					? {
-							...session,
-							title: getChatTitle(messages),
-							messages,
-							updatedAt: Date.now(),
-					  }
-					: session
-			)
-		);
-	}, [messages, activeSessionId]);
-
-	const activeSessionTitle =
-		chatSessions.find((session) => session.id === activeSessionId)?.title ||
-		__('AI Design Assistant', 'blockish');
-
 	const resetChat = () => {
-		if (typingIntervalRef.current) {
-			clearInterval(typingIntervalRef.current);
-		}
-		const nextSessionId = `session-${Date.now()}`;
-		setIsTyping(false);
-		setInput('');
-		setMessages(INITIAL_MESSAGES);
-		setActiveSessionId(nextSessionId);
-		setChatSessions((prev) => [buildSession(nextSessionId, INITIAL_MESSAGES), ...prev]);
-	};
-
-	const handleSelectSession = (sessionId) => {
-		const session = chatSessions.find((item) => item.id === sessionId);
-		if (!session) {
-			return;
-		}
-
 		if (typingIntervalRef.current) {
 			clearInterval(typingIntervalRef.current);
 			typingIntervalRef.current = null;
 		}
-
 		setIsTyping(false);
 		setInput('');
-		setActiveSessionId(sessionId);
-		setMessages(session.messages || INITIAL_MESSAGES);
+		setMessages(INITIAL_MESSAGES);
 	};
 
 	const typeAssistantReply = (fullReply) => {
@@ -160,13 +108,7 @@ function AIDesignAssistantSidebar() {
 				ref={setAssistantRoot}
 				style={panelHeight ? { height: `${panelHeight}px` } : undefined}
 			>
-				<AssistantHeader
-					onResetChat={resetChat}
-					chatSessions={[...chatSessions].sort((a, b) => b.updatedAt - a.updatedAt)}
-					activeSessionId={activeSessionId}
-					onSelectSession={handleSelectSession}
-					currentTitle={activeSessionTitle}
-				/>
+				<AssistantHeader title={__('AI Design Assistant', 'blockish')} />
 				<AssistantMessages messages={messages} isTyping={isTyping} chatBodyRef={chatBodyRef} />
 				<AssistantComposer
 					input={input}
