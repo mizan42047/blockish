@@ -44,6 +44,13 @@ jobs:
       - name: Release checks
         run: npm run release:check
 
+      - name: Upload release zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-zip
+          path: blockish-v*.zip
+          retention-days: 1
+
       - name: Deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
         env:
@@ -72,12 +79,18 @@ jobs:
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+      - name: Download release zip
+        uses: actions/download-artifact@v4
+        with:
+          name: release-zip
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           name: Blockish ${{ env.VERSION }}
           body: ${{ steps.changelog.outputs.notes }}
+          files: blockish-v*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSION: ${{ github.ref_name }}
