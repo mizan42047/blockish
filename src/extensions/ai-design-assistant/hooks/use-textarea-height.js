@@ -1,16 +1,17 @@
 import { useEffect } from '@wordpress/element';
-const useTextareaHeight = ( elementRef ) => {
+const useTextareaHeight = ( textareaRef, value = '' ) => {
 	useEffect( () => {
-		if ( ! elementRef ) {
+		const textarea = textareaRef?.current;
+		if ( ! textarea ) {
 			return;
 		}
 
-		elementRef.style.height = 'auto';
-		const nextHeight = Math.min( elementRef.scrollHeight, 180 );
-		elementRef.style.height = `${ nextHeight }px`;
-	}, [ elementRef ] );
+		textarea.style.height = 'auto';
+		const nextHeight = Math.min( textarea.scrollHeight, 180 );
+		textarea.style.height = `${ nextHeight }px`;
+	}, [ textareaRef, value ] );
 
-	return elementRef;
+	return textareaRef;
 };
 
 export default useTextareaHeight;

@@ -9,8 +9,8 @@ import { setSessionChatId } from '../utils/session';
 
 export default function AssistantComposer({ selectedChat }) {
 	const textareaRef = useRef(null);
-	useTextareaHeight(textareaRef?.current);
 	const [input, setInput] = useState('');
+	useTextareaHeight(textareaRef, input);
 	const { saveEntityRecord, editEntityRecord, saveEditedEntityRecord } = useDispatch('core');
 
 	const onSendMessage = async () => {
