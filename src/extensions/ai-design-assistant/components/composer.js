@@ -4,7 +4,8 @@ import { useRef, useState } from '@wordpress/element';
 import useTextareaHeight from '../hooks/use-textarea-height';
 import { useDispatch } from '@wordpress/data';
 import { getChatTitle } from '../utils/chat';
-import { CHAT_POST_TYPE, CHAT_SESSION_KEY } from '../constants';
+import { CHAT_POST_TYPE } from '../constants';
+import { setSessionChatId } from '../utils/session';
 
 export default function AssistantComposer({ selectedChat }) {
 	const textareaRef = useRef(null);
@@ -30,7 +31,7 @@ export default function AssistantComposer({ selectedChat }) {
 				status: 'publish',
 			})
 
-			window.sessionStorage.setItem(CHAT_SESSION_KEY, newChat.id);
+			setSessionChatId(newChat.id);
 		} else {
 			try {
 				await editEntityRecord('postType', CHAT_POST_TYPE, selectedChat.id, {

@@ -4,7 +4,8 @@ import { useDispatch } from '@wordpress/data';
 import { Button, Flex, Icon, __experimentalText as Text } from '@wordpress/components';
 import { addCard, timeToRead, trash, search } from '@wordpress/icons';
 import { useChats } from '../utils/use-chats';
-import { CHAT_POST_TYPE, CHAT_SESSION_KEY } from '../constants';
+import { CHAT_POST_TYPE } from '../constants';
+import { clearSessionChatId, getSessionChatId, setSessionChatId } from '../utils/session';
 
 export default function AssistantHeader({ selectedChat }) {
 	const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -37,14 +38,14 @@ export default function AssistantHeader({ selectedChat }) {
 		setIsHistoryOpen(false);
 		setShowConfirm(false);
 		setSearchTerm('');
-		window.sessionStorage.setItem(CHAT_SESSION_KEY, id);
+		setSessionChatId(id);
 	};
 
 	const deleteChat = async (id) => {
 		try {
-			const sessionId = window.sessionStorage.getItem(CHAT_SESSION_KEY);
-			if (id === sessionId) {
-				window.sessionStorage.removeItem(CHAT_SESSION_KEY);
+			const sessionId = getSessionChatId();
+			if (`${id}` === `${sessionId}`) {
+				clearSessionChatId();
 			}
 			await deleteEntityRecord('postType', CHAT_POST_TYPE, id, {
 				force: true,
@@ -73,7 +74,7 @@ export default function AssistantHeader({ selectedChat }) {
 						variant="tertiary"
 						icon={addCard}
 						label={__('Create new chat', 'blockish')}
-						onClick={() => window.sessionStorage.removeItem(CHAT_SESSION_KEY)}
+						onClick={clearSessionChatId}
 					/>
 				</Flex>
 			</Flex>
