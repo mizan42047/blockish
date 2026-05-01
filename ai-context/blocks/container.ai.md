@@ -43,6 +43,9 @@ Responsive note:
 - `isVariationPicked` (boolean)
   - Must be `true` for normal configured container behavior.
   - If false at top-level parent, editor may show variation placeholder flow.
+- `tagName` (object `{label,value}`)
+  - default: `{ label: "Div", value: "div" }`
+  - controls the saved wrapper element tag
 
 2. Width + Sizing
 - `containerWidth` (string)
@@ -98,8 +101,8 @@ Shared gap controls:
 - `gridColumns`: Desktop 3 / Tablet 2 / Mobile 1
 - `gridRows.Desktop`: 1
 - `flexDirection.Desktop`: `row`
-- `justifyContent`: center on Desktop/Tablet/Mobile
-- `alignItems`: center on Desktop/Tablet/Mobile
+- `justifyContent.Desktop`: `center`
+- `alignItems.Desktop`: `center`
 
 ## Variation/Nesting Notes
 
@@ -135,6 +138,7 @@ For a standard hero:
 - Always apply global advanced-control rules from `global/advanced-controls.ai.md` first.
 - Only set attributes documented in this file.
 - Keep responsive objects consistent (`Desktop/Tablet/Mobile`) when writing device-aware values.
+- Preserve the `{ label, value }` shape for `tagName`.
 - Do not switch to grid attributes unless `display` is `grid`.
 - Do not write flex/grid-only controls when `display` is `block`.
 - Do not rely on placeholder variation UI in automation; write direct attributes/inner blocks.

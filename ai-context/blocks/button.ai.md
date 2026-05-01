@@ -49,6 +49,8 @@ Avoid button for long paragraph links or complex grouped actions (use container 
 - `buttonContentSpacing` (object by device)
 - `buttonWidth` (object by device)
 - `buttonMinHeight` (object by device)
+- `buttonIconSize` (object by device)
+  - controls icon width/height when `icon` is set
 
 3. Typography / visual style
 - `buttonTypography`
@@ -83,6 +85,7 @@ Avoid button for long paragraph links or complex grouped actions (use container 
 - Keep action text short and explicit.
 - Do not invent unsupported icon position values.
 - If icon is not needed, omit `icon` rather than injecting placeholder icon data.
+- Only write `buttonIconSize` when an icon is present.
 - Keep hover transition within practical UI range (commonly `0..1.5` seconds unless user requests otherwise).
 - Use global advanced controls for extra spacing/position only when needed.
 

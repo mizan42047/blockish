@@ -69,15 +69,29 @@ Avoid this block when user needs advanced playlist/chapter system beyond current
 - `showOverlay` (boolean, default `false`)
 - `overlayImage` (object)
 - `showOverlayPlayIcon` (boolean, default `true`)
+- `overlayPlayButtonSize` (object)
+  - controls overlay play button width/height
+- `overlayPlayButtonIconSize` (object)
+  - controls triangle icon size via CSS variable
+- `overlayPlayButtonBg` (string)
+  - controls overlay play button background
+- `overlayPlayButtonIconColor` (string)
+  - controls overlay play triangle color
+- `overlayPlayButtonBorderRadius` (object)
+  - controls overlay play button radius
 
 4. Layout
 - `alignment` (object by device)
   - default: `Desktop: center`
   - values: `left`, `center`, `right`
-- `videoWidth` (object by device)
-  - default: `Desktop: 100%`
-- `videoHeight` (object by device)
-  - default: `Desktop: 360px`
+- `videoAspectRatio` (object `{label,value}`)
+  - default: `{ label: "16:9", value: "16 / 9" }`
+  - supports `auto` behavior in runtime when value is `auto`
+- `videoCSSFilters` (string)
+  - group selector type: `BlockishCSSFilters`
+
+Deprecated/removed:
+- Do not write `videoWidth` or `videoHeight`; current block data uses `videoAspectRatio` instead.
 
 ## Source-Specific Conditions
 
@@ -99,6 +113,8 @@ Avoid this block when user needs advanced playlist/chapter system beyond current
 - Use non-negative start/end times.
 - Avoid autoplay with sound unless user explicitly requests (prefer muted autoplay).
 - For overlays, ensure image exists before enabling.
+- Only write overlay play button style attributes when `showOverlayPlayIcon = true`.
+- Use `videoAspectRatio` for sizing instead of deprecated `videoWidth`/`videoHeight`.
 - Preserve accessibility/readability: keep controls enabled when usability is important.
 
 ## Failure/Fallback Guidance
