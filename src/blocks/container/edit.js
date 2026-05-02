@@ -6,6 +6,7 @@ import { useEffect } from '@wordpress/element';
 import clsx from 'clsx';
 import Inspector from './inspector';
 import Placeholder from './placeholder';
+import getBackgroundVideo from './background-video';
 import './editor.scss';
 
 export default function Edit({ attributes, setAttributes, advancedControls, clientId }) {
@@ -21,15 +22,20 @@ export default function Edit({ attributes, setAttributes, advancedControls, clie
 		[clientId]
 	);
 	const { replaceInnerBlocks } = dispatch(blockEditorStore);
+	const backgroundVideo = getBackgroundVideo(attributes?.containerBackground);
+	const backgroundOverlay = typeof attributes?.containerBackgroundOverlay === 'string' ? JSON.parse(attributes?.containerBackgroundOverlay) : attributes?.containerBackgroundOverlay;
 	const blockProps = useBlockProps({
 		className: clsx({
 			'has-child-blocks': hasChildBlocks,
 			'blockish-container': attributes?.isVariationPicked && hasChildBlocks,
+			'has-background-video': backgroundVideo?.url,
+			'has-background-overlay': backgroundOverlay?.enabled,
 			[`${attributes?.containerWidth}`]: attributes?.containerWidth && attributes?.isVariationPicked,
 			[`layout-type-${attributes?.display}`]: attributes?.display,
 			[`grid-layout-type-${attributes?.gridLayoutType}`]: attributes?.display === 'grid' && attributes?.gridLayoutType,
 		}),
 	});
+	
 
 	const innerBlockProps = useInnerBlocksProps(blockProps, {
 		renderAppender: hasChildBlocks ? undefined : InnerBlocks?.ButtonBlockAppender
@@ -76,7 +82,20 @@ export default function Edit({ attributes, setAttributes, advancedControls, clie
 					advancedControls={advancedControls}
 					hasParent={hasParent}
 				/>
-				<Tag {...innerBlockProps}></Tag>
+				<Tag {...innerBlockProps}>
+					{backgroundVideo?.url && (
+						<video
+							className="blockish-container-background-video"
+							src={backgroundVideo.url}
+							autoPlay
+							muted
+							loop
+							playsInline
+							aria-hidden="true"
+						/>
+					)}
+					{innerBlockProps.children}
+				</Tag>
 			</>
 		);
 	}
