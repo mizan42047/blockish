@@ -1,145 +1,185 @@
-# Blockish AI Context (Operator Manual)
+# Blockish AI Context (Summary + Index)
 
-This folder is the operating guide for AI agents that build/edit designs with Blockish.
-It is focused on safe execution, not internal developer architecture.
+This folder is the source of truth for AI agents that generate or edit Blockish designs.
 
-## Goals
+Primary objective:
+- help AI choose the correct Blockish blocks,
+- build clean block trees with minimum required block count,
+- use global controls and extensions safely,
+- avoid unsupported attributes or inefficient structures.
 
-Use this context system to make AI outputs:
-- valid against real Blockish capabilities,
-- predictable and editable inside the editor,
-- responsive by default,
-- easy to explain to end users.
+## Required Read Order
 
-## Quick Start (Required Read Order)
+1. `ai-context/README.ai.md` (this file)
+2. `ai-context/global/advanced-controls.ai.md`
+3. Relevant block specs from `ai-context/blocks/*.ai.md`
+4. Relevant extension specs from `ai-context/extensions/*.ai.md`
 
-1. Read this file first.
-2. Read global controls baseline:
-   `ai-context/global/advanced-controls.ai.md`
-3. Read every relevant block spec in:
-   `ai-context/blocks/*.ai.md`
-4. Read extension specs before writing extension-related attributes:
-   `ai-context/extensions/*.ai.md`
-5. Execute using only documented attributes and conditional rules.
+If a rule conflicts, priority is:
+1. Runtime source behavior
+2. Block-specific AI spec
+3. Global advanced controls spec
+4. This summary/index
 
-## AI Execution Workflow
+## Source-Validated Capability Snapshot
 
-1. Parse user intent
-- Identify purpose: hero, feature list, CTA, FAQ, pricing, etc.
-- Extract constraints: tone, spacing, color, hierarchy, density.
+Current registered blocks (18):
+- `blockish/container`
+- `blockish/icon`
+- `blockish/heading`
+- `blockish/image`
+- `blockish/button`
+- `blockish/video`
+- `blockish/google-map`
+- `blockish/icon-list`
+- `blockish/icon-list-item` (child of `icon-list`)
+- `blockish/rating`
+- `blockish/counter`
+- `blockish/progress-bar`
+- `blockish/social-icons`
+- `blockish/social-icon-item` (child of `social-icons`)
+- `blockish/accordion`
+- `blockish/accordion-item` (child of `accordion`)
+- `blockish/tab`
+- `blockish/tab-item` (child of `tab`)
 
-2. Plan composition
-- Choose minimal block tree that satisfies the request.
-- Confirm each chosen block supports required behavior.
+Current registered extensions (2):
+- `class-manager`
+- `ai-design-assistant`
 
-3. Apply changes
-- Write block attributes first.
-- Write global advanced attributes second.
-- Keep responsive values explicit when layout depends on device behavior.
+## Parent/Child Rules (Critical)
 
-4. Validate safety
-- Re-check conditional dependencies (width mode, flex/grid context, position conditions).
-- Remove uncertain attributes instead of guessing.
+AI must respect these nesting constraints:
+- `icon-list-item` must be inside `icon-list`
+- `social-icon-item` must be inside `social-icons`
+- `accordion-item` must be inside `accordion`
+- `tab-item` must be inside `tab`
 
-5. Report outcome
-- Explain what changed in user-friendly language.
-- If there are limits, state them clearly and provide one practical alternative.
+If a design requires repeated items, prefer the parent + item pattern instead of creating unrelated sibling blocks.
 
-## Quality Guardrails
+## How Blockish Works (Mental Model for AI)
 
-- Never invent undocumented attributes or enum values.
-- Prefer simple, stable structures over complex block trees.
-- Preserve user intent even when exact styling is unavailable.
-- Keep selectors scoped when using `customCss`.
-- Prefer native controls; use `customCss` only as a fallback.
+1. Structure layer:
+- `container` is the main layout/section wrapper.
+- Most page sections should start from one top-level `container`.
 
-## Fallback Policy
+2. Content layer:
+- Use content blocks (`heading`, `image`, `button`, `video`, etc.) inside container hierarchy.
 
-If exact output is not possible:
-1. Use closest valid composition.
-2. Preserve content hierarchy and responsive behavior.
-3. Mention limitation plainly.
-4. Suggest one low-risk alternative.
+3. Global advanced controls layer:
+- All `blockish/*` blocks can receive shared advanced attributes (layout, width, position, flex/grid context, transform, background, border, custom CSS).
+- Must follow `advanced-controls.ai.md` conditions and responsive value shape.
 
-## Documentation Map
+4. Extension layer:
+- `class-manager` can attach reusable style classes globally.
+- Use this for repeated styling patterns across many blocks.
 
-- Global baseline (mandatory for all `blockish/*` blocks):
-  `ai-context/global/advanced-controls.ai.md`
-- Block specs:
-  `ai-context/blocks/*.ai.md`
-- Extensions (planned):
-  `ai-context/extensions/class-manager.ai.md`
-- Scenarios/playbooks (planned):
-  `ai-context/scenarios/*.ai.md`
+## AI Composition Strategy
 
-## Authoring Standard (For Contributors)
+Before generating blocks:
+1. Identify page intent (hero, features, CTA, FAQ, testimonial, contact, pricing).
+2. Choose smallest valid block tree.
+3. Reuse parent/item blocks where list-like content exists.
+4. Apply block attributes first, global advanced controls second.
+5. Add `customCss` only if controls cannot achieve the design.
 
-When adding/updating any AI spec:
-1. Match actual `block.json` and runtime behavior.
-2. Document defaults, allowed values, and conditional logic.
-3. Include responsive storage shape requirements when relevant.
-4. Add safe-write and fallback notes.
-5. Keep examples minimal and implementation-accurate.
+## Block Planning Recipes (Estimated Counts)
 
-## Block Spec Template (Copy/Paste)
+These are planning baselines, not hard limits.
 
-```md
-# Block Spec: `blockish/<slug>`
+1. Simple Hero (title + text + CTA)
+- Typical tree: `container` -> `heading` + optional text block + `button`
+- Blockish count: usually 2 to 4 Blockish blocks (depending on whether text is Heading or core paragraph)
 
-## Summary
-- Role:
-- Typical use:
-- Can contain:
+2. Features Grid (3 items)
+- Typical tree: outer `container` -> inner item containers x3 -> per item (`icon` + `heading`)
+- Blockish count: usually 10 to 14
+- Efficiency tip: use repeated inner container pattern and shared spacing/background styles.
 
-## When AI Should Use It
-- Use when:
-- Avoid when:
+3. FAQ Section
+- Typical tree: `container` -> `accordion` -> `accordion-item` xN
+- Blockish count for 5 FAQs: usually 7
+- Efficiency tip: keep one accordion with multiple items, not multiple accordions.
 
-## Attributes (AI-Relevant)
-- `<attributeSlug>`:
-  - type:
-  - allowed values:
-  - default:
-  - responsive shape:
-  - conditions:
+4. Social Links Row
+- Typical tree: `container` -> `social-icons` -> `social-icon-item` xN
+- Blockish count for 4 networks: usually 6
 
-## Defaults
-- ...
+5. Stats Row
+- Typical tree: `container` -> inner containers x3/4 -> `counter` or `progress-bar` per item
+- Blockish count for 3 stats: usually 7 to 10
 
-## Safe-Write Rules
-- ...
+6. Tabbed Content
+- Typical tree: `container` -> `tab` -> `tab-item` xN
+- Blockish count for 3 tabs: usually 5
 
-## Failure/Fallback
-- ...
-```
+## Efficiency Rules (Very Important)
 
-## Extension Spec Template (Copy/Paste)
+- Prefer fewer top-level containers and more meaningful inner grouping.
+- Avoid deep nesting when one container level is enough.
+- For repeated visuals across sections, prefer `class-manager` over duplicated inline/per-block styles.
+- Keep global advanced styles minimal and purposeful.
+- Do not set every responsive key unless needed; set only required device values.
 
-```md
-# Extension Spec: `<extension-name>`
+## Extension Usage Rules
 
-## Scope
-- Affects blocks:
-- Injected attributes:
+### `class-manager`
+Use when:
+- the same style token/pattern appears across multiple blocks,
+- user asks for reusable classes or global consistency.
 
-## Activation Conditions
-- ...
+Avoid when:
+- styling is one-off and local.
 
-## Attribute Rules
-- ...
+Safety:
+- do not invent fake class IDs/slugs,
+- preserve existing class assignments unless replacement is requested.
 
-## Safe-Write Rules
-- ...
-```
+### `ai-design-assistant`
+- Treat as assistant feature infrastructure.
+- Do not assume it provides visual block styling attributes by itself.
 
-## Definition of Done (AI Context Update)
+## Safe Execution Checklist
 
-A context update is complete when:
-1. Docs reflect current plugin behavior.
-2. Conditions and value shapes are documented.
-3. No undocumented attributes are required to execute common tasks.
-4. At least one valid fallback path is documented.
+Before finalizing AI output:
+1. Every used block exists in Blockish block list.
+2. Parent-child constraints are valid.
+3. Global advanced attributes follow conditions (`widthType`, flex/grid context, position dependency).
+4. Responsive value shapes are consistent.
+5. No undocumented attributes or enum values are used.
+6. `customCss` is scoped with `{{SELECTOR}}` and only used when needed.
 
-## Maintenance Rule
+## Quick Index
 
-Whenever block behavior changes (attributes, defaults, UI conditions, nesting rules), update the matching `*.ai.md` in the same PR/commit so AI context never drifts from the product.
+Global:
+- `ai-context/global/advanced-controls.ai.md`
+
+Blocks:
+- `ai-context/blocks/container.ai.md`
+- `ai-context/blocks/heading.ai.md`
+- `ai-context/blocks/button.ai.md`
+- `ai-context/blocks/image.ai.md`
+- `ai-context/blocks/icon.ai.md`
+- `ai-context/blocks/video.ai.md`
+- `ai-context/blocks/google-map.ai.md`
+- `ai-context/blocks/icon-list.ai.md`
+- `ai-context/blocks/icon-list-item.ai.md`
+- `ai-context/blocks/rating.ai.md`
+- `ai-context/blocks/counter.ai.md`
+- `ai-context/blocks/progress-bar.ai.md`
+- `ai-context/blocks/social-icons.ai.md`
+- `ai-context/blocks/social-icon-item.ai.md`
+- `ai-context/blocks/accordion.ai.md`
+- `ai-context/blocks/accordion-item.ai.md`
+- `ai-context/blocks/tab.ai.md`
+- `ai-context/blocks/tab-item.ai.md`
+
+Extensions:
+- `ai-context/extensions/class-manager.ai.md`
+
+## Maintenance Contract
+
+Whenever a block or extension changes in source (`src/` or `includes/Config/*List.php`):
+1. update the corresponding `ai-context/*.ai.md` file,
+2. update this index if block/extension list or composition guidance changed,
+3. keep AI context and runtime behavior in the same commit/PR.
