@@ -1,0 +1,26 @@
+[
+	{
+		"name": "blockish/heading",
+		"attributes": {
+			"content": "Page not found",
+			"tag": { "label": "H1", "value": "h1" }
+		}
+	},
+	{
+		"name": "blockish/paragraph",
+		"attributes": {
+			"content": "The page you are looking for does not exist, or it has been moved. Try a search or return to the homepage."
+		}
+	},
+	{
+		"name": "core/search",
+		"attributes": {
+			"label": "Search",
+			"showLabel": false,
+			"placeholder": "Search…",
+			"buttonText": "Search",
+			"buttonPosition": "button-inside",
+			"buttonUseIcon": true
+		}
+	}
+]

@@ -1,0 +1,112 @@
+[
+	{
+		"name": "woocommerce/add-to-cart-with-options-variation-selector",
+		"attributes": {},
+		"innerBlocks": [
+			{
+				"name": "woocommerce/add-to-cart-with-options-variation-selector-attribute",
+				"attributes": {},
+				"innerBlocks": [
+					{
+						"name": "blockish/container",
+						"attributes": {
+							"isVariationPicked": true,
+							"flexDirection": {
+								"Desktop": {
+									"label": "Column",
+									"value": "column"
+								}
+							},
+							"flexWrap": {
+								"Desktop": {
+									"label": "No Wrap",
+									"value": "nowrap"
+								}
+							},
+							"margin": {
+								"Desktop": {
+									"top": "1rem",
+									"bottom": "1rem"
+								}
+							}
+						},
+						"innerBlocks": [
+							{
+								"name": "woocommerce/add-to-cart-with-options-variation-selector-attribute-name",
+								"attributes": {},
+								"innerBlocks": []
+							},
+							{
+								"name": "woocommerce/product-filter-chips",
+								"attributes": {},
+								"innerBlocks": []
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	{
+		"name": "woocommerce/add-to-cart-with-options-variation-description",
+		"attributes": {
+			"style": {
+				"spacing": {
+					"margin": {
+						"top": "1rem",
+						"bottom": "1rem"
+					}
+				}
+			}
+		},
+		"innerBlocks": []
+	},
+	{
+		"name": "woocommerce/product-stock-indicator",
+		"attributes": {
+			"style": {
+				"spacing": {
+					"margin": {
+						"top": "1rem",
+						"bottom": "1rem"
+					}
+				}
+			}
+		},
+		"innerBlocks": []
+	},
+	{
+		"name": "blockish/container",
+		"attributes": {
+			"isVariationPicked": true,
+			"flexDirection": {
+				"Desktop": {
+					"label": "Row",
+					"value": "row"
+				}
+			},
+			"flexWrap": {
+				"Desktop": {
+					"label": "Wrap",
+					"value": "wrap"
+				}
+			}
+		},
+		"innerBlocks": [
+			{
+				"name": "woocommerce/add-to-cart-with-options-quantity-selector",
+				"attributes": {
+					"quantitySelectorStyle": "stepper"
+				},
+				"innerBlocks": []
+			},
+			{
+				"name": "woocommerce/product-button",
+				"attributes": {
+					"textAlign": "left"
+				},
+				"innerBlocks": []
+			}
+		]
+	}
+]

@@ -86,6 +86,43 @@ class PostPrime {
 			}
 			self::prime_pattern_refs_from_blocks( parse_blocks( $part->post_content ) );
 		}
+
+		if ( class_exists( '\Blockish\Extensions\ThemeBuilder' ) && \Blockish\Extensions\ThemeBuilder::is_enabled() ) {
+			self::prime_theme_builder_parts();
+		}
+	}
+
+	/**
+	 * Warm synced-pattern refs inside active Theme Builder parts.
+	 */
+	public static function prime_theme_builder_parts() {
+		$parts = get_posts(
+			array(
+				'post_type'              => 'blockish_tb',
+				'post_status'            => 'publish',
+				'posts_per_page'         => 100,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+				'meta_query'             => array(
+					array(
+						'key'   => 'blockish_tb_kind',
+						'value' => 'part',
+					),
+				),
+			)
+		);
+
+		foreach ( $parts as $part ) {
+			if ( ! $part instanceof \WP_Post || ! is_string( $part->post_content ) || '' === $part->post_content ) {
+				continue;
+			}
+			$active = get_post_meta( $part->ID, 'blockish_tb_active', true );
+			if ( '' !== $active && ! $active ) {
+				continue;
+			}
+			self::prime_pattern_refs_from_blocks( parse_blocks( $part->post_content ) );
+		}
 	}
 
 	/**

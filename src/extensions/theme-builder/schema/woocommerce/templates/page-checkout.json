@@ -1,0 +1,48 @@
+[
+	{
+		"name": "blockish/template-part",
+		"attributes": {
+			"slug": "checkout-header",
+			"tagName": "header"
+		},
+		"innerBlocks": []
+	},
+	{
+		"name": "woocommerce/page-content-wrapper",
+		"attributes": {
+			"page": "checkout"
+		},
+		"innerBlocks": [
+			{
+				"name": "blockish/container",
+				"attributes": {
+					"isVariationPicked": true,
+					"flexDirection": {
+						"Desktop": {
+							"label": "Column",
+							"value": "column"
+						}
+					},
+					"tagName": {
+						"label": "Main",
+						"value": "main"
+					}
+				},
+				"innerBlocks": [
+					{
+						"name": "woocommerce/store-notices",
+						"attributes": {},
+						"innerBlocks": []
+					},
+					{
+						"name": "blockish/post-content",
+						"attributes": {
+							"align": "full"
+						},
+						"innerBlocks": []
+					}
+				]
+			}
+		]
+	}
+]

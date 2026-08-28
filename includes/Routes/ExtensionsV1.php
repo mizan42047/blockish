@@ -141,13 +141,15 @@ class ExtensionsV1 extends WP_REST_Controller {
 
 		update_option( self::EXTENSION_OPTION, $next );
 
-		return rest_ensure_response(
-			array(
-				'status'     => 'success',
-				'extensions' => $next,
-				'message'    => array( 'Extensions list has been updated successfully.' ),
-			)
-		);
+		// Same ordered payload as GET (hardcoded ExtensionList order), not option key order.
+		$response = $this->get_extensions();
+		$data     = $response->get_data();
+		if ( is_array( $data ) ) {
+			$data['message'] = array( 'Extensions list has been updated successfully.' );
+			$response->set_data( $data );
+		}
+
+		return $response;
 	}
 
 	private function get_saved_extensions() {

@@ -1,0 +1,88 @@
+/**
+ * Item editor panel + loading overlay (chrome title hide lives in extension editor.scss / PHP iframe).
+ */
+
+.blockish-tb-doc-panel {
+	.blockish-tb-doc-panel__row {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+		margin: 0 0 12px;
+	}
+
+	.blockish-tb-doc-panel__label {
+		font-size: 11px;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		text-transform: uppercase;
+		color: #757575;
+	}
+
+	code {
+		font-size: 12px;
+		word-break: break-all;
+	}
+
+	.blockish-tb-doc-panel__hint {
+		margin: 0 0 12px;
+		font-size: 12px;
+		line-height: 1.45;
+		color: #757575;
+	}
+
+	.blockish-tb-doc-panel__notice {
+		margin: 0 0 8px;
+	}
+}
+
+.blockish-tb-canvas-loading {
+	position: fixed;
+	inset: 0;
+	z-index: 100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba( 246, 247, 247, 0.92 );
+	backdrop-filter: blur( 2px );
+}
+
+.blockish-tb-canvas-loading__card {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 12px;
+	min-width: 180px;
+	padding: 28px 32px;
+	border-radius: 4px;
+	background: #fff;
+	box-shadow: 0 1px 3px rgba( 0, 0, 0, 0.08 );
+}
+
+.blockish-tb-canvas-loading__label {
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.4;
+	color: #1e1e1e;
+}
+
+body.blockish-tb-editor-loading {
+	overflow: hidden;
+}
+
+/* Theme Builder canvas — all root blocks full bleed (mirrors Enqueue.php iframe CSS). */
+.editor-styles-wrapper .is-root-container.is-layout-constrained > .block-editor-block-list__block,
+.editor-styles-wrapper .is-layout-constrained.is-root-container > .block-editor-block-list__block {
+	max-width: none !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	width: 100%;
+}
+
+/* Align toolbar lives in the admin chrome (outside the canvas iframe). */
+body.blockish-tb-editor-screen.blockish-tb-root-selected {
+	.block-editor-block-toolbar [aria-label='Align'],
+	.block-editor-block-toolbar button[aria-label='Align'] {
+		display: none !important;
+	}
+}

@@ -8,6 +8,34 @@ import { isValidMenu } from '../utils';
 import DashboardSidebar from './dashboard-sidebar';
 import ContentArea from './content-area';
 
+const THEME_BUILDER_SLUG = 'theme-builder';
+
+function isBlockThemeSite() {
+	return Boolean(window.blockishDashboardData?.isBlockTheme);
+}
+
+/**
+ * On block themes, Theme Builder stays off during bulk Enable All —
+ * user confirms via the card tip when toggling it alone.
+ */
+function filterBulkEnableSlugs(status, slugs, extensions = {}) {
+	const targets =
+		Array.isArray(slugs) && slugs.length > 0
+			? slugs
+			: Object.keys(extensions || {});
+
+	if (status !== 'active' || !isBlockThemeSite()) {
+		return targets;
+	}
+
+	return targets.filter((slug) => {
+		if (slug !== THEME_BUILDER_SLUG) {
+			return true;
+		}
+		return extensions?.[THEME_BUILDER_SLUG]?.status === 'active';
+	});
+}
+
 export default function App() {
 	const { setActiveMenu, loadDashboard, saveDashboard, updateModuleStatus, updateModuleSettings } = useDispatch(STORE_NAME);
 	const history = useHistory();
@@ -45,10 +73,10 @@ export default function App() {
 			return;
 		}
 
-		if (isValidMenu(routeMenu) && routeMenu !== activeMenu) {
+		if (isValidMenu(routeMenu, data?.extensions) && routeMenu !== activeMenu) {
 			setActiveMenu(routeMenu);
 		}
-	}, [location, activeMenu, setActiveMenu]);
+	}, [location, activeMenu, setActiveMenu, data?.extensions]);
 
 	const handleSave = () =>
 		saveDashboard({
@@ -89,14 +117,8 @@ export default function App() {
 
 	const handleSetAllExtensionStatus = (status, slugs = null) => {
 		pendingSaveRef.current = true;
-		if (Array.isArray(slugs) && slugs.length > 0) {
-			slugs.forEach((slug) => {
-				updateModuleStatus('extensions', slug, status);
-			});
-			return;
-		}
-
-		Object.keys(data?.extensions || {}).forEach((slug) => {
+		const targets = filterBulkEnableSlugs(status, slugs, data?.extensions);
+		targets.forEach((slug) => {
 			updateModuleStatus('extensions', slug, status);
 		});
 	};
@@ -197,7 +219,11 @@ export default function App() {
 					</div>
 				</div>
 			)}
-			<DashboardSidebar activeMenu={activeMenu} onMenuClick={handleMenuClick} />
+			<DashboardSidebar
+				activeMenu={activeMenu}
+				onMenuClick={handleMenuClick}
+				extensions={data?.extensions}
+			/>
 
 			<FlexBlock as="main" className="blockish-main-content">
 				{isLoading && (

@@ -1,0 +1,17 @@
+[
+	{
+		"name": "blockish/heading",
+		"attributes": {
+			"content": "Blog",
+			"tag": { "label": "H1", "value": "h1" },
+			"margin": {
+				"Desktop": {
+					"top": "var:preset|spacing|30",
+					"right": "0",
+					"bottom": "var:preset|spacing|60",
+					"left": "0"
+				}
+			}
+		}
+	}
+]

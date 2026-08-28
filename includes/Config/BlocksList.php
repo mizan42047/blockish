@@ -70,6 +70,12 @@ class BlocksList extends ConfigList {
                 'package' => 'free',
                 'status'  => 'active',
             ),
+            'template-part' => array(
+                'name'    => __('Template Part', 'blockish'),
+                'description' => __('Inserts a Theme Builder template part (header, footer, or custom) by slug into a template.', 'blockish'),
+                'package' => 'free',
+                'status'  => 'active',
+            ),
             'post-info' => array(
                 'name'    => __('Post Info', 'blockish'),
                 'description' => __('Displays post metadata such as author, published/modified dates, time, comments, and terms with icons, separators, and optional links.', 'blockish'),

@@ -1,0 +1,64 @@
+[
+	{
+		"name": "blockish/container",
+		"attributes": {
+			"isVariationPicked": true,
+			"flexDirection": {
+				"Desktop": {
+					"label": "Column",
+					"value": "column"
+				}
+			},
+			"tagName": {
+				"label": "Header",
+				"value": "header"
+			},
+			"area": "header",
+			"metadata": {
+				"name": "Checkout Header"
+			}
+		},
+		"innerBlocks": [
+			{
+				"name": "blockish/container",
+				"attributes": {
+					"isVariationPicked": true,
+					"flexDirection": {
+						"Desktop": {
+							"label": "Row",
+							"value": "row"
+						}
+					},
+					"justifyContent": {
+						"Desktop": {
+							"label": "Space Between",
+							"value": "space-between"
+						}
+					},
+					"padding": {
+						"Desktop": {
+							"bottom": "var:preset|spacing|20",
+							"top": "var:preset|spacing|20"
+						}
+					}
+				},
+				"innerBlocks": [
+					{
+						"name": "blockish/site-title",
+						"attributes": {
+							"level": 0
+						},
+						"innerBlocks": []
+					},
+					{
+						"name": "woocommerce/cart-link",
+						"attributes": {
+							"content": ""
+						},
+						"innerBlocks": []
+					}
+				]
+			}
+		]
+	}
+]

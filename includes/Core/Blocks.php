@@ -26,6 +26,17 @@ class Blocks
         }
 
         foreach ($active_blocks as $slug => $block) {
+            // Part slots only exist when Theme Builder is enabled.
+            if (
+                'template-part' === $slug &&
+                (
+                    ! class_exists('\Blockish\Extensions\ThemeBuilder') ||
+                    ! \Blockish\Extensions\ThemeBuilder::is_enabled()
+                )
+            ) {
+                continue;
+            }
+
             $path = BLOCKISH_BLOCKS_DIR . $slug;
 
             if (is_readable($path)) {

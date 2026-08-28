@@ -68,10 +68,12 @@ Do not invent markup.
 
 .blockish-social-icons.is-color-official .blockish-social-icon-item__link {
   background-color: var(--blockish-social-icon-official-color,#2563eb);
+  color: var(--blockish-social-icons-secondary-color,#fff);
 }
 
 .blockish-social-icons.is-color-custom .blockish-social-icon-item__link {
   background-color: var(--blockish-social-icons-primary-color,#111827);
+  color: var(--blockish-social-icons-secondary-color,#fff);
 }
 
 .blockish-social-icons.shape-square .blockish-social-icon-item__link {
@@ -98,7 +100,6 @@ Do not invent markup.
   animation-duration: .6s;
   animation-fill-mode: both;
   border: 0;
-  color: var(--blockish-social-icons-secondary-color,#fff);
   display: inline-flex;
   justify-content: center;
   line-height: 1;

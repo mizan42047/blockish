@@ -132,6 +132,7 @@ class Dashboard {
                         ),
                     ),
                     'addonsList'        => \Blockish\Config\AddonsList::get_instance()->get_list(),
+                    'isBlockTheme'      => function_exists( 'wp_is_block_theme' ) && wp_is_block_theme(),
                 )
             ) . ';',
             'before'

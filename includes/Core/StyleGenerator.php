@@ -134,25 +134,27 @@ class StyleGenerator
             return $block_data;
         }
 
+        $attr_hash = md5( $block_data['blockName'] . wp_json_encode( $block_data['attrs'] ?? array() ) );
+
         $cache_key = $this->get_cache_key();
-        if (!empty($this->get_cached_css_data($cache_key)[$this->block_count])) {
-            $cached_data = $this->get_cached_css_data($cache_key)[$this->block_count];
-            $cached_block_name = $cached_data['blockName'];
-            $cached_block_class = $cached_data['blockClass'];
-            $cached_css = $cached_data['css'];
+        if ( ! empty( $this->get_cached_css_data( $cache_key )[ $this->block_count ] ) ) {
+            $cached_data        = $this->get_cached_css_data( $cache_key )[ $this->block_count ];
+            $cached_block_name  = $cached_data['blockName'] ?? '';
+            $cached_block_class = $cached_data['blockClass'] ?? '';
+            $cached_attr_hash   = $cached_data['attrHash'] ?? '';
+            $cached_css         = $cached_data['css'] ?? '';
             if (
                 $block_data['blockName'] === $cached_block_name &&
-                !empty($cached_css) &&
-                !empty($cached_block_class)
+                $attr_hash === $cached_attr_hash &&
+                ! empty( $cached_css ) &&
+                ! empty( $cached_block_class )
             ) {
                 $block_data['attrs']['blockClass'] = $cached_block_class;
-                $this->collected_block_css .= $cached_css;
-                $this->block_count += 1;
+                $this->collected_block_css        .= $cached_css;
+                $this->block_count                += 1;
                 return $block_data;
             }
         }
-
-        $attr_hash = md5($block_data['blockName'] . wp_json_encode($block_data['attrs'] ?? []));
         $block_data['attrs']['blockClass'] = 'bb-' . substr($attr_hash, 0, 6);
         $block_css_class = $block_data['attrs']['blockClass'].'.blockish-block-wrapper';
         $block_class = $block_data['attrs']['blockClass'];
@@ -336,14 +338,21 @@ class StyleGenerator
             $selector   = '.' . $block_css_class;
             $custom_css = preg_replace( '/\{\{\s*SELECTOR\s*\}\}/', $selector, $custom_css );
             $custom_css = preg_replace( '/\bSELECTOR\b/', $selector, $custom_css );
-            $final_css .= $custom_css;
+            // Drop unresolved placeholders — corrupt customCss must not break the whole page stylesheet.
+            if ( false !== strpos( $custom_css, '{{' ) ) {
+                $custom_css = '';
+            }
+            if ( '' !== trim( $custom_css ) ) {
+                $final_css .= $custom_css;
+            }
         }
 
-        $cached_css_data = [
-            'blockName' => $block_data['blockName'],
+        $cached_css_data = array(
+            'blockName'  => $block_data['blockName'],
             'blockClass' => $block_class,
-            'css' => $final_css
-        ];
+            'attrHash'   => $attr_hash,
+            'css'        => $final_css,
+        );
 
         $merged_cached_data = $this->get_cached_css_data($cache_key);
         $merged_cached_data[] = $cached_css_data;

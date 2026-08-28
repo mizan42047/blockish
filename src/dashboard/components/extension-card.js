@@ -1,4 +1,5 @@
-import { __, sprintf } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import {
 	Button,
 	Card,
@@ -11,19 +12,68 @@ import {
 	__experimentalText as Text,
 	__experimentalVStack as VStack,
 } from '@wordpress/components';
-import { useState } from '@wordpress/element';
 import { settingsIcon } from '../../components/icons/block-icons';
 import { lock } from '@wordpress/icons';
+
+const THEME_BUILDER_SLUG = 'theme-builder';
+
+function isBlockThemeSite() {
+	return Boolean(window.blockishDashboardData?.isBlockTheme);
+}
 
 export default function ExtensionCard({ extension, isSaving, onToggle, onOpenSettings, onNavigate }) {
 	const isActive = extension.status === 'active';
 	const isLocked = extension.status === 'locked';
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [showEnableTip, setShowEnableTip] = useState(false);
+	const tipRef = useRef(null);
+
+	const needsBlockThemeTip =
+		extension.slug === THEME_BUILDER_SLUG && isBlockThemeSite() && !isActive;
+
+	useEffect(() => {
+		if (!showEnableTip) {
+			return;
+		}
+
+		const onPointerDown = (event) => {
+			if (tipRef.current && !tipRef.current.contains(event.target)) {
+				setShowEnableTip(false);
+			}
+		};
+		const onKeyDown = (event) => {
+			if (event.key === 'Escape') {
+				setShowEnableTip(false);
+			}
+		};
+
+		document.addEventListener('mousedown', onPointerDown);
+		document.addEventListener('keydown', onKeyDown);
+		return () => {
+			document.removeEventListener('mousedown', onPointerDown);
+			document.removeEventListener('keydown', onKeyDown);
+		};
+	}, [showEnableTip]);
+
+	useEffect(() => {
+		if (isActive) {
+			setShowEnableTip(false);
+		}
+	}, [isActive]);
+
+	const handleToggleChange = (checked) => {
+		if (checked && needsBlockThemeTip) {
+			setShowEnableTip(true);
+			return;
+		}
+		setShowEnableTip(false);
+		onToggle(extension.slug, checked);
+	};
 
 	return (
 		<>
 			<Card
-				className={`blockish-block-card ${!isActive ? 'is-inactive' : ''} ${isLocked ? 'is-locked-card' : ''}`}
+				className={`blockish-block-card ${!isActive ? 'is-inactive' : ''} ${isLocked ? 'is-locked-card' : ''} ${showEnableTip ? 'has-enable-tip' : ''}`}
 				size="small"
 				onClick={() => {
 					if (isLocked) {
@@ -42,7 +92,7 @@ export default function ExtensionCard({ extension, isSaving, onToggle, onOpenSet
 						<Heading className="blockish-block-card-title blockish-heading-tertiary" level={3}>
 							{extension.name}
 						</Heading>
-						<div className="blockish-extension-controls">
+						<div className="blockish-extension-controls" ref={tipRef}>
 							{isLocked ? (
 								<Button
 									className="blockish-lock-icon"
@@ -58,7 +108,7 @@ export default function ExtensionCard({ extension, isSaving, onToggle, onOpenSet
 									<FormToggle
 										className="blockish-block-toggle"
 										checked={isActive}
-										onChange={(event) => onToggle(extension.slug, event.target.checked)}
+										onChange={(event) => handleToggleChange(event.target.checked)}
 									/>
 									{extension.hasSpecialControls && (
 										<Button
@@ -70,6 +120,33 @@ export default function ExtensionCard({ extension, isSaving, onToggle, onOpenSet
 											disabled={!isActive || isSaving}
 											onClick={() => onOpenSettings(extension.slug)}
 										/>
+									)}
+									{showEnableTip && (
+										<div className="blockish-enable-tip" role="dialog" aria-live="polite">
+											<p className="blockish-enable-tip__text">
+												{__(
+													'Will override Site Editor templates & parts.',
+													'blockish'
+												)}
+											</p>
+											<div className="blockish-enable-tip__actions">
+												<Button
+													variant="tertiary"
+													onClick={() => setShowEnableTip(false)}
+												>
+													{__('Cancel', 'blockish')}
+												</Button>
+												<Button
+													variant="primary"
+													onClick={() => {
+														setShowEnableTip(false);
+														onToggle(extension.slug, true);
+													}}
+												>
+													{__('Enable', 'blockish')}
+												</Button>
+											</div>
+										</div>
 									)}
 								</>
 							)}

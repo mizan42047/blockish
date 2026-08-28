@@ -57,6 +57,13 @@ class ExtensionList extends ConfigList {
                 'category'    => 'general',
                 'status'      => 'active',
             ),
+            'theme-builder' => array(
+                'name'        => __( 'Theme Builder', 'blockish' ),
+                'description' => __( 'Build site templates and template parts — header, footer, front-page, page, single, archive, search, 404, and more — with Blockish blocks.', 'blockish' ),
+                'package'     => 'free',
+                'category'    => 'general',
+                'status'      => 'inactive',
+            ),
             'dynamic-data' => array(
                 'name'        => __( 'Dynamic Data', 'blockish' ),
                 'description' => __( 'Adds dynamic data binding capabilities to blocks.', 'blockish' ),

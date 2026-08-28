@@ -1,8 +1,9 @@
 .blockish-site-logo {
 	margin: 0;
+	line-height: 0;
 
 	a {
-		display: inline-block;
+		display: block;
 	}
 
 	.blockish-site-logo__image {

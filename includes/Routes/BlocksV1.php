@@ -110,13 +110,15 @@ class BlocksV1 extends WP_REST_Controller {
 
 		update_option( self::BLOCK_OPTION, $next );
 
-		return rest_ensure_response(
-			array(
-				'status'  => 'success',
-				'blocks'  => $next,
-				'message' => array( 'Blocks list has been updated successfully.' ),
-			)
-		);
+		// Same ordered payload as GET (hardcoded BlockList order), not option key order.
+		$response = $this->get_blocks();
+		$data     = $response->get_data();
+		if ( is_array( $data ) ) {
+			$data['message'] = array( 'Blocks list has been updated successfully.' );
+			$response->set_data( $data );
+		}
+
+		return $response;
 	}
 
 	private function get_saved_blocks() {
