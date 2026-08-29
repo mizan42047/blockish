@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Classic / hybrid PHP themes: render Theme Builder templates on the frontend
  * using the same block canvas as Site Editor (template-canvas.php).
  *
- * Block themes are handled by FrontendBridge (get_block_template* filters).
+ * Block themes use the Site Editor — Theme Builder does not run there.
  */
 class ClassicThemeBridge {
 

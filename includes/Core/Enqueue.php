@@ -76,8 +76,9 @@ class Enqueue {
             'blockish-global',
             'blockishGlobalData',
             array(
-                'dashboardUrl' => admin_url( 'admin.php?page=blockish-dashboard' ),
-                'addonsUrl'    => admin_url( 'admin.php?page=blockish-dashboard&route=addons' ),
+                'dashboardUrl'              => admin_url( 'admin.php?page=blockish-dashboard' ),
+                'addonsUrl'                 => admin_url( 'admin.php?page=blockish-dashboard&route=addons' ),
+                'globalThemeOverrideLevel'  => ThemeOverride::get_global_level(),
             )
         );
 

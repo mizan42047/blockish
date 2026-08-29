@@ -12,6 +12,7 @@ import Transform from './components/transform';
 import Background from './components/background';
 import Border from './components/border';
 import CustomCss from './components/custom-css';
+import ThemeOverrideControl from './components/theme-override';
 import DynamicityMarketing from './components/dynamicity-marketing';
 
 const BlockishBlocksAdvancedControls = createHigherOrderComponent(
@@ -50,6 +51,7 @@ const BlockishBlocksAdvancedControls = createHigherOrderComponent(
                             <Transform {...props} />
                             <Background {...props} />
                             <Border {...props} />
+                            <ThemeOverrideControl {...props} />
                             <CustomCss {...props} />
                         </>
                     )

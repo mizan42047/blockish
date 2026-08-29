@@ -5,6 +5,7 @@ import { __experimentalHeading as Heading, __experimentalText as Text, __experim
 import SavedExtensionSchemasSettings from './settings/saved-extension-schemas-settings';
 import GlobalInteractionsSettings from './settings/global-interactions-settings';
 import SeoSettings from './settings/seo-settings';
+import ThemeOverrideSettings from './settings/theme-override-settings';
 
 export default function SettingsPage() {
 	const toolsPath = window?.blockishDashboardData?.dashboardToolsApiPath || '/blockish/v1/dashboard-tools';
@@ -14,6 +15,7 @@ export default function SettingsPage() {
 	const [schemas, setSchemas] = useState({ count: 0, items: [] });
 	const [globalInteractions, setGlobalInteractions] = useState({ count: 0, items: [] });
 	const [seoSettings, setSeoSettings] = useState({});
+	const [themeOverrideSettings, setThemeOverrideSettings] = useState({ global_theme_override_level: 0 });
 
 	const loadToolsData = async () => {
 		setIsLoading(true);
@@ -23,6 +25,7 @@ export default function SettingsPage() {
 			setSchemas(response?.schemas || { count: 0, items: [] });
 			setGlobalInteractions(response?.globalInteractions || { count: 0, items: [] });
 			setSeoSettings(response?.seoSettings || {});
+			setThemeOverrideSettings(response?.themeOverrideSettings || { global_theme_override_level: 0 });
 		} catch (err) {
 			setError(err?.message || __('Failed to load settings data', 'blockish'));
 		} finally {
@@ -68,6 +71,23 @@ export default function SettingsPage() {
 		}
 	};
 
+	const updateThemeOverrideSettings = async (newSettings) => {
+		setIsSaving(true);
+		setError('');
+		try {
+			const response = await apiFetch({
+				path: `${toolsPath}/theme-override-settings`,
+				method: 'POST',
+				data: newSettings,
+			});
+			setThemeOverrideSettings(response?.themeOverrideSettings || {});
+		} catch (err) {
+			setError(err?.message || __('Failed to save theme override settings', 'blockish'));
+		} finally {
+			setIsSaving(false);
+		}
+	};
+
 	const deleteGlobalInteraction = async (id) => {
 		setIsSaving(true);
 		setError('');
@@ -102,6 +122,13 @@ export default function SettingsPage() {
 				isLoading={isLoading}
 				isSaving={isSaving}
 				onUpdateSeoSettings={updateSeoSettings}
+			/>
+
+			<ThemeOverrideSettings
+				themeOverrideSettings={themeOverrideSettings}
+				isLoading={isLoading}
+				isSaving={isSaving}
+				onUpdateThemeOverrideSettings={updateThemeOverrideSettings}
 			/>
 
 			<SavedExtensionSchemasSettings

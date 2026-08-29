@@ -10,6 +10,8 @@ import {
 	zap,
 } from '../../components/icons/block-icons';
 
+export { settingsIcon };
+
 export const THEME_BUILDER_MENU_KEY = 'theme-builder';
 
 export const SIDEBAR_MENUS = [
@@ -30,7 +32,11 @@ export const SIDEBAR_MENUS = [
 ];
 
 export function isThemeBuilderExtensionActive(extensions = {}) {
-	return extensions?.[THEME_BUILDER_MENU_KEY]?.status === 'active';
+	const tb = extensions?.[THEME_BUILDER_MENU_KEY];
+	if (!tb || tb.unavailable) {
+		return false;
+	}
+	return tb.status === 'active';
 }
 
 /**

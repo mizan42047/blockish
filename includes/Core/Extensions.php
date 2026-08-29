@@ -53,6 +53,10 @@ class Extensions
         }
 
         foreach ($active_extensions as $slug => $extension) {
+            if ( 'theme-builder' === $slug && function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
+                continue;
+            }
+
             $path = !empty($extension['path'])
                 ? $extension['path']
                 : trailingslashit(BLOCKISH_EXTENSIONS_DIR) . $slug;

@@ -8,6 +8,7 @@ const BlockishBlocksWrapperProps = createHigherOrderComponent(
 	( BlockListBlock ) => ( props ) => {
 		const { attributes, name, clientId } = props;
 		const deviceType = useDeviceType();
+		const { wrapperClassList, resolveThemeOverrideLevel } = window.blockish.helpers;
 
 		// Synced pattern: apply alignfull/alignwide only when align is set.
 		if ( name === 'core/block' ) {
@@ -20,21 +21,18 @@ const BlockishBlocksWrapperProps = createHigherOrderComponent(
 						align === 'full' ? 'alignfull' : 'alignwide'
 					),
 				};
-				return (
-					<BlockListBlock { ...props } wrapperProps={ wrapperProps } />
-				);
+				return <BlockListBlock { ...props } wrapperProps={ wrapperProps } />;
 			}
 			return <BlockListBlock { ...props } />;
 		}
 
 		if ( name?.includes( 'blockish' ) ) {
-			const hash = useMemo( () => {
-				return clientId?.slice( -6 );
-			}, [ clientId ] );
+			const hash = useMemo( () => clientId?.slice( -6 ), [ clientId ] );
+			const overrideLevel = resolveThemeOverrideLevel( attributes );
 
 			const globalWrapperProps = {
 				...props.wrapperProps,
-				className: clsx( `bb-${ hash }`, 'blockish-block-wrapper' ),
+				className: clsx( ...wrapperClassList( hash, overrideLevel ) ),
 			};
 
 			const wrapperProps = applyFilters(
@@ -43,10 +41,13 @@ const BlockishBlocksWrapperProps = createHigherOrderComponent(
 				attributes,
 				{ deviceType }
 			);
+
 			return <BlockListBlock { ...props } wrapperProps={ wrapperProps } />;
 		}
+
 		return <BlockListBlock { ...props } />;
 	},
 	'BlockishBlocksWrapperProps'
 );
+
 export default BlockishBlocksWrapperProps;

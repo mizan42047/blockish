@@ -2,11 +2,10 @@
 namespace Blockish\Extensions;
 
 use Blockish\Config\ExtensionList;
+use Blockish\ThemeBuilder\ClassicThemeBridge;
 use Blockish\ThemeBuilder\DefaultPosts;
 use Blockish\ThemeBuilder\Enqueue;
 use Blockish\ThemeBuilder\PostType;
-use Blockish\ThemeBuilder\FrontendBridge;
-use Blockish\ThemeBuilder\ClassicThemeBridge;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -15,17 +14,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Theme Builder extension bootstrap.
  *
- * Off by default. When active: CPT + library list + block editor for templates/parts.
+ * Classic themes only — block themes use the Site Editor.
  */
 class ThemeBuilder {
 	use \Blockish\Traits\SingletonTrait;
 
+	const EXTENSION_OPTION = 'blockish_extension_list';
+
 	private function __construct() {
+		self::ensure_block_theme_deactivated();
+
 		add_action( 'init', array( $this, 'register_runtime_hooks' ), 5 );
+		add_action( 'after_switch_theme', array( $this, 'ensure_block_theme_deactivated' ) );
 	}
 
 	/**
-	 * Bootstrap when the extension is active.
+	 * Bootstrap when the extension is active on a classic theme.
 	 *
 	 * @return void
 	 */
@@ -37,10 +41,34 @@ class ThemeBuilder {
 		PostType::get_instance();
 		DefaultPosts::get_instance();
 		Enqueue::get_instance();
-		FrontendBridge::register_hooks();
 		ClassicThemeBridge::register_hooks();
 
 		add_filter( 'allowed_block_types_all', array( $this, 'restrict_template_part_inserter' ), 10, 2 );
+	}
+
+	/**
+	 * Turn off Theme Builder when a block theme is active.
+	 *
+	 * Runs as early as possible (plugins_loaded) so ExtensionList never caches TB as active.
+	 *
+	 * @return void
+	 */
+	public static function ensure_block_theme_deactivated() {
+		if ( self::is_available_for_site() ) {
+			return;
+		}
+
+		$saved = get_option( self::EXTENSION_OPTION, array() );
+		if ( ! is_array( $saved ) || empty( $saved['theme-builder']['status'] ) ) {
+			return;
+		}
+
+		if ( 'active' !== $saved['theme-builder']['status'] ) {
+			return;
+		}
+
+		$saved['theme-builder']['status'] = 'inactive';
+		update_option( self::EXTENSION_OPTION, $saved );
 	}
 
 	/**
@@ -80,11 +108,24 @@ class ThemeBuilder {
 	}
 
 	/**
-	 * Whether Theme Builder is enabled in the extensions list.
+	 * Theme Builder targets classic (PHP) themes only.
+	 *
+	 * @return bool
+	 */
+	public static function is_available_for_site() {
+		return function_exists( 'wp_is_block_theme' ) && ! wp_is_block_theme();
+	}
+
+	/**
+	 * Whether Theme Builder is enabled and allowed on this site.
 	 *
 	 * @return bool
 	 */
 	public static function is_enabled() {
+		if ( ! self::is_available_for_site() ) {
+			return false;
+		}
+
 		$active = ExtensionList::get_instance()->get_list( 'active' );
 		return ! empty( $active['theme-builder'] );
 	}

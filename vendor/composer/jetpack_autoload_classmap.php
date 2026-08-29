@@ -98,6 +98,10 @@ return array(
 		'version' => 'dev-main',
 		'path'    => $baseDir . '/includes/Core/StyleGenerator.php'
 	),
+	'Blockish\\Core\\ThemeOverride' => array(
+		'version' => 'dev-main',
+		'path'    => $baseDir . '/includes/Core/ThemeOverride.php'
+	),
 	'Blockish\\Core\\Utilities' => array(
 		'version' => 'dev-main',
 		'path'    => $baseDir . '/includes/Core/Utilities.php'
@@ -534,6 +538,10 @@ return array(
 		'version' => 'dev-main',
 		'path'    => $baseDir . '/includes/Routes/SVGUploaderV1.php'
 	),
+	'Blockish\\Routes\\ThemeBuilderV1' => array(
+		'version' => 'dev-main',
+		'path'    => $baseDir . '/includes/Routes/ThemeBuilderV1.php'
+	),
 	'Blockish\\ThemeBuilder\\ClassicThemeBridge' => array(
 		'version' => 'dev-main',
 		'path'    => $baseDir . '/includes/ThemeBuilder/ClassicThemeBridge.php'
@@ -550,10 +558,6 @@ return array(
 		'version' => 'dev-main',
 		'path'    => $baseDir . '/includes/ThemeBuilder/Enqueue.php'
 	),
-	'Blockish\\ThemeBuilder\\FrontendBridge' => array(
-		'version' => 'dev-main',
-		'path'    => $baseDir . '/includes/ThemeBuilder/FrontendBridge.php'
-	),
 	'Blockish\\ThemeBuilder\\PartResolver' => array(
 		'version' => 'dev-main',
 		'path'    => $baseDir . '/includes/ThemeBuilder/PartResolver.php'
@@ -561,6 +565,10 @@ return array(
 	'Blockish\\ThemeBuilder\\PostType' => array(
 		'version' => 'dev-main',
 		'path'    => $baseDir . '/includes/ThemeBuilder/PostType.php'
+	),
+	'Blockish\\ThemeBuilder\\SiteEditorMigration' => array(
+		'version' => 'dev-main',
+		'path'    => $baseDir . '/includes/ThemeBuilder/SiteEditorMigration.php'
 	),
 	'Blockish\\ThemeBuilder\\TemplateOptions' => array(
 		'version' => 'dev-main',

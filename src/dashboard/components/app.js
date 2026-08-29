@@ -15,8 +15,7 @@ function isBlockThemeSite() {
 }
 
 /**
- * On block themes, Theme Builder stays off during bulk Enable All —
- * user confirms via the card tip when toggling it alone.
+ * Theme Builder is classic-theme only — never bulk-enable on block themes.
  */
 function filterBulkEnableSlugs(status, slugs, extensions = {}) {
 	const targets =
@@ -28,12 +27,7 @@ function filterBulkEnableSlugs(status, slugs, extensions = {}) {
 		return targets;
 	}
 
-	return targets.filter((slug) => {
-		if (slug !== THEME_BUILDER_SLUG) {
-			return true;
-		}
-		return extensions?.[THEME_BUILDER_SLUG]?.status === 'active';
-	});
+	return targets.filter((slug) => slug !== THEME_BUILDER_SLUG);
 }
 
 export default function App() {
@@ -111,6 +105,10 @@ export default function App() {
 	};
 
 	const handleToggleExtension = (slug, enabled) => {
+		const extension = data?.extensions?.[slug];
+		if (enabled && (extension?.unavailable || (slug === THEME_BUILDER_SLUG && isBlockThemeSite()))) {
+			return;
+		}
 		pendingSaveRef.current = true;
 		updateModuleStatus('extensions', slug, enabled ? 'active' : 'inactive');
 	};

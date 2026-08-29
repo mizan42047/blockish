@@ -181,6 +181,10 @@
 	opacity: 0.66;
 }
 
+.blockish-block-card.is-unavailable-card {
+	opacity: 1;
+}
+
 /* Tip lives inside the card — don't wash it out with inactive opacity. */
 .blockish-block-card.is-inactive.has-enable-tip {
 	opacity: 1;

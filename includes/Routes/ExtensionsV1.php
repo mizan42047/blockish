@@ -2,6 +2,8 @@
 
 namespace Blockish\Routes;
 
+use Blockish\Extensions\ThemeBuilder;
+use Blockish\ThemeBuilder\SiteEditorMigration;
 use WP_REST_Controller;
 use WP_REST_Request;
 
@@ -46,6 +48,8 @@ class ExtensionsV1 extends WP_REST_Controller {
 	}
 
 	public function get_extensions() {
+		ThemeBuilder::ensure_block_theme_deactivated();
+
 		$hardcoded_extensions = \Blockish\Config\ExtensionList::get_instance()->get_list('list');
 		$saved_extensions = $this->get_saved_extensions();
 		$addons = \Blockish\Config\AddonsList::get_instance()->get_list('list');
@@ -69,6 +73,10 @@ class ExtensionsV1 extends WP_REST_Controller {
 				if ( empty( $addons[ $extension['addon'] ]['is_available'] ) ) {
 					$extension['status'] = 'locked';
 				}
+			}
+
+			if ( 'theme-builder' === $slug ) {
+				$extension = self::apply_theme_builder_availability( $extension );
 			}
 		}
 
@@ -109,6 +117,10 @@ class ExtensionsV1 extends WP_REST_Controller {
 
 			$status = sanitize_key( $status );
 			if ( ! in_array( $status, array( 'active', 'inactive' ), true ) ) {
+				continue;
+			}
+
+			if ( 'theme-builder' === $slug && 'active' === $status && ! ThemeBuilder::is_available_for_site() ) {
 				continue;
 			}
 
@@ -154,5 +166,31 @@ class ExtensionsV1 extends WP_REST_Controller {
 
 	private function get_saved_extensions() {
 		return get_option( self::EXTENSION_OPTION, array() );
+	}
+
+	/**
+	 * Theme Builder is classic-theme only; expose migration hints on block themes.
+	 *
+	 * @param array $extension Extension payload.
+	 * @return array
+	 */
+	private static function apply_theme_builder_availability( $extension ) {
+		if ( ThemeBuilder::is_available_for_site() ) {
+			$extension['unavailable'] = false;
+			return $extension;
+		}
+
+		if ( 'locked' !== ( $extension['status'] ?? '' ) ) {
+			$extension['status'] = 'inactive';
+		}
+
+		$extension['unavailable']       = true;
+		$extension['unavailableReason'] = __(
+			'Theme Builder is for classic themes only. Block themes use the Site Editor.',
+			'blockish'
+		);
+		$extension['themeBuilderMigration'] = SiteEditorMigration::get_status();
+
+		return $extension;
 	}
 }
