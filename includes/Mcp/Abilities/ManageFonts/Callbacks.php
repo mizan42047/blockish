@@ -40,7 +40,7 @@ class Callbacks
                 $result = self::delete_font($args, $family_id);
                 $messages[] = $result['message'];
             } else {
-                throw new \Exception(sprintf('Invalid action "%s".', $action));
+                throw new \Exception(esc_html(sprintf('Invalid action "%s".', $action)));
             }
         }
 
@@ -433,7 +433,7 @@ class Callbacks
     {
         // For remove, it's slightly trickier because ManageThemeJson merges. 
         // We'd need to fetch current global styles, remove the item, and save.
-        $post_name = 'wp-global-styles-' . urlencode(wp_get_theme()->get_stylesheet());
+        $post_name = 'wp-global-styles-' . rawurlencode(wp_get_theme()->get_stylesheet());
         $args = [
             'post_type' => 'wp_global_styles',
             'name' => $post_name,

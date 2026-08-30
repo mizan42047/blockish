@@ -95,9 +95,11 @@ class Enqueue {
         if ( $screen && ! empty( $screen->post_type ) && 'blockish_form' === $screen->post_type ) {
             return true;
         }
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only editor screen detection.
         if ( isset( $_GET['post_type'] ) && 'blockish_form' === sanitize_key( wp_unslash( $_GET['post_type'] ) ) ) {
             return true;
         }
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only editor screen detection.
         $post_id = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0;
         if ( $post_id && 'blockish_form' === get_post_type( $post_id ) ) {
             return true;

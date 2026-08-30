@@ -23,7 +23,7 @@ class Callbacks
         if (false === $data) {
             $response = wp_remote_get(self::API_URL);
             if (is_wp_error($response)) {
-                throw new \Exception('Failed to fetch Google Fonts collection: ' . $response->get_error_message());
+                throw new \Exception('Failed to fetch Google Fonts collection: ' . esc_html($response->get_error_message()));
             }
 
             $body = wp_remote_retrieve_body($response);
@@ -48,19 +48,19 @@ class Callbacks
         }
 
         if (!$found_family) {
-            throw new \Exception(sprintf('Font "%s" not found in the WordPress Google Fonts collection.', $args['name']));
+            throw new \Exception(esc_html(sprintf('Font "%s" not found in the WordPress Google Fonts collection.', $args['name'])));
         }
 
         // Filter font faces if variants are provided
         if (!empty($requested_variants)) {
             $filtered_faces = [];
             foreach ($found_family['fontFace'] as $face) {
-                if (in_array($face['fontWeight'], $requested_variants)) {
+                if (in_array($face['fontWeight'], $requested_variants, true)) {
                     $filtered_faces[] = $face;
                 }
             }
             if (empty($filtered_faces)) {
-                throw new \Exception(sprintf('Font "%s" does not have the requested variants (%s).', $args['name'], implode(', ', $requested_variants)));
+                throw new \Exception(esc_html(sprintf('Font "%s" does not have the requested variants (%s).', $args['name'], implode(', ', $requested_variants))));
             }
             $found_family['fontFace'] = $filtered_faces;
         }

@@ -116,7 +116,7 @@ class SiteEditorMigration {
 			array(
 				'post_type'              => PostType::POST_TYPE,
 				'post_status'            => 'publish',
-				'posts_per_page'         => 200,
+				'posts_per_page'         => 200, // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page -- TB catalog is bounded.
 				'no_found_rows'          => true,
 				'update_post_meta_cache' => true,
 				'update_post_term_cache' => false,

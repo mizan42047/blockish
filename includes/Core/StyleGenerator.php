@@ -284,9 +284,11 @@ class StyleGenerator
                         $condition_met = false;
                         switch ($rule['condition']) {
                             case '==':
+                                // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual -- Dynamic rules may compare mixed scalar types.
                                 $condition_met = ($processed_condition_value == $rule['value']);
                                 break;
                             case '!=':
+                                // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual -- Dynamic rules may compare mixed scalar types.
                                 $condition_met = ($processed_condition_value != $rule['value']);
                                 break;
                             case 'empty':
