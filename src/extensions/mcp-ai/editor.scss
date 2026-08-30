@@ -36,6 +36,10 @@
 	}
 
 	.blockish-ai-preview-inner-blocks {
+		position: relative;
+		z-index: 1;
+		margin-top: 0 !important;
+
 		.wp-block-template-part {
 			max-width: none !important;
 		}
@@ -48,9 +52,14 @@
 	z-index: 100000;
 	display: flex;
 	justify-content: flex-end;
+	align-items: flex-start;
 	padding: 0 16px;
 	pointer-events: none;
-	
+	// Reserve pill height for sticky, then pull preview content up so the
+	// bar overlays instead of leaving an empty row above the first block.
+	height: 40px;
+	margin-bottom: -40px;
+
 	.blockish-ai-button-group {
 		pointer-events: auto;
 		background: rgba(255, 255, 255, 0.85);

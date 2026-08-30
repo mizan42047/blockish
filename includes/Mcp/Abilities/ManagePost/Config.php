@@ -24,7 +24,7 @@ class Config
                         'type'        => 'string',
                         'description' => 'Do NOT use for Blockish layouts, pattern refs, or forms. Layouts must be staged via block_schema. Passing post_content for pages/posts/patterns/forms is rejected.',
                     ],
-                    'post_status'  => ['type' => 'string',  'description' => 'draft, publish, private, etc. Defaults to "draft".'],
+                    'post_status'  => ['type' => 'string',  'description' => 'publish, draft, private, etc. Defaults to "publish".'],
                     'post_excerpt' => ['type' => 'string'],
                     'post_parent'  => [
                         'type'        => 'integer',
@@ -91,7 +91,7 @@ class Config
             'permission_callback' => fn() => current_user_can('edit_posts'),
             'meta'                => [
                 'mcp' => ['public' => true],
-                'usage_notes' => 'CRITICAL RULES (manage-post): 1) Send block_schema for layouts — staged as blockish/ai-preview in post_content (not meta). 2) Create patterns with manage-pattern FIRST; use returned real IDs only for core/block refs. 3) Full-bleed section refs MUST set attributes.align to "full" (omit align only for content-width). 4) NEVER send pattern-ref comments or block HTML into post_content. 5) Re-stage replaces pendingSchema only; previousSchema stays until Accept/Discard. 6) Monolithic full-page schemas are REJECTED — patterns + refs. 7) NEVER put core/template-part header/footer on pages. 8) Call get-block-docs with required block_names (only blocks you need). 9) After staging: trigger-refresh and share edit_url. 10) Optional post_parent nests under a parent.',
+                'usage_notes' => 'CRITICAL RULES (manage-post): 1) Send block_schema for layouts — staged as blockish/ai-preview in post_content (not meta). 2) Create patterns with manage-pattern FIRST; use returned real IDs only for core/block refs. 3) Full-bleed section refs MUST set attributes.align to "full" (omit align only for content-width). 4) NEVER send pattern-ref comments or block HTML into post_content. 5) Re-stage replaces pendingSchema only; previousSchema stays until Accept/Discard. 6) Monolithic full-page schemas are REJECTED — patterns + refs. 7) NEVER put core/template-part header/footer on pages. 8) Call get-block-docs with required block_names (only blocks you need). 9) After staging: trigger-refresh and share edit_url. 10) Optional post_parent nests under a parent. 11) Handoff: if the editor canvas may look conflicting/wrong before Accept, tell the user to Accept first then judge from the live frontend; feedback if frontend is broken after Accept.',
             ],
         ];
     }
