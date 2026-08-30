@@ -2,13 +2,23 @@ import { useState } from '@wordpress/element';
 import Sidebar from '../components/Sidebar';
 import LibraryList from '../components/LibraryList';
 import CreateFlow from '../components/CreateFlow';
-import { getItemEditUrl, navigateToUrl } from './navigation';
+import {
+	getItemEditUrl,
+	getStoredLibraryFilter,
+	navigateToUrl,
+	storeLibraryFilter,
+} from './navigation';
 
 export default function App() {
-	const [ filter, setFilter ] = useState( 'template' );
+	const [ filter, setFilter ] = useState( getStoredLibraryFilter );
 	const [ isCreating, setIsCreating ] = useState( false );
 
 	const createKind = filter === 'part' ? 'part' : 'template';
+
+	const handleFilter = ( nextFilter ) => {
+		setFilter( nextFilter );
+		storeLibraryFilter( nextFilter );
+	};
 
 	const handleCreated = ( item ) => {
 		setIsCreating( false );
@@ -19,7 +29,7 @@ export default function App() {
 
 	return (
 		<div className="blockish-tb-library-app">
-			<Sidebar activeFilter={ filter } onFilter={ setFilter } />
+			<Sidebar activeFilter={ filter } onFilter={ handleFilter } />
 			<main className="blockish-tb-main">
 				<LibraryList
 					filter={ filter }

@@ -20,6 +20,10 @@ body.post-type-blockish_tb:not(.blockish-tb-library-screen) {
 	.edit-post-post-trash {
 		display: none !important;
 	}
+
+	.interface-pinned-items [aria-label='Theme Builder Settings'] {
+		display: none !important;
+	}
 }
 
 /* Library list: fullscreen over WP admin chrome */

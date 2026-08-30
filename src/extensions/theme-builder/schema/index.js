@@ -19,6 +19,7 @@ import partHeader from './parts/header.json';
 import partFooter from './parts/footer.json';
 import {
 	getWooCommerceSchema,
+	isWooCommerceSchemaSlug,
 } from './woocommerce';
 
 const pageSchema = () => wrapChrome( pageMain );
@@ -26,10 +27,35 @@ const pageNoTitleSchema = () => wrapChrome( pageNoTitleMain );
 const frontPageSchema = () =>
 	wrapChrome( pageNoTitleMain, { mainMargin: false } );
 const singleSchema = () =>
-	wrapChrome( singleMain, { mainMargin: false } );
-const notFoundSchema = () => wrapChrome( notFoundMain );
+	wrapChrome( singleMain, { mainMargin: false, innerContentWidth: true } );
+const notFoundSchema = () => {
+	const chrome = wrapChrome( notFoundMain, {
+		mainMargin: false,
+		innerContentWidth: true,
+	} );
+	const main = chrome.find( ( block ) => block.name === 'blockish/container' );
+	if ( main?.attributes ) {
+		main.attributes.containerMinHeight = { Desktop: '75vh' };
+		main.attributes.justifyContent = {
+			Desktop: { label: 'Center', value: 'center' },
+		};
+		main.attributes.alignItems = {
+			Desktop: { label: 'Center', value: 'center' },
+		};
+		main.attributes.padding = {
+			Desktop: {
+				top: 'var:preset|spacing|60',
+				right: 'var:preset|spacing|40',
+				bottom: 'var:preset|spacing|60',
+				left: 'var:preset|spacing|40',
+			},
+		};
+	}
+	return chrome;
+};
 
-const loopSchemaForSlug = ( slug ) => wrapChrome( getLoopMainBlocks( slug ) );
+const loopSchemaForSlug = ( slug ) =>
+	wrapChrome( getLoopMainBlocks( slug ), { innerContentWidth: true } );
 
 /** @type {Record<string, () => Array>} */
 const TEMPLATE_SCHEMAS = {
@@ -56,9 +82,6 @@ const TEMPLATE_SCHEMAS = {
 
 	// Utility (no loop)
 	404: notFoundSchema,
-
-	// WooCommerce system page (no dedicated WC block template)
-	'page-my-account': pageNoTitleSchema,
 };
 
 /** @type {Record<string, Array>} */
@@ -75,20 +98,16 @@ const PART_SCHEMAS = {
 export function getSchemaForSlug( kind, slug ) {
 	const key = ( slug || '' ).toString();
 
+	// WooCommerce templates/parts start empty — user builds with WC blocks in the editor.
+	if ( isWooCommerceSchemaSlug( kind, key ) ) {
+		return [];
+	}
+
 	if ( kind === 'part' ) {
-		const wooPart = getWooCommerceSchema( 'part', key );
-		if ( wooPart ) {
-			return wooPart;
-		}
 		if ( PART_SCHEMAS[ key ] ) {
 			return PART_SCHEMAS[ key ];
 		}
 		return [];
-	}
-
-	const wooTemplate = getWooCommerceSchema( 'template', key );
-	if ( wooTemplate ) {
-		return wooTemplate;
 	}
 
 	if ( TEMPLATE_SCHEMAS[ key ] ) {

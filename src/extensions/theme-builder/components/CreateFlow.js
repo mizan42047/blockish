@@ -67,17 +67,13 @@ const ICON_MAP = {
 const DEFAULT_CONDITIONS = [ { type: 'include', rule: 'entire_site' } ];
 
 function areaFromPartSlug( slug ) {
-	if ( slug === 'header' || slug === 'checkout-header' ) {
+	if ( slug === 'header' ) {
 		return 'header';
 	}
 	if ( slug === 'footer' ) {
 		return 'footer';
 	}
-	// Unknown / custom part tiles default to header (no "General" area).
-	if ( ! slug || slug === 'custom' || slug === 'uncategorized' || slug === 'general' ) {
-		return 'header';
-	}
-	return slug;
+	return slug || 'header';
 }
 
 export default function CreateFlow( { kind = 'template', onCancel, onSuccess } ) {
@@ -134,10 +130,6 @@ export default function CreateFlow( { kind = 'template', onCancel, onSuccess } )
 
 	const usedSlugs = useMemo( () => {
 		const set = new Set();
-		// Parts can share areas (multiple headers with different conditions).
-		if ( kind === 'part' ) {
-			return set;
-		}
 		( records || [] ).forEach( ( item ) => {
 			if ( libraryId && item.id === libraryId ) {
 				return;
@@ -146,13 +138,23 @@ export default function CreateFlow( { kind = 'template', onCancel, onSuccess } )
 				return;
 			}
 			const slug = getMeta( item, 'blockish_tb_slug' );
+			if ( kind === 'part' ) {
+				// WooCommerce parts: one override per catalog slug (resolved by slug).
+				const catalogRow = options.find(
+					( row ) => row.slug === slug && row.group === 'woocommerce'
+				);
+				if ( catalogRow ) {
+					set.add( slug );
+				}
+				return;
+			}
 			// Hierarchy types are unique; custom can be created many times.
 			if ( slug && slug !== 'custom' && slug !== 'shell' ) {
 				set.add( slug );
 			}
 		} );
 		return set;
-	}, [ records, libraryId, kind ] );
+	}, [ records, libraryId, kind, options ] );
 
 	const standardOptions = useMemo(
 		() =>
@@ -222,7 +224,8 @@ export default function CreateFlow( { kind = 'template', onCancel, onSuccess } )
 			};
 
 			if ( kind === 'part' ) {
-				meta.blockish_tb_area = areaFromPartSlug( row.slug );
+				meta.blockish_tb_area =
+					row.group === 'woocommerce' ? row.slug : areaFromPartSlug( row.slug );
 				if ( row.group !== 'woocommerce' ) {
 					meta.blockish_tb_conditions =
 						Array.isArray( conditionsOverride ) && conditionsOverride.length

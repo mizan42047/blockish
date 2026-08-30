@@ -24,6 +24,14 @@ class TemplateResolver {
 			return null;
 		}
 
+		$custom_id = CustomTemplateRegistry::post_id_from_slug( $slug );
+		if ( $custom_id > 0 ) {
+			$custom = self::resolve_post( $custom_id );
+			if ( $custom instanceof \WP_Post ) {
+				return $custom;
+			}
+		}
+
 		$query = new \WP_Query(
 			array(
 				'post_type'              => PostType::POST_TYPE,
@@ -50,13 +58,33 @@ class TemplateResolver {
 			return null;
 		}
 
-		$template = $query->posts[0];
+		return self::resolve_post( (int) $query->posts[0]->ID );
+	}
 
-		$active = get_post_meta( $template->ID, PostType::META_ACTIVE, true );
+	/**
+	 * @param int $post_id Theme Builder template post ID.
+	 * @return \WP_Post|null
+	 */
+	private static function resolve_post( $post_id ) {
+		$post_id = (int) $post_id;
+		if ( $post_id <= 0 ) {
+			return null;
+		}
+
+		$post = get_post( $post_id );
+		if ( ! $post instanceof \WP_Post || PostType::POST_TYPE !== $post->post_type ) {
+			return null;
+		}
+
+		if ( PostType::KIND_TEMPLATE !== get_post_meta( $post_id, PostType::META_KIND, true ) ) {
+			return null;
+		}
+
+		$active = get_post_meta( $post_id, PostType::META_ACTIVE, true );
 		if ( '' !== $active && ! $active ) {
 			return null;
 		}
 
-		return $template;
+		return $post;
 	}
 }

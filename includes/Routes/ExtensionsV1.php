@@ -48,8 +48,6 @@ class ExtensionsV1 extends WP_REST_Controller {
 	}
 
 	public function get_extensions() {
-		ThemeBuilder::ensure_block_theme_deactivated();
-
 		$hardcoded_extensions = \Blockish\Config\ExtensionList::get_instance()->get_list('list');
 		$saved_extensions = $this->get_saved_extensions();
 		$addons = \Blockish\Config\AddonsList::get_instance()->get_list('list');
@@ -177,16 +175,13 @@ class ExtensionsV1 extends WP_REST_Controller {
 	private static function apply_theme_builder_availability( $extension ) {
 		if ( ThemeBuilder::is_available_for_site() ) {
 			$extension['unavailable'] = false;
+			unset( $extension['unavailableReason'], $extension['themeBuilderMigration'] );
 			return $extension;
-		}
-
-		if ( 'locked' !== ( $extension['status'] ?? '' ) ) {
-			$extension['status'] = 'inactive';
 		}
 
 		$extension['unavailable']       = true;
 		$extension['unavailableReason'] = __(
-			'Theme Builder is for classic themes only. Block themes use the Site Editor.',
+			'Theme Builder is for classic themes only. Block themes use the Site Editor. Your preference is kept — switch back to a classic theme and Theme Builder will work again without re-enabling.',
 			'blockish'
 		);
 		$extension['themeBuilderMigration'] = SiteEditorMigration::get_status();

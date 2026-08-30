@@ -2,22 +2,24 @@
 	{
 		"name": "blockish/container",
 		"attributes": {
+			"isVariationPicked": true,
+			"innerContentWidth": true,
 			"flexDirection": {
 				"Desktop": {
 					"label": "Column",
 					"value": "column"
 				}
 			},
-			"alignItems": {
-				"Desktop": {
-					"label": "Stretch",
-					"value": "stretch"
-				}
-			},
 			"justifyContent": {
 				"Desktop": {
 					"label": "Start",
 					"value": "flex-start"
+				}
+			},
+			"alignItems": {
+				"Desktop": {
+					"label": "Stretch",
+					"value": "stretch"
 				}
 			},
 			"padding": {
@@ -30,22 +32,26 @@
 			},
 			"metadata": {
 				"name": "Footer"
-			},
-			"isVariationPicked": true,
-			"containerWidth": "alignfull"
+			}
 		},
 		"innerBlocks": [
 			{
 				"name": "blockish/container",
 				"attributes": {
+					"isVariationPicked": true,
 					"containerWidth": "align-custom-width",
-					"customWidthContainer": {
-						"Desktop": "1200px"
-					},
-					"widthType": {
+					"customWidthContainer": [],
+					"flexDirection": {
 						"Desktop": {
-							"label": "Full",
-							"value": "100%"
+							"label": "Column",
+							"value": "column"
+						}
+					},
+					"justifyContent": [],
+					"alignItems": {
+						"Desktop": {
+							"label": "Stretch",
+							"value": "stretch"
 						}
 					},
 					"margin": {
@@ -56,37 +62,31 @@
 							"left": "auto"
 						}
 					},
-					"flexDirection": {
+					"widthType": {
 						"Desktop": {
-							"label": "Column",
-							"value": "column"
-						}
-					},
-					"alignItems": {
-						"Desktop": {
-							"label": "Stretch",
-							"value": "stretch"
-						}
-					},
-					"justifyContent": {
-						"Desktop": {
-							"label": "Start",
-							"value": "flex-start"
+							"label": "Full",
+							"value": "100%"
 						}
 					},
 					"metadata": {
 						"name": "Footer inner"
-					},
-					"isVariationPicked": true
+					}
 				},
 				"innerBlocks": [
 					{
 						"name": "blockish/container",
 						"attributes": {
-							"rowGap": {
-								"Desktop": "2.5rem"
+							"isVariationPicked": true,
+							"containerWidth": "align-custom-width",
+							"display": "grid",
+							"gridLayoutType": "fixed",
+							"gridColumns": {
+								"Tablet": 2
 							},
 							"columnGap": {
+								"Desktop": "2.5rem"
+							},
+							"rowGap": {
 								"Desktop": "2.5rem"
 							},
 							"padding": {
@@ -97,72 +97,52 @@
 									"left": "0"
 								}
 							},
-							"gridLayoutType": "fixed",
-							"display": "grid",
-							"gridColumns": {
-								"Tablet": 2
-							},
 							"metadata": {
 								"name": "Footer top"
 							},
-							"isVariationPicked": true,
-							"containerWidth": "align-custom-width",
 							"customCss": "{{SELECTOR}} { grid-template-columns: 1.5fr repeat(3, 1fr); } {{SELECTOR}} { align-items: start; } {{SELECTOR}} { justify-items: start; } {{SELECTOR}} { text-align: left; } @media (max-width: 768px) { {{SELECTOR}} { grid-template-columns: 1fr; } }"
 						},
 						"innerBlocks": [
 							{
 								"name": "blockish/container",
 								"attributes": {
+									"isVariationPicked": true,
+									"containerWidth": "align-custom-width",
 									"flexDirection": {
 										"Desktop": {
 											"label": "Column",
 											"value": "column"
 										}
 									},
-									"alignItems": {
-										"Desktop": {
-											"label": "Start",
-											"value": "flex-start"
-										}
-									},
-									"justifyContent": {
-										"Desktop": {
-											"label": "Start",
-											"value": "flex-start"
-										}
+									"justifyContent": [],
+									"alignItems": [],
+									"columnGap": {
+										"Desktop": "0"
 									},
 									"rowGap": {
 										"Desktop": "0"
 									},
-									"columnGap": {
-										"Desktop": "0"
-									},
 									"metadata": {
 										"name": "Brand"
-									},
-									"isVariationPicked": true,
-									"containerWidth": "align-custom-width"
+									}
 								},
 								"innerBlocks": [
 									{
 										"name": "blockish/container",
 										"attributes": {
+											"isVariationPicked": true,
+											"containerWidth": "align-custom-width",
 											"flexDirection": {
 												"Desktop": {
 													"label": "Row",
 													"value": "row"
 												}
 											},
+											"justifyContent": [],
 											"alignItems": {
 												"Desktop": {
 													"label": "Center",
 													"value": "center"
-												}
-											},
-											"justifyContent": {
-												"Desktop": {
-													"label": "Start",
-													"value": "flex-start"
 												}
 											},
 											"columnGap": {
@@ -170,9 +150,7 @@
 											},
 											"metadata": {
 												"name": "Brand mark"
-											},
-											"isVariationPicked": true,
-											"containerWidth": "align-custom-width"
+											}
 										},
 										"innerBlocks": [
 											{
@@ -181,7 +159,8 @@
 													"logoWidth": {
 														"Desktop": "36px"
 													}
-												}
+												},
+												"innerBlocks": []
 											},
 											{
 												"name": "blockish/site-title",
@@ -189,14 +168,23 @@
 													"tag": {
 														"label": "P",
 														"value": "p"
+													},
+													"themeOverrideLevel": "3",
+													"margin": {
+														"Desktop": {
+															"top": "0px",
+															"bottom": "0px"
+														}
 													}
-												}
+												},
+												"innerBlocks": []
 											}
 										]
 									},
 									{
 										"name": "blockish/paragraph",
 										"attributes": {
+											"content": "AI builds the page. You Accept. Same WordPress editor.",
 											"margin": {
 												"Desktop": {
 													"top": "1.15rem",
@@ -207,46 +195,41 @@
 											},
 											"maxWidth": {
 												"Desktop": "16rem"
-											},
-											"content": "AI builds the page. You Accept. Same WordPress editor."
-										}
+											}
+										},
+										"innerBlocks": []
 									}
 								]
 							},
 							{
 								"name": "blockish/container",
 								"attributes": {
+									"isVariationPicked": true,
+									"containerWidth": "align-custom-width",
 									"flexDirection": {
 										"Desktop": {
 											"label": "Column",
 											"value": "column"
 										}
 									},
-									"alignItems": {
-										"Desktop": {
-											"label": "Start",
-											"value": "flex-start"
-										}
-									},
-									"justifyContent": {
-										"Desktop": {
-											"label": "Start",
-											"value": "flex-start"
-										}
-									},
+									"justifyContent": [],
+									"alignItems": [],
 									"rowGap": {
 										"Desktop": "0.85rem"
 									},
 									"metadata": {
 										"name": "Product"
-									},
-									"isVariationPicked": true,
-									"containerWidth": "align-custom-width"
+									}
 								},
 								"innerBlocks": [
 									{
 										"name": "blockish/heading",
 										"attributes": {
+											"content": "Product",
+											"tag": {
+												"label": "H4",
+												"value": "h4"
+											},
 											"margin": {
 												"Desktop": {
 													"top": "0",
@@ -254,13 +237,9 @@
 													"bottom": "0.65rem",
 													"left": "0"
 												}
-											},
-											"content": "Product",
-											"tag": {
-												"label": "H4",
-												"value": "h4"
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/paragraph",
@@ -271,7 +250,8 @@
 												"newTab": false,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/paragraph",
@@ -282,7 +262,8 @@
 												"newTab": false,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/paragraph",
@@ -293,7 +274,8 @@
 												"newTab": false,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/paragraph",
@@ -304,44 +286,40 @@
 												"newTab": false,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									}
 								]
 							},
 							{
 								"name": "blockish/container",
 								"attributes": {
+									"isVariationPicked": true,
+									"containerWidth": "align-custom-width",
 									"flexDirection": {
 										"Desktop": {
 											"label": "Column",
 											"value": "column"
 										}
 									},
-									"alignItems": {
-										"Desktop": {
-											"label": "Start",
-											"value": "flex-start"
-										}
-									},
-									"justifyContent": {
-										"Desktop": {
-											"label": "Start",
-											"value": "flex-start"
-										}
-									},
+									"justifyContent": [],
+									"alignItems": [],
 									"rowGap": {
 										"Desktop": "0.85rem"
 									},
 									"metadata": {
 										"name": "Resources"
-									},
-									"isVariationPicked": true,
-									"containerWidth": "align-custom-width"
+									}
 								},
 								"innerBlocks": [
 									{
 										"name": "blockish/heading",
 										"attributes": {
+											"content": "Resources",
+											"tag": {
+												"label": "H4",
+												"value": "h4"
+											},
 											"margin": {
 												"Desktop": {
 													"top": "0",
@@ -349,13 +327,9 @@
 													"bottom": "0.65rem",
 													"left": "0"
 												}
-											},
-											"content": "Resources",
-											"tag": {
-												"label": "H4",
-												"value": "h4"
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/paragraph",
@@ -366,7 +340,8 @@
 												"newTab": true,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/paragraph",
@@ -377,44 +352,40 @@
 												"newTab": true,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									}
 								]
 							},
 							{
 								"name": "blockish/container",
 								"attributes": {
+									"isVariationPicked": true,
+									"containerWidth": "align-custom-width",
 									"flexDirection": {
 										"Desktop": {
 											"label": "Column",
 											"value": "column"
 										}
 									},
-									"alignItems": {
-										"Desktop": {
-											"label": "Start",
-											"value": "flex-start"
-										}
-									},
-									"justifyContent": {
-										"Desktop": {
-											"label": "Start",
-											"value": "flex-start"
-										}
-									},
+									"justifyContent": [],
+									"alignItems": [],
 									"rowGap": {
 										"Desktop": "0.85rem"
 									},
 									"metadata": {
 										"name": "Account"
-									},
-									"isVariationPicked": true,
-									"containerWidth": "align-custom-width"
+									}
 								},
 								"innerBlocks": [
 									{
 										"name": "blockish/heading",
 										"attributes": {
+											"content": "Account",
+											"tag": {
+												"label": "H4",
+												"value": "h4"
+											},
 											"margin": {
 												"Desktop": {
 													"top": "0",
@@ -422,13 +393,9 @@
 													"bottom": "0.65rem",
 													"left": "0"
 												}
-											},
-											"content": "Account",
-											"tag": {
-												"label": "H4",
-												"value": "h4"
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/paragraph",
@@ -439,7 +406,8 @@
 												"newTab": true,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/paragraph",
@@ -450,7 +418,8 @@
 												"newTab": true,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/paragraph",
@@ -461,7 +430,8 @@
 												"newTab": false,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									}
 								]
 							}
@@ -470,16 +440,15 @@
 					{
 						"name": "blockish/container",
 						"attributes": {
+							"isVariationPicked": true,
+							"containerWidth": "align-custom-width",
+							"flexWrap": {
+								"Desktop": "wrap"
+							},
 							"flexDirection": {
 								"Desktop": {
 									"label": "Row",
 									"value": "row"
-								}
-							},
-							"alignItems": {
-								"Desktop": {
-									"label": "Center",
-									"value": "center"
 								}
 							},
 							"justifyContent": {
@@ -488,12 +457,19 @@
 									"value": "space-between"
 								}
 							},
-							"rowGap": {
-								"Desktop": "1rem"
+							"alignItems": {
+								"Desktop": {
+									"label": "Center",
+									"value": "center"
+								}
 							},
 							"columnGap": {
 								"Desktop": "1rem"
 							},
+							"rowGap": {
+								"Desktop": "1rem"
+							},
+							"containerBorder": "{\"top\":{\"width\":{\"Desktop\":\"1px\"},\"style\":\"solid\",\"color\":\"currentColor\"}}",
 							"padding": {
 								"Desktop": {
 									"top": "1.25rem",
@@ -502,20 +478,15 @@
 									"left": "0"
 								}
 							},
-							"containerBorder": "{\"top\":{\"width\":{\"Desktop\":\"1px\"},\"style\":\"solid\",\"color\":\"currentColor\"}}",
-							"flexWrap": {
-								"Desktop": "wrap"
-							},
 							"metadata": {
 								"name": "Footer bottom"
-							},
-							"isVariationPicked": true,
-							"containerWidth": "align-custom-width"
+							}
 						},
 						"innerBlocks": [
 							{
 								"name": "blockish/paragraph",
 								"attributes": {
+									"content": "© WowDevs. All rights reserved.",
 									"margin": {
 										"Desktop": {
 											"top": "0",
@@ -523,32 +494,13 @@
 											"bottom": "0",
 											"left": "0"
 										}
-									},
-									"content": "© WowDevs. All rights reserved."
-								}
+									}
+								},
+								"innerBlocks": []
 							},
 							{
 								"name": "blockish/social-icons",
 								"attributes": {
-									"widthType": {
-										"Desktop": {
-											"label": "Auto",
-											"value": "auto"
-										}
-									},
-									"margin": {
-										"Desktop": {
-											"top": "0",
-											"right": "0",
-											"bottom": "0",
-											"left": "auto"
-										}
-									},
-									"iconSpacing": {
-										"Desktop": "10px"
-									},
-									"shape": "circle",
-									"iconColorMode": "official",
 									"flexWrap": {
 										"Desktop": {
 											"label": "Unwrap",
@@ -559,6 +511,23 @@
 										"Desktop": {
 											"label": "Right",
 											"value": "flex-end"
+										}
+									},
+									"iconSpacing": {
+										"Desktop": "10px"
+									},
+									"margin": {
+										"Desktop": {
+											"top": "0",
+											"right": "0",
+											"bottom": "0",
+											"left": "auto"
+										}
+									},
+									"widthType": {
+										"Desktop": {
+											"label": "Auto",
+											"value": "auto"
 										}
 									}
 								},
@@ -577,7 +546,8 @@
 												"newTab": true,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/social-icon-item",
@@ -593,7 +563,8 @@
 												"newTab": true,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/social-icon-item",
@@ -609,7 +580,8 @@
 												"newTab": true,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									},
 									{
 										"name": "blockish/social-icon-item",
@@ -625,7 +597,8 @@
 												"newTab": true,
 												"noFollow": false
 											}
-										}
+										},
+										"innerBlocks": []
 									}
 								]
 							}

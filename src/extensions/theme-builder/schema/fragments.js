@@ -16,17 +16,21 @@ export const LOOP_CARD =
 
 /**
  * @param {Array} mainInnerBlocks Blocks inside <main>.
- * @param {{ mainMargin?: boolean }} [options]
+ * @param {{ mainMargin?: boolean, innerContentWidth?: boolean }} [options]
  * @return {Array} Root block_schema
  */
 export function wrapChrome( mainInnerBlocks = [], options = {} ) {
-	const { mainMargin = true } = options;
+	const { mainMargin = true, innerContentWidth = false } = options;
 
 	const mainAttributes = {
 		isVariationPicked: true,
 		tagName: { label: 'Main', value: 'main' },
 		flexDirection: FLEX_COLUMN,
 	};
+
+	if ( innerContentWidth ) {
+		mainAttributes.innerContentWidth = true;
+	}
 
 	if ( mainMargin ) {
 		mainAttributes.margin = {

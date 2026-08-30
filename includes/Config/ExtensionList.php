@@ -18,10 +18,6 @@ class ExtensionList extends ConfigList {
      * ExtensionList constructor.
      */
     public function __construct() {
-        if ( class_exists( '\Blockish\Extensions\ThemeBuilder' ) ) {
-            \Blockish\Extensions\ThemeBuilder::ensure_block_theme_deactivated();
-        }
-
         // Ensure parent constructor is called
         parent::__construct();
         $this->remove_stale_extensions();

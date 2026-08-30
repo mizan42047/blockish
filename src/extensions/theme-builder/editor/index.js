@@ -17,15 +17,20 @@ import {
 	Notice,
 } from '@wordpress/components';
 import { useSelect, useDispatch, dispatch, select, subscribe } from '@wordpress/data';
-import { createPortal, useEffect, useMemo, useRef } from '@wordpress/element';
+import { createPortal, useEffect, useMemo, useRef, useState } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import domReady from '@wordpress/dom-ready';
+import { Button, Modal } from '@wordpress/components';
+import { backup } from '@wordpress/icons';
+import { getSchemaForSlug } from '../schema';
+import { schemaToBlocks } from '../schema/schemaToMarkup';
 import {
 	conditionsFromShowOn,
 	firstAvailableShowOn,
 	getPartPlacementMap,
 	getShowOnSelectOptions,
 	isShowOnTaken,
+	isSlugBasedPartSlug,
 	partPlacementKey,
 	showOnFromConditions,
 	showOnLabel,
@@ -292,6 +297,69 @@ function PartSettings( { meta, editPost, postId } ) {
 	);
 }
 
+function RestoreDefaultControl( { kind, slug } ) {
+	const [ isOpen, setIsOpen ] = useState( false );
+	const { resetBlocks } = useDispatch( blockEditorStore );
+
+	const defaultBlocks = useMemo( () => {
+		if ( kind !== 'template' && kind !== 'part' ) {
+			return [];
+		}
+		const schema = getSchemaForSlug( kind, slug || '' );
+		if ( ! Array.isArray( schema ) || ! schema.length ) {
+			return [];
+		}
+		return schemaToBlocks( schema );
+	}, [ kind, slug ] );
+
+	if ( ! defaultBlocks.length ) {
+		return null;
+	}
+
+	const handleRestore = () => {
+		resetBlocks( defaultBlocks );
+		setIsOpen( false );
+	};
+
+	return (
+		<>
+			<div className="blockish-tb-doc-panel__restore">
+				<Button
+					variant="secondary"
+					icon={ backup }
+					onClick={ () => setIsOpen( true ) }
+					__next40pxDefaultSize
+				>
+					{ __( 'Restore default', 'blockish' ) }
+				</Button>
+			</div>
+			{ isOpen ? (
+				<Modal
+					title={ __( 'Restore default layout?', 'blockish' ) }
+					onRequestClose={ () => setIsOpen( false ) }
+					className="blockish-tb-restore-modal"
+					size="small"
+				>
+					<p className="blockish-tb-restore-modal__text">
+						{ __(
+							'Replace all blocks with the starter layout for this type. Your current design will be lost.',
+							'blockish'
+						) }
+					</p>
+					<div className="blockish-tb-restore-modal__actions">
+						<Button variant="tertiary" onClick={ () => setIsOpen( false ) }>
+							{ __( 'Cancel', 'blockish' ) }
+						</Button>
+						<Button variant="primary" isDestructive onClick={ handleRestore }>
+							{ __( 'Restore', 'blockish' ) }
+						</Button>
+					</div>
+				</Modal>
+			) : null }
+		</>
+	);
+}
+
 function ThemeBuilderInfoPanel() {
 	const { editPost } = useDispatch( editorStore );
 	const { kind, slug, title, meta, postId } = useSelect( ( sel ) => {
@@ -312,6 +380,8 @@ function ThemeBuilderInfoPanel() {
 	usePageNoTitleCleanup( slug );
 
 	const isPart = kind === 'part';
+	const partCatalog = window.blockishThemeBuilder?.partSlugs || [];
+	const isSlugBasedPart = isPart && isSlugBasedPartSlug( slug, partCatalog );
 	const kindLabel = isPart
 		? __( 'Template part', 'blockish' )
 		: __( 'Template', 'blockish' );
@@ -341,8 +411,24 @@ function ThemeBuilderInfoPanel() {
 				<span>{ title || '—' }</span>
 			</div>
 
-			{ isPart ? (
+			<RestoreDefaultControl kind={ kind } slug={ slug } />
+
+			{ isSlugBasedPart ? (
+				<p className="blockish-tb-doc-panel__hint">
+					{ __(
+						'WooCommerce loads this part by slug when a matching template asks for it (e.g. Checkout template → Checkout Header). Show on rules do not apply. Only one part per slug is used.',
+						'blockish'
+					) }
+				</p>
+			) : isPart ? (
 				<PartSettings meta={ meta } editPost={ editPost } postId={ postId } />
+			) : slug.startsWith( 'blockish-tb-' ) || slug === 'custom' ? (
+				<p className="blockish-tb-doc-panel__hint">
+					{ __(
+						'Assign this layout on any post or page from the editor Template control (Page attributes). It only renders where you apply it.',
+						'blockish'
+					) }
+				</p>
 			) : (
 				<p className="blockish-tb-doc-panel__hint">
 					{ __(

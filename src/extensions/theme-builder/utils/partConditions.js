@@ -78,6 +78,11 @@ export function getPartPlacementMap( records, excludeId = 0 ) {
 		if ( getMeta( item, 'blockish_tb_kind' ) !== 'part' ) {
 			return;
 		}
+		const partSlug = ( getMeta( item, 'blockish_tb_slug' ) || '' ).toLowerCase();
+		// Only header/footer use Area + Show on placement.
+		if ( partSlug !== 'header' && partSlug !== 'footer' ) {
+			return;
+		}
 		const area = (
 			getMeta( item, 'blockish_tb_area' ) ||
 			getMeta( item, 'blockish_tb_slug' ) ||
@@ -202,4 +207,18 @@ export function suggestPartName( areaLabel, showOn ) {
 		return where;
 	}
 	return `${ areaLabel } — ${ where }`;
+}
+
+/**
+ * WooCommerce / slug-based parts — loaded by catalog slug, not Show on rules.
+ *
+ * @param {string} slug
+ * @param {Array<{slug:string,group?:string}>} [catalog]
+ * @return {boolean}
+ */
+export function isSlugBasedPartSlug( slug, catalog ) {
+	const key = ( slug || '' ).toLowerCase();
+	return ( catalog || [] ).some(
+		( row ) => row.group === 'woocommerce' && row.slug === key
+	);
 }

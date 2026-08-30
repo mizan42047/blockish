@@ -95,6 +95,76 @@ class PartResolver {
 	}
 
 	/**
+	 * Render a resolved area slot (header/footer) with semantic wrapper markup.
+	 *
+	 * @param string $area    header|footer.
+	 * @param array  $context Optional condition context overrides.
+	 * @return string HTML or empty string.
+	 */
+	public static function render_area( $area, array $context = array() ) {
+		$area = sanitize_title( (string) $area );
+		if ( '' === $area ) {
+			return '';
+		}
+
+		$part = self::resolve( $area, $context );
+		if ( ! $part instanceof \WP_Post ) {
+			return '';
+		}
+
+		if ( class_exists( '\Blockish\Core\PostPrime' ) ) {
+			\Blockish\Core\PostPrime::prime_pattern_refs_from_blocks( parse_blocks( $part->post_content ) );
+		}
+
+		$html = self::render_part( $part );
+		if ( '' === trim( $html ) ) {
+			return '';
+		}
+
+		return self::wrap_area_html( $area, $html );
+	}
+
+	/**
+	 * @param string $area Area slug (header|footer|…).
+	 * @param string $html Inner HTML.
+	 * @return string
+	 */
+	public static function wrap_area_html( $area, $html ) {
+		$area         = sanitize_title( (string) $area );
+		$wrapper_tag  = 'div';
+		$wrapper_class = 'blockish-template-part blockish-template-part--' . sanitize_html_class( $area );
+
+		if ( function_exists( 'get_allowed_block_template_part_areas' ) ) {
+			foreach ( get_allowed_block_template_part_areas() as $defined_area ) {
+				if ( isset( $defined_area['area'] ) && $defined_area['area'] === $area ) {
+					if ( ! empty( $defined_area['area_tag'] ) ) {
+						$wrapper_tag = tag_escape( $defined_area['area_tag'] );
+					}
+					break;
+				}
+			}
+		} elseif ( 'header' === $area ) {
+			$wrapper_tag = 'header';
+		} elseif ( 'footer' === $area ) {
+			$wrapper_tag = 'footer';
+		}
+
+		$attrs = '';
+		if ( function_exists( 'get_block_wrapper_attributes' ) ) {
+			$attrs = get_block_wrapper_attributes(
+				array(
+					'class' => $wrapper_class,
+				)
+			);
+		} else {
+			$attrs = 'class="' . esc_attr( $wrapper_class ) . '"';
+		}
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $wrapper_tag is tag_escape()'d or a fixed literal; $html is escaped at block render.
+		return sprintf( '<%1$s %2$s>%3$s</%1$s>', $wrapper_tag, $attrs, $html );
+	}
+
+	/**
 	 * WooCommerce / named template parts — matched by catalog slug only (no Show on rules).
 	 *
 	 * @param string $slug Part catalog slug (mini-cart, checkout-header, …).

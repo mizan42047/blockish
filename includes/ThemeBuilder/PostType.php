@@ -47,6 +47,36 @@ class PostType {
 		add_filter( 'rest_prepare_post_type', array( $this, 'rest_hide_title_support_for_editor' ), 10, 2 );
 		add_filter( 'rest_request_before_callbacks', array( $this, 'rest_before_blockish_tb_callbacks' ), 10, 3 );
 		add_filter( 'rest_prepare_' . self::POST_TYPE, array( $this, 'rest_skip_block_render_in_content' ), 10, 3 );
+		add_action( 'save_post_' . self::POST_TYPE, array( $this, 'normalize_woocommerce_part_meta' ), 20, 2 );
+	}
+
+	/**
+	 * Keep WooCommerce part area meta aligned with catalog slug (not header/footer slots).
+	 *
+	 * @param int      $post_id Post ID.
+	 * @param \WP_Post $post    Post object.
+	 * @return void
+	 */
+	public function normalize_woocommerce_part_meta( $post_id, $post ) {
+		unset( $post );
+
+		if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+			return;
+		}
+
+		if ( self::KIND_PART !== get_post_meta( $post_id, self::META_KIND, true ) ) {
+			return;
+		}
+
+		$slug = sanitize_title( (string) get_post_meta( $post_id, self::META_SLUG, true ) );
+		if ( ! TemplateOptions::is_woocommerce_part_slug( $slug ) ) {
+			return;
+		}
+
+		$target = $slug;
+		if ( $target !== sanitize_title( (string) get_post_meta( $post_id, self::META_AREA, true ) ) ) {
+			update_post_meta( $post_id, self::META_AREA, $target );
+		}
 	}
 
 	/**
@@ -370,6 +400,23 @@ class PostType {
 			return $prepared;
 		}
 
+		$part_slug = isset( $meta[ self::META_SLUG ] )
+			? sanitize_title( (string) $meta[ self::META_SLUG ] )
+			: '';
+		if ( '' === $part_slug && $exclude_id ) {
+			$part_slug = sanitize_title( (string) get_post_meta( $exclude_id, self::META_SLUG, true ) );
+		}
+
+		// Slug-based parts (WooCommerce) — no Area + Show on placement rules.
+		if ( TemplateOptions::is_woocommerce_part_slug( $part_slug ) ) {
+			return $prepared;
+		}
+
+		// Condition slots are only for site-wide header/footer parts.
+		if ( ! in_array( $part_slug, array( 'header', 'footer' ), true ) ) {
+			return $prepared;
+		}
+
 		if ( isset( $meta[ self::META_AREA ] ) ) {
 			$area = self::sanitize_area( $meta[ self::META_AREA ] );
 		} elseif ( isset( $meta[ self::META_SLUG ] ) ) {
@@ -508,13 +555,13 @@ class PostType {
 	 */
 	public static function area_from_slug( $slug ) {
 		$slug = sanitize_title( (string) $slug );
-		if ( 'header' === $slug || 'checkout-header' === $slug ) {
+		if ( 'header' === $slug ) {
 			return self::AREA_HEADER;
 		}
 		if ( 'footer' === $slug ) {
 			return self::AREA_FOOTER;
 		}
-		// No "General" area in the product UI — unknown slugs stay as custom area keys.
+		// WooCommerce / named parts keep their catalog slug as area.
 		return $slug ? $slug : self::AREA_HEADER;
 	}
 

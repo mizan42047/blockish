@@ -68,20 +68,26 @@ class ClassicThemeBridge {
 			return $templates;
 		}
 
+		$new_slugs = array_values(
+			array_filter(
+				array_map(
+					static function ( $file ) {
+						$file = (string) $file;
+						if ( '' === $file ) {
+							return '';
+						}
+						return sanitize_title( basename( $file, '.php' ) );
+					},
+					$templates
+				)
+			)
+		);
+
+		// Prepend so a later index.php fallback (themes without 404.php, search.php, etc.)
+		// does not erase earlier, more-specific hierarchy captures.
 		self::$template_hierarchy = array_values(
 			array_unique(
-				array_filter(
-					array_map(
-						static function ( $file ) {
-							$file = (string) $file;
-							if ( '' === $file ) {
-								return '';
-							}
-							return sanitize_title( basename( $file, '.php' ) );
-						},
-						$templates
-					)
-				)
+				array_merge( $new_slugs, self::$template_hierarchy )
 			)
 		);
 
@@ -98,15 +104,30 @@ class ClassicThemeBridge {
 		}
 
 		$match = self::get_resolved_template();
-		if ( ! is_array( $match ) || empty( $match['post'] ) || ! ( $match['post'] instanceof \WP_Post ) ) {
-			return $template;
+		if ( is_array( $match ) && ! empty( $match['post'] ) && $match['post'] instanceof \WP_Post ) {
+			$content = trim( (string) $match['post']->post_content );
+			if ( '' !== $content ) {
+				return self::boot_canvas(
+					$content,
+					sanitize_title( (string) $match['slug'] )
+				);
+			}
 		}
 
-		$content = trim( (string) $match['post']->post_content );
-		if ( '' === $content ) {
-			return $template;
-		}
+		// Parts-only: swap header/footer inside the theme template (HFE / Elementor style).
+		ClassicThemeLocations::boot_for_request();
 
+		return $template;
+	}
+
+	/**
+	 * Load WordPress block template canvas with TB block content.
+	 *
+	 * @param string $content  Serialized block markup.
+	 * @param string $slug     Template slug for $_wp_current_template_id.
+	 * @return string Path to template-canvas.php.
+	 */
+	private static function boot_canvas( $content, $slug ) {
 		if ( class_exists( '\Blockish\Core\PostPrime' ) ) {
 			\Blockish\Core\PostPrime::prime_pattern_refs_from_blocks( parse_blocks( $content ) );
 			\Blockish\Core\PostPrime::prime_theme_builder_parts();
@@ -115,7 +136,7 @@ class ClassicThemeBridge {
 		global $_wp_current_template_content, $_wp_current_template_id;
 
 		$_wp_current_template_content = $content;
-		$_wp_current_template_id      = get_stylesheet() . '//' . sanitize_title( (string) $match['slug'] );
+		$_wp_current_template_id      = get_stylesheet() . '//' . sanitize_title( $slug );
 
 		self::register_canvas_hooks();
 
@@ -127,9 +148,11 @@ class ClassicThemeBridge {
 	 * @return array{post:\WP_Post,slug:string}|null
 	 */
 	private static function resolve_for_hierarchy( array $template_slugs ) {
-		$slugs = array();
+		$slugs       = array();
+		$ordered_raw = array_merge( QueryTemplateSlugs::get(), $template_slugs );
+		$ordered     = self::prioritize_slugs( $ordered_raw );
 
-		foreach ( $template_slugs as $slug ) {
+		foreach ( $ordered as $slug ) {
 			$slug = sanitize_title( (string) $slug );
 			if ( '' === $slug ) {
 				continue;
@@ -158,6 +181,37 @@ class ClassicThemeBridge {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Dedupe slugs while preserving order; keep `index` as the final fallback.
+	 *
+	 * @param string[] $slugs Raw slug candidates.
+	 * @return string[]
+	 */
+	private static function prioritize_slugs( array $slugs ) {
+		$ordered   = array();
+		$has_index = false;
+
+		foreach ( $slugs as $slug ) {
+			$slug = sanitize_title( (string) $slug );
+			if ( '' === $slug ) {
+				continue;
+			}
+			if ( 'index' === $slug ) {
+				$has_index = true;
+				continue;
+			}
+			if ( ! in_array( $slug, $ordered, true ) ) {
+				$ordered[] = $slug;
+			}
+		}
+
+		if ( $has_index ) {
+			$ordered[] = 'index';
+		}
+
+		return $ordered;
 	}
 
 	/**

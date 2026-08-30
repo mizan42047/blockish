@@ -33,6 +33,23 @@
 	.blockish-tb-doc-panel__notice {
 		margin: 0 0 8px;
 	}
+
+	.blockish-tb-doc-panel__restore {
+		margin: 0 0 12px;
+	}
+}
+
+.blockish-tb-restore-modal__text {
+	margin: 0 0 16px;
+	font-size: 13px;
+	line-height: 1.5;
+	color: #1e1e1e;
+}
+
+.blockish-tb-restore-modal__actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
 }
 
 .blockish-tb-canvas-loading {

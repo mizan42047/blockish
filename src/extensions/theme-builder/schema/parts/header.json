@@ -7,6 +7,7 @@
 				"label": "Hidden",
 				"value": "hidden"
 			},
+			"innerContentWidth": true,
 			"padding": {
 				"Desktop": {
 					"top": "var:preset|spacing|30",
@@ -22,9 +23,7 @@
 				"attributes": {
 					"isVariationPicked": true,
 					"containerWidth": "align-custom-width",
-					"customWidthContainer": {
-						"Desktop": "1200px"
-					},
+					"customWidthContainer": {},
 					"justifyContent": {
 						"Desktop": {
 							"label": "Space Between",
@@ -69,6 +68,13 @@
 									"tag": {
 										"value": "p",
 										"label": "P"
+									},
+									"themeOverrideLevel": "1",
+									"margin": {
+										"Desktop": {
+											"top": "0px",
+											"bottom": "0px"
+										}
 									}
 								}
 							}
@@ -95,50 +101,65 @@
 												"name": "blockish/navmenu-item",
 												"attributes": {
 													"label": "Home",
-													"url": "/",
-													"linkId": 0,
-													"linkKind": "",
-													"linkType": ""
+													"url": "/"
 												}
 											},
 											{
 												"name": "blockish/navmenu-item",
 												"attributes": {
 													"label": "About",
-													"url": "/about/",
-													"linkId": 0,
-													"linkKind": "",
-													"linkType": ""
+													"url": "/about/"
 												}
 											},
 											{
 												"name": "blockish/navmenu-item",
 												"attributes": {
 													"label": "Services",
-													"url": "/services/",
-													"linkId": 0,
-													"linkKind": "",
-													"linkType": ""
+													"url": "/services/"
 												}
 											},
 											{
 												"name": "blockish/navmenu-item",
 												"attributes": {
 													"label": "Contact",
-													"url": "/contact/",
-													"linkId": 0,
-													"linkKind": "",
-													"linkType": ""
+													"url": "/contact/"
 												}
 											}
 										]
 									},
 									{
 										"name": "blockish/offcanvas",
-										"attributes": {
-											"syncWithMenu": true
-										},
-										"innerBlocks": []
+										"attributes": {},
+										"innerBlocks": [
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "Home",
+													"url": "/"
+												}
+											},
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "About",
+													"url": "/about/"
+												}
+											},
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "Services",
+													"url": "/services/"
+												}
+											},
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "Contact",
+													"url": "/contact/"
+												}
+											}
+										]
 									}
 								]
 							}

@@ -3,6 +3,8 @@ namespace Blockish\Extensions;
 
 use Blockish\Config\ExtensionList;
 use Blockish\ThemeBuilder\ClassicThemeBridge;
+use Blockish\ThemeBuilder\ClassicThemeLocations;
+use Blockish\ThemeBuilder\CustomTemplateRegistry;
 use Blockish\ThemeBuilder\DefaultPosts;
 use Blockish\ThemeBuilder\Enqueue;
 use Blockish\ThemeBuilder\PostType;
@@ -19,13 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 class ThemeBuilder {
 	use \Blockish\Traits\SingletonTrait;
 
-	const EXTENSION_OPTION = 'blockish_extension_list';
-
 	private function __construct() {
-		self::ensure_block_theme_deactivated();
-
 		add_action( 'init', array( $this, 'register_runtime_hooks' ), 5 );
-		add_action( 'after_switch_theme', array( $this, 'ensure_block_theme_deactivated' ) );
 	}
 
 	/**
@@ -41,34 +38,12 @@ class ThemeBuilder {
 		PostType::get_instance();
 		DefaultPosts::get_instance();
 		Enqueue::get_instance();
+		require_once BLOCKISH_INCLUDES_DIR . 'ThemeBuilder/theme-locations-api.php';
 		ClassicThemeBridge::register_hooks();
+		ClassicThemeLocations::register_hooks();
+		CustomTemplateRegistry::register_hooks();
 
 		add_filter( 'allowed_block_types_all', array( $this, 'restrict_template_part_inserter' ), 10, 2 );
-	}
-
-	/**
-	 * Turn off Theme Builder when a block theme is active.
-	 *
-	 * Runs as early as possible (plugins_loaded) so ExtensionList never caches TB as active.
-	 *
-	 * @return void
-	 */
-	public static function ensure_block_theme_deactivated() {
-		if ( self::is_available_for_site() ) {
-			return;
-		}
-
-		$saved = get_option( self::EXTENSION_OPTION, array() );
-		if ( ! is_array( $saved ) || empty( $saved['theme-builder']['status'] ) ) {
-			return;
-		}
-
-		if ( 'active' !== $saved['theme-builder']['status'] ) {
-			return;
-		}
-
-		$saved['theme-builder']['status'] = 'inactive';
-		update_option( self::EXTENSION_OPTION, $saved );
 	}
 
 	/**

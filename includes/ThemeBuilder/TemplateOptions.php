@@ -116,45 +116,154 @@ class TemplateOptions {
 	}
 
 	/**
-	 * WooCommerce block templates (Product Catalog, Cart, Checkout, etc.).
+	 * WooCommerce template slugs for Theme Builder (classic themes only).
+	 *
+	 * Core WC locations use a static catalog; product taxonomies come from
+	 * dynamic_taxonomy_template_options(); system pages from wc_get_page_id().
 	 *
 	 * @return array<int, array{slug:string,label:string,description:string,icon:string,group:string,initialContent:string}>
 	 */
 	private static function woocommerce_template_options() {
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			return array();
+		}
+
+		return array_merge(
+			self::woocommerce_static_template_options(),
+			self::woocommerce_system_page_options()
+		);
+	}
+
+	/**
+	 * Known WooCommerce template slugs + labels (Theme Builder catalog).
+	 *
+	 * @return array<string, array{label:string,description:string,icon:string}>
+	 */
+	private static function woocommerce_static_template_catalog() {
+		return array(
+			'archive-product'            => array(
+				'label'       => __( 'Product Catalog', 'blockish' ),
+				'description' => __( 'Displays the product catalog when no custom template is assigned to the Shop page.', 'blockish' ),
+				'icon'        => 'archive',
+			),
+			'single-product'             => array(
+				'label'       => __( 'Single Product', 'blockish' ),
+				'description' => __( 'Displays a single product on the front end.', 'blockish' ),
+				'icon'        => 'post',
+			),
+			'product-search-results'     => array(
+				'label'       => __( 'Product Search Results', 'blockish' ),
+				'description' => __( 'Displays search results for products.', 'blockish' ),
+				'icon'        => 'search',
+			),
+			'taxonomy-product_attribute' => array(
+				'label'       => __( 'Products by Attribute', 'blockish' ),
+				'description' => __( 'Displays products filtered by a product attribute.', 'blockish' ),
+				'icon'        => 'category',
+			),
+			'page-cart'                  => array(
+				'label'       => __( 'Cart', 'blockish' ),
+				'description' => __( 'Displays the cart page.', 'blockish' ),
+				'icon'        => 'cart',
+			),
+			'page-checkout'              => array(
+				'label'       => __( 'Checkout', 'blockish' ),
+				'description' => __( 'Displays the checkout page.', 'blockish' ),
+				'icon'        => 'cart',
+			),
+			'order-confirmation'         => array(
+				'label'       => __( 'Order Confirmation', 'blockish' ),
+				'description' => __( 'Displays the order confirmation page after checkout.', 'blockish' ),
+				'icon'        => 'page',
+			),
+			'coming-soon'                => array(
+				'label'       => __( 'Coming Soon', 'blockish' ),
+				'description' => __( 'Displays the WooCommerce coming soon page.', 'blockish' ),
+				'icon'        => 'page',
+			),
+		);
+	}
+
+	/**
+	 * @return array<int, array{slug:string,label:string,description:string,icon:string,group:string,initialContent:string}>
+	 */
+	private static function woocommerce_static_template_options() {
 		$options = array();
 
-		if ( ! class_exists( 'WooCommerce' ) || ! function_exists( 'get_block_templates' ) ) {
-			return $options;
-		}
-
-		$templates = get_block_templates( array(), 'wp_template' );
-		if ( ! is_array( $templates ) ) {
-			return $options;
-		}
-
-		foreach ( $templates as $template ) {
-			if ( ! self::is_woocommerce_block_template( $template ) ) {
-				continue;
-			}
-
-			$slug = isset( $template->slug ) ? (string) $template->slug : '';
-			if ( '' === $slug ) {
-				continue;
-			}
-
+		foreach ( self::woocommerce_static_template_catalog() as $slug => $meta ) {
 			$options[] = array(
 				'slug'           => $slug,
-				'label'          => ! empty( $template->title ) ? (string) $template->title : $slug,
-				'description'    => isset( $template->description ) ? (string) $template->description : '',
-				'icon'           => self::woocommerce_icon_for_slug( $slug ),
+				'label'          => $meta['label'],
+				'description'    => $meta['description'],
+				'icon'           => $meta['icon'],
 				'group'          => 'woocommerce',
-				'initialContent' => isset( $template->content ) ? (string) $template->content : '',
+				'initialContent' => '',
 			);
 		}
 
-		// WC system pages that are still regular pages (no dedicated block template yet).
-		foreach ( self::woocommerce_system_page_options() as $row ) {
-			$options[] = $row;
+		return $options;
+	}
+
+	/**
+	 * Known WooCommerce template part slugs + labels (Theme Builder catalog).
+	 *
+	 * @return array<string, array{label:string,description:string,icon:string}>
+	 */
+	private static function woocommerce_static_part_catalog() {
+		return array(
+			'mini-cart'                                  => array(
+				'label'       => __( 'Mini-Cart', 'blockish' ),
+				'description' => __( 'Template part for the mini cart drawer or dropdown.', 'blockish' ),
+				'icon'        => 'cart',
+			),
+			'checkout-header'                            => array(
+				'label'       => __( 'Checkout Header', 'blockish' ),
+				'description' => __( 'Header area shown on the checkout page.', 'blockish' ),
+				'icon'        => 'header',
+			),
+			'coming-soon-social-links'                   => array(
+				'label'       => __( 'Coming Soon Social Links', 'blockish' ),
+				'description' => __( 'Social links block for the coming soon template.', 'blockish' ),
+				'icon'        => 'layout',
+			),
+			'simple-product-add-to-cart-with-options'    => array(
+				'label'       => __( 'Simple Product: Add to Cart', 'blockish' ),
+				'description' => __( 'Add to cart area for simple products.', 'blockish' ),
+				'icon'        => 'cart',
+			),
+			'external-product-add-to-cart-with-options'  => array(
+				'label'       => __( 'External Product: Add to Cart', 'blockish' ),
+				'description' => __( 'Add to cart area for external/affiliate products.', 'blockish' ),
+				'icon'        => 'cart',
+			),
+			'variable-product-add-to-cart-with-options'  => array(
+				'label'       => __( 'Variable Product: Add to Cart', 'blockish' ),
+				'description' => __( 'Add to cart area for variable products.', 'blockish' ),
+				'icon'        => 'cart',
+			),
+			'grouped-product-add-to-cart-with-options'   => array(
+				'label'       => __( 'Grouped Product: Add to Cart', 'blockish' ),
+				'description' => __( 'Add to cart area for grouped products.', 'blockish' ),
+				'icon'        => 'cart',
+			),
+		);
+	}
+
+	/**
+	 * @return array<int, array{slug:string,label:string,description:string,icon:string,group:string,initialContent:string}>
+	 */
+	private static function woocommerce_static_part_options() {
+		$options = array();
+
+		foreach ( self::woocommerce_static_part_catalog() as $slug => $meta ) {
+			$options[] = array(
+				'slug'           => $slug,
+				'label'          => $meta['label'],
+				'description'    => $meta['description'],
+				'icon'           => $meta['icon'],
+				'group'          => 'woocommerce',
+				'initialContent' => '',
+			);
 		}
 
 		return $options;
@@ -218,89 +327,11 @@ class TemplateOptions {
 	 * @return array<int, array{slug:string,label:string,description:string,icon:string,group:string,initialContent:string}>
 	 */
 	private static function woocommerce_part_options() {
-		$options = array();
-
-		if ( ! class_exists( 'WooCommerce' ) || ! function_exists( 'get_block_templates' ) ) {
-			return $options;
+		if ( ! class_exists( 'WooCommerce' ) ) {
+			return array();
 		}
 
-		$parts = get_block_templates( array(), 'wp_template_part' );
-		if ( ! is_array( $parts ) ) {
-			return $options;
-		}
-
-		foreach ( $parts as $part ) {
-			if ( ! self::is_woocommerce_block_template( $part ) ) {
-				continue;
-			}
-
-			$slug = isset( $part->slug ) ? (string) $part->slug : '';
-			if ( '' === $slug ) {
-				continue;
-			}
-
-			$options[] = array(
-				'slug'           => $slug,
-				'label'          => ! empty( $part->title ) ? (string) $part->title : $slug,
-				'description'    => isset( $part->description ) ? (string) $part->description : '',
-				'icon'           => self::woocommerce_icon_for_slug( $slug ),
-				'group'          => 'woocommerce',
-				'initialContent' => isset( $part->content ) ? (string) $part->content : '',
-			);
-		}
-
-		return $options;
-	}
-
-	/**
-	 * @param object $template Block template object.
-	 * @return bool
-	 */
-	private static function is_woocommerce_block_template( $template ) {
-		if ( ! is_object( $template ) ) {
-			return false;
-		}
-
-		$theme  = isset( $template->theme ) ? (string) $template->theme : '';
-		$source = isset( $template->source ) ? (string) $template->source : '';
-		$slug   = isset( $template->slug ) ? (string) $template->slug : '';
-
-		if ( false !== strpos( $theme, 'woocommerce' ) ) {
-			return true;
-		}
-
-		if ( 'plugin' !== $source ) {
-			return false;
-		}
-
-		$utils = '\\Automattic\\WooCommerce\\Blocks\\Utils\\BlockTemplateUtils';
-		if ( class_exists( $utils ) && is_callable( array( $utils, 'get_template' ) ) ) {
-			return null !== call_user_func( array( $utils, 'get_template' ), $slug );
-		}
-
-		$known = array(
-			'archive-product',
-			'single-product',
-			'product-search-results',
-			'taxonomy-product_attribute',
-			'taxonomy-product_cat',
-			'taxonomy-product_tag',
-			'taxonomy-product_brand',
-			'page-cart',
-			'page-checkout',
-			'page-my-account',
-			'order-confirmation',
-			'coming-soon',
-			'mini-cart',
-			'checkout-header',
-			'coming-soon-social-links',
-			'simple-product-add-to-cart-with-options',
-			'external-product-add-to-cart-with-options',
-			'variable-product-add-to-cart-with-options',
-			'grouped-product-add-to-cart-with-options',
-		);
-
-		return in_array( $slug, $known, true );
+		return self::woocommerce_static_part_options();
 	}
 
 	/**
@@ -566,6 +597,21 @@ class TemplateOptions {
 
 		$object_types = isset( $taxonomy->object_type ) ? (array) $taxonomy->object_type : array();
 		return in_array( 'product', $object_types, true );
+	}
+
+	/**
+	 * WooCommerce catalog part slugs (mini-cart, checkout-header, …).
+	 *
+	 * @param string $slug Part slug.
+	 * @return bool
+	 */
+	public static function is_woocommerce_part_slug( $slug ) {
+		$slug = sanitize_title( (string) $slug );
+		if ( '' === $slug ) {
+			return false;
+		}
+
+		return array_key_exists( $slug, self::woocommerce_static_part_catalog() );
 	}
 
 	/**
