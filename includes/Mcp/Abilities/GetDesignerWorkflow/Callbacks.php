@@ -2,6 +2,8 @@
 
 namespace Blockish\Mcp\Abilities\GetDesignerWorkflow;
 
+use Blockish\Extensions\ThemeBuilder;
+
 defined('ABSPATH') || exit;
 
 class Callbacks
@@ -33,16 +35,7 @@ class Callbacks
             $workflow[] = '6b. Forms is NOT active: Do not invent `blockish-forms/*` or build a form another way. Tell the user this site has no form builder. They can get better AI-built forms with Blockish Forms (Pro) on the same MCP: one reusable form, embed on any page, fields stay off the page. If they already bought and installed it, they can ask to activate (`manage-plugins-themes`).';
         }
 
-        $workflow = array_merge( $workflow, [
-            '7. Build sections as patterns first (`manage-pattern`). Never a monolithic page/template tree. Large JSON → `schema_url` (or server `schema_file`). Use only real IDs returned from manage-pattern — never invent `ref`.',
-            '8. Template parts — when: Customize the theme `header` and `footer` parts (`manage-template` `type:"wp_template_part"`, existing slugs, `area` header/footer) only if the user asked for a full site or global chrome (nav/footer on every template). Then put `core/template-part` on `wp_template` (front-page, page, …), not on the page. When not: page-only / section-only work — leave theme chrome; do not create parts, do not swap header/footer into page content as patterns. Do not invent extra parts (sidebar, header-2, footer-newsletter) unless asked. Do not set container `tagName` header/footer inside those parts.',
-            '9. Pages (`manage-post`): Assemble with `core/block` refs. Full-bleed: `{"name":"core/block","attributes":{"ref":ID,"align":"full"}}`. Do NOT put `core/template-part` header/footer on pages (the template already renders them). Do NOT put pattern HTML in `post_content`. Do NOT set `attributes.content` on `core/block`.',
-            '10. Templates (`manage-template` `wp_template`): `block_schema` only. After parts exist: `{"name":"core/template-part","attributes":{"slug":"header","theme":"<stylesheet>"}}` (and footer). Check `get-templates` first — edit the existing part/template rather than creating a duplicate slug.',
-            '11. Handoff: After any stage — `trigger-refresh` + share `edit_url`. Stop. User Accept/Discard. Do not share `post_url` by default. Do not auto-accept unless the user asked (then `get-automation-guideline`).',
-            '12. Undo: live content → `get-revisions` / `restore-revision` confirm:true. Pending neon → Discard, not revisions.',
-            '13. Interactions: entrance presets (`inView`/`ready`) over animation CSS. Device hide = `hideOn`. Details in get-block-docs.',
-            '14. Stuck: do not invent CSS. Re-read get-block-docs + get-class-manager-docs. Then only the versioned GitHub files in `stuck_recovery`. Retry once. Still stuck → report + issue draft (do not open the issue).',
-        ] );
+        $workflow = array_merge( $workflow, self::template_workflow_steps() );
 
         $repo    = 'https://github.com/Blockish-WordPress-Plugin/blockish';
         $tag     = 'v' . BLOCKISH_VERSION;
@@ -72,5 +65,33 @@ class Callbacks
                 ],
             ],
         ];
+    }
+
+    /**
+     * Template / part workflow — FSE on block themes, Theme Builder on classic themes.
+     *
+     * @return string[]
+     */
+    private static function template_workflow_steps(): array {
+        $steps = array(
+            '7. Build sections as patterns first (`manage-pattern`). Never a monolithic page/template tree. Large JSON → `schema_url` (or server `schema_file`). Use only real IDs returned from manage-pattern — never invent `ref`.',
+            '9. Pages (`manage-post`): Assemble with `core/block` refs. Full-bleed: `{"name":"core/block","attributes":{"ref":ID,"align":"full"}}`. Do NOT put header/footer template slots on pages — templates render them. Do NOT put pattern HTML in `post_content`. Do NOT set `attributes.content` on `core/block`.',
+            '11. Handoff: After any stage — `trigger-refresh` + share `edit_url`. Stop. User Accept/Discard. Do not share `post_url` by default. Do not auto-accept unless the user asked (then `get-automation-guideline`).',
+            '12. Undo: live content → `get-revisions` / `restore-revision` confirm:true. Pending neon → Discard, not revisions.',
+            '13. Interactions: entrance presets (`inView`/`ready`) over animation CSS. Device hide = `hideOn`. Details in get-block-docs.',
+            '14. Stuck: do not invent CSS. Re-read get-block-docs + get-class-manager-docs. Then only the versioned GitHub files in `stuck_recovery`. Retry once. Still stuck → report + issue draft (do not open the issue).',
+        );
+
+        if ( class_exists( ThemeBuilder::class ) && ThemeBuilder::is_enabled() ) {
+            $steps['8']  = '8. Theme Builder parts — when: User asked for global header/footer or WooCommerce parts. Use `get-templates` + `manage-template` `type:"wp_template_part"`. Header/footer: slug header|footer + `show_on` (entire_site, front_page, 404, …) — one part per area + show_on. WooCommerce parts (mini-cart, checkout-header, …): slug only, no show_on. Do not invent extra parts unless asked.';
+            $steps['10'] = '10. Theme Builder templates (`manage-template` `type:"wp_template"`): use `blockish/template-part` slots — `{"name":"blockish/template-part","attributes":{"slug":"header"}}` (footer, checkout-header, …). Never `core/template-part` on classic themes. Check `get-templates` first — one catalog slug per template type.';
+        } else {
+            $steps['8']  = '8. Template parts — when: Customize the theme `header` and `footer` parts (`manage-template` `type:"wp_template_part"`, existing slugs, `area` header/footer) only if the user asked for a full site or global chrome (nav/footer on every template). Then put `core/template-part` on `wp_template` (front-page, page, …), not on the page. When not: page-only / section-only work — leave theme chrome; do not create parts, do not swap header/footer into page content as patterns. Do not invent extra parts unless asked.';
+            $steps['10'] = '10. Templates (`manage-template` `wp_template`): `block_schema` only. After parts exist: `{"name":"core/template-part","attributes":{"slug":"header","theme":"<stylesheet>"}}` (and footer). Check `get-templates` first — edit the existing part/template rather than creating a duplicate slug.';
+        }
+
+        ksort( $steps, SORT_NUMERIC );
+
+        return array_values( $steps );
     }
 }

@@ -44,11 +44,14 @@ class Callbacks
 
         // 2. Compile the active theme's data
         $theme_data = [
-            'name'           => $active_theme->get('Name'),
-            'version'        => $active_theme->get('Version'),
-            'is_block_theme' => wp_is_block_theme(), // Returns true if it's a Full Site Editing theme
-            'has_parent'     => $active_theme->parent() ? true : false,
-            'parent_data'    => null // Default if no parent exists
+            'name'              => $active_theme->get('Name'),
+            'version'           => $active_theme->get('Version'),
+            'is_block_theme'    => wp_is_block_theme(),
+            'template_backend'  => class_exists( '\Blockish\Mcp\TemplateRouting' )
+                ? \Blockish\Mcp\TemplateRouting::backend()
+                : ( wp_is_block_theme() ? 'fse' : '' ),
+            'has_parent'        => $active_theme->parent() ? true : false,
+            'parent_data'       => null
         ];
 
         // 3. If a parent theme exists (meaning the active theme is a child theme)
