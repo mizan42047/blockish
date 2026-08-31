@@ -237,7 +237,10 @@ export default function CreateFlow( { kind = 'template', onCancel, onSuccess } )
 
 			const item = await saveEntityRecord( 'postType', postType, {
 				title,
-				content: getInitialContent( kind, row.slug ),
+				content:
+					row.group === 'woocommerce'
+						? ''
+						: getInitialContent( kind, row.slug ),
 				status: 'publish',
 				meta,
 			} );

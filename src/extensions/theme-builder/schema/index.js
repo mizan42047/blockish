@@ -17,10 +17,7 @@ import notFoundMain from './templates/404.main.json';
 
 import partHeader from './parts/header.json';
 import partFooter from './parts/footer.json';
-import {
-	getWooCommerceSchema,
-	isWooCommerceSchemaSlug,
-} from './woocommerce';
+import { isWooCommerceSchemaSlug } from './woocommerce';
 
 const pageSchema = () => wrapChrome( pageMain );
 const pageNoTitleSchema = () => wrapChrome( pageNoTitleMain );
@@ -154,6 +151,9 @@ export {
 	getLoopMainBlocks,
 } from './loopTemplates';
 export {
-	getWooCommerceSchema,
 	isWooCommerceSchemaSlug,
+	isWooCommerceTemplateSlug,
+	isWooCommerceProductTaxonomyTemplateSlug,
+	WOOCOMMERCE_TEMPLATE_SLUGS,
+	WOOCOMMERCE_PART_SLUGS,
 } from './woocommerce';

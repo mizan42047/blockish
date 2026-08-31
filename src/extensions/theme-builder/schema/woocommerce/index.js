@@ -1,61 +1,62 @@
 /**
- * WooCommerce template / part block_schema (final Blockish JSON).
- * Same pattern as templates/home.main.json — no runtime converter.
+ * WooCommerce Theme Builder slugs — catalog parity with TemplateOptions.php.
+ * Templates/parts start empty; user builds with WooCommerce blocks in the editor.
  */
-import archiveProduct from './templates/archive-product.json';
-import singleProduct from './templates/single-product.json';
-import productSearchResults from './templates/product-search-results.json';
-import taxonomyProductAttribute from './templates/taxonomy-product_attribute.json';
-import pageCart from './templates/page-cart.json';
-import pageCheckout from './templates/page-checkout.json';
-import orderConfirmation from './templates/order-confirmation.json';
-import comingSoon from './templates/coming-soon.json';
 
-import miniCart from './parts/mini-cart.json';
-import checkoutHeader from './parts/checkout-header.json';
-import comingSoonSocialLinks from './parts/coming-soon-social-links.json';
-import simpleAddToCart from './parts/simple-product-add-to-cart-with-options.json';
-import externalAddToCart from './parts/external-product-add-to-cart-with-options.json';
-import variableAddToCart from './parts/variable-product-add-to-cart-with-options.json';
-import groupedAddToCart from './parts/grouped-product-add-to-cart-with-options.json';
-
-/** @type {Record<string, Array>} */
-const TEMPLATE_SCHEMAS = {
-	'archive-product': archiveProduct,
-	'single-product': singleProduct,
-	'product-search-results': productSearchResults,
-	'taxonomy-product_attribute': taxonomyProductAttribute,
-	'page-cart': pageCart,
-	'page-checkout': pageCheckout,
-	'order-confirmation': orderConfirmation,
-	'coming-soon': comingSoon,
-};
-
-/** Same layout as product attribute taxonomy archives. */
-const TAXONOMY_TEMPLATE_ALIASES = [
-	'taxonomy-product_cat',
-	'taxonomy-product_tag',
-	'taxonomy-product_brand',
-];
-
-/** @type {Record<string, Array>} */
-const PART_SCHEMAS = {
-	'mini-cart': miniCart,
-	'checkout-header': checkoutHeader,
-	'coming-soon-social-links': comingSoonSocialLinks,
-	'simple-product-add-to-cart-with-options': simpleAddToCart,
-	'external-product-add-to-cart-with-options': externalAddToCart,
-	'variable-product-add-to-cart-with-options': variableAddToCart,
-	'grouped-product-add-to-cart-with-options': groupedAddToCart,
-};
-
-const ALL_TEMPLATE_SLUGS = [
-	...Object.keys( TEMPLATE_SCHEMAS ),
-	...TAXONOMY_TEMPLATE_ALIASES,
+/** @type {readonly string[]} */
+export const WOOCOMMERCE_TEMPLATE_SLUGS = [
+	'archive-product',
+	'single-product',
+	'product-search-results',
+	'taxonomy-product_attribute',
+	'page-cart',
+	'page-checkout',
+	'order-confirmation',
+	'coming-soon',
 	'page-my-account',
 ];
 
-const ALL_PART_SLUGS = Object.keys( PART_SCHEMAS );
+/** @type {readonly string[]} */
+export const WOOCOMMERCE_PART_SLUGS = [
+	'mini-cart',
+	'checkout-header',
+	'coming-soon-social-links',
+	'simple-product-add-to-cart-with-options',
+	'external-product-add-to-cart-with-options',
+	'variable-product-add-to-cart-with-options',
+	'grouped-product-add-to-cart-with-options',
+];
+
+const TEMPLATE_SLUG_SET = new Set( WOOCOMMERCE_TEMPLATE_SLUGS );
+const PART_SLUG_SET = new Set( WOOCOMMERCE_PART_SLUGS );
+
+/**
+ * Product taxonomy templates (taxonomy-product_cat, taxonomy-pa_color, …).
+ *
+ * @param {string} slug
+ * @return {boolean}
+ */
+export function isWooCommerceProductTaxonomyTemplateSlug( slug ) {
+	return (
+		slug.startsWith( 'taxonomy-product_' ) ||
+		slug.startsWith( 'taxonomy-pa_' )
+	);
+}
+
+/**
+ * @param {string} slug
+ * @return {boolean}
+ */
+export function isWooCommerceTemplateSlug( slug ) {
+	const key = ( slug || '' ).toString();
+	if ( ! key ) {
+		return false;
+	}
+	return (
+		TEMPLATE_SLUG_SET.has( key ) ||
+		isWooCommerceProductTaxonomyTemplateSlug( key )
+	);
+}
 
 /**
  * @param {'template'|'part'} kind
@@ -64,31 +65,11 @@ const ALL_PART_SLUGS = Object.keys( PART_SCHEMAS );
  */
 export function isWooCommerceSchemaSlug( kind, slug ) {
 	const key = ( slug || '' ).toString();
+	if ( ! key ) {
+		return false;
+	}
 	if ( kind === 'part' ) {
-		return ALL_PART_SLUGS.includes( key );
+		return PART_SLUG_SET.has( key );
 	}
-	return ALL_TEMPLATE_SLUGS.includes( key );
-}
-
-/**
- * @param {'template'|'part'} kind
- * @param {string} slug
- * @return {Array|null}
- */
-export function getWooCommerceSchema( kind, slug ) {
-	const key = ( slug || '' ).toString();
-
-	if ( kind === 'part' ) {
-		return PART_SCHEMAS[ key ] || null;
-	}
-
-	if ( TEMPLATE_SCHEMAS[ key ] ) {
-		return TEMPLATE_SCHEMAS[ key ];
-	}
-
-	if ( TAXONOMY_TEMPLATE_ALIASES.includes( key ) ) {
-		return TEMPLATE_SCHEMAS[ 'taxonomy-product_attribute' ];
-	}
-
-	return null;
+	return isWooCommerceTemplateSlug( key );
 }
