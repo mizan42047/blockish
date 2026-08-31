@@ -1,0 +1,60 @@
+@import './library/style.scss';
+@import './editor/style.scss';
+
+/* Title/trash chrome only on template/part editors (not the library screen). */
+body.post-type-blockish_tb:not(.blockish-tb-library-screen) {
+	.editor-post-title,
+	.editor-post-title__input,
+	.edit-post-visual-editor__post-title-wrapper,
+	.editor-visual-editor__post-title-wrapper {
+		display: none !important;
+	}
+
+	.editor-post-card-panel,
+	.editor-all-actions-button,
+	.editor-post-summary .editor-post-featured-image,
+	.editor-post-summary .editor-post-excerpt,
+	.editor-post-content-information,
+	.editor-post-last-edited-panel,
+	.editor-post-trash,
+	.edit-post-post-trash {
+		display: none !important;
+	}
+
+	.interface-pinned-items [aria-label='Theme Builder Settings'] {
+		display: none !important;
+	}
+}
+
+/* Library list: fullscreen over WP admin chrome */
+body.blockish-tb-library-screen.wp-toolbar {
+	padding-top: 0 !important;
+}
+
+body.blockish-tb-library-screen {
+	#adminmenumain,
+	#adminmenuback,
+	#adminmenuwrap,
+	#wpadminbar,
+	#wpfooter,
+	#screen-meta,
+	#screen-meta-links {
+		display: none !important;
+	}
+
+	#wpcontent,
+	#wpbody,
+	#wpbody-content {
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+
+	#editor.blockish-tb-library-root {
+		position: fixed;
+		inset: 0;
+		z-index: 100000;
+		overflow: hidden;
+		width: 100%;
+		max-width: 100%;
+	}
+}

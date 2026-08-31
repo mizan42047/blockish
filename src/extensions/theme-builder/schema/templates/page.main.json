@@ -1,0 +1,21 @@
+[
+	{
+		"name": "blockish/post-featured-image",
+		"attributes": {
+			"imageSize": { "value": "large", "label": "Large" }
+		}
+	},
+	{
+		"name": "blockish/post-title",
+		"attributes": {
+			"tag": { "label": "H1", "value": "h1" },
+			"linkToPost": false
+		}
+	},
+	{
+		"name": "blockish/post-content",
+		"attributes": {
+			"align": "full"
+		}
+	}
+]

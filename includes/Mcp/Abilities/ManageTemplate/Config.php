@@ -12,7 +12,7 @@ class Config
     {
         return [
             'label'               => __('Create or Edit Template', 'blockish'),
-            'description'         => __('Creates, updates or deletes a Full Site Editing (FSE) template or template part (set delete to remove); returns id, slug, edit_url and action. Pass Blockish layouts as block_schema, never raw HTML. Never wrap with core/group — use one blockish/container with tagName main around blockish/post-content. front-page, page, and single share that skeleton; Homepage content is the page assigned under Reading, not pattern refs in the template. core/template-part and core/block have no innerBlocks. Staged as blockish/ai-preview. Share edit_url for Accept/Discard. Call get-designer-workflow and get-block-docs first. Always trigger-refresh after staging.', 'blockish'),
+            'description'         => __('Creates, updates or deletes a template or template part. Block themes: FSE wp_template / wp_template_part. Classic themes with Theme Builder: same type values map to TB templates and parts. Pass Blockish layouts as block_schema, never raw HTML. Staged as blockish/ai-preview. Share edit_url for Accept/Discard. Call get-designer-workflow and get-block-docs first. Always trigger-refresh after staging.', 'blockish'),
             'category'            => 'blockish',
             'input_schema'        => [
                 'type'       => 'object',
@@ -20,7 +20,17 @@ class Config
                     'slug'         => ['type' => 'string', 'description' => 'The slug of the template (e.g., "header", "single", "index").'],
                     'type'         => ['type' => 'string', 'description' => '"wp_template" or "wp_template_part". Defaults to "wp_template".', 'enum' => ['wp_template', 'wp_template_part']],
                     'title'        => ['type' => 'string', 'description' => 'Human-readable title.'],
-                    'area'         => ['type' => 'string', 'description' => 'For template parts, the area it belongs to (e.g., "header", "footer", "uncategorized").'],
+                    'area'         => ['type' => 'string', 'description' => 'For template parts, the area (header, footer). Theme Builder header/footer parts also accept show_on.'],
+                    'show_on'      => [
+                        'type'        => 'string',
+                        'description' => 'Theme Builder header/footer parts only. One of: entire_site, front_page, singular, archive, search, 404, post_type:post, post_type:page.',
+                    ],
+                    'conditions'   => [
+                        'type'        => 'array',
+                        'description' => 'Theme Builder header/footer parts only. Alternative to show_on — same shape stored in blockish_tb_conditions.',
+                    ],
+                    'active'       => ['type' => 'boolean', 'description' => 'Theme Builder only. Whether the template/part is active on the frontend.'],
+                    'priority'     => ['type' => 'integer', 'description' => 'Theme Builder header/footer parts only. Higher wins when multiple parts match (default 10).'],
                     'delete'       => ['type' => 'boolean', 'description' => 'Set to true to delete this template customization, falling back to the theme default.'],
                     'block_schema' => [
                         'type'        => 'array',
@@ -49,6 +59,7 @@ class Config
             'output_schema'       => [
                 'type'       => 'object',
                 'properties' => [
+                    'backend'       => ['type' => 'string', 'description' => 'fse or theme_builder.'],
                     'id'            => ['type' => 'integer'],
                     'slug'          => ['type' => 'string'],
                     'edit_url'      => ['type' => 'string', 'description' => 'URL to edit the template in the Site Editor. Share this when schema is staged.'],
@@ -62,7 +73,7 @@ class Config
             'permission_callback' => fn() => current_user_can('edit_theme_options'),
             'meta'                => [
                 'mcp' => ['public' => true],
-                'usage_notes' => 'Staged as blockish/ai-preview. ALWAYS trigger-refresh and share edit_url. Never core/group. Never pattern refs on wp_template — those go on the page. Same skeleton for front-page, page, single: [{"name":"core/template-part","attributes":{"slug":"header","theme":"<stylesheet>"}},{"name":"blockish/container","attributes":{"tagName":{"label":"Main","value":"main"},"flexDirection":{"Desktop":"column"},"alignItems":{"Desktop":"stretch"},"justifyContent":{"Desktop":"flex-start"},"innerContentWidth":true},"innerBlocks":[{"name":"blockish/post-content","attributes":{"align":"full"}}]},{"name":"core/template-part","attributes":{"slug":"footer","theme":"<stylesheet>"}}]. Header/footer parts: tagName stays div. Call get-block-docs for blockish/container and blockish/post-content.',
+                'usage_notes' => 'Same tool on block themes (FSE) and classic + Theme Builder. FSE: core/template-part with theme slug on wp_template. Theme Builder: blockish/template-part with area or catalog slug (checkout-header, mini-cart, …). Header/footer parts: set show_on. TB template example: [{"name":"blockish/template-part","attributes":{"slug":"header"}},{"name":"blockish/container","attributes":{"tagName":{"label":"Main","value":"main"},"flexDirection":{"Desktop":"column"},"innerContentWidth":true},"innerBlocks":[{"name":"blockish/post-content","attributes":{"align":"full"}}]},{"name":"blockish/template-part","attributes":{"slug":"footer"}}]. ALWAYS trigger-refresh (numeric id) and share edit_url.',
             ],
         ];
     }

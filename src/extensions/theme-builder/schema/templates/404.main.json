@@ -1,0 +1,111 @@
+[
+	{
+		"name": "blockish/container",
+		"attributes": {
+			"isVariationPicked": true,
+			"containerWidth": "align-custom-width",
+			"customWidthContainer": { "Desktop": "36rem" },
+			"flexDirection": { "Desktop": { "label": "Column", "value": "column" } },
+			"alignItems": { "Desktop": { "label": "Center", "value": "center" } },
+			"justifyContent": { "Desktop": { "label": "Center", "value": "center" } },
+			"rowGap": { "Desktop": "1.25rem" },
+			"widthType": { "Desktop": { "label": "Full", "value": "100%" } }
+		},
+		"innerBlocks": [
+			{
+				"name": "blockish/heading",
+				"attributes": {
+					"content": "404",
+					"tag": { "label": "H1", "value": "h1" },
+					"alignment": { "Desktop": { "label": "Center", "value": "center" } },
+					"margin": {
+						"Desktop": {
+							"top": "0",
+							"right": "0",
+							"bottom": "0",
+							"left": "0"
+						}
+					}
+				}
+			},
+			{
+				"name": "blockish/heading",
+				"attributes": {
+					"content": "Page not found",
+					"tag": { "label": "H2", "value": "h2" },
+					"alignment": { "Desktop": { "label": "Center", "value": "center" } },
+					"margin": {
+						"Desktop": {
+							"top": "0",
+							"right": "0",
+							"bottom": "0",
+							"left": "0"
+						}
+					}
+				}
+			},
+			{
+				"name": "blockish/paragraph",
+				"attributes": {
+					"content": "The page you are looking for does not exist, or it has been moved. Search the site or head back to the homepage.",
+					"alignment": { "Desktop": { "label": "Center", "value": "center" } },
+					"maxWidth": { "Desktop": "28rem" },
+					"margin": {
+						"Desktop": {
+							"top": "0",
+							"right": "0",
+							"bottom": "0.5rem",
+							"left": "0"
+						}
+					}
+				}
+			},
+			{
+				"name": "blockish/container",
+				"attributes": {
+					"isVariationPicked": true,
+					"containerWidth": "align-custom-width",
+					"flexDirection": { "Desktop": { "label": "Row", "value": "row" } },
+					"flexWrap": { "Desktop": "wrap" },
+					"justifyContent": { "Desktop": { "label": "Center", "value": "center" } },
+					"alignItems": { "Desktop": { "label": "Center", "value": "center" } },
+					"columnGap": { "Desktop": "1rem" },
+					"rowGap": { "Desktop": "1rem" },
+					"widthType": { "Desktop": { "label": "Full", "value": "100%" } }
+				},
+				"innerBlocks": [
+					{
+						"name": "core/search",
+						"attributes": {
+							"label": "Search",
+							"showLabel": false,
+							"placeholder": "Search the site…",
+							"width": 100,
+							"widthUnit": "%",
+							"buttonText": "Search",
+							"buttonPosition": "button-inside",
+							"buttonUseIcon": true
+						}
+					},
+					{
+						"name": "blockish/button",
+						"attributes": {
+							"text": "Back to home",
+							"url": {
+								"url": "/",
+								"newTab": false,
+								"noFollow": false
+							},
+							"buttonPlacement": {
+								"Desktop": {
+									"label": "Center",
+									"value": "center"
+								}
+							}
+						}
+					}
+				]
+			}
+		]
+	}
+]

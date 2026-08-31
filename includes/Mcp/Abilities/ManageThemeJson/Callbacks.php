@@ -92,7 +92,7 @@ class Callbacks
         } else {
             $post_id = (int) wp_insert_post([
                 'post_type'    => 'wp_global_styles',
-                'post_name'    => 'wp-global-styles-' . urlencode(wp_get_theme()->get_stylesheet()),
+                'post_name'    => 'wp-global-styles-' . rawurlencode(wp_get_theme()->get_stylesheet()),
                 'post_title'   => 'Custom Styles',
                 'post_status'  => 'publish',
                 'post_content' => $post_content,
@@ -372,11 +372,6 @@ class Callbacks
 
             $err = $check_presets(['typography', 'fontFamilies'], ['fontFamily', 'slug']);
             if ($err) return $err;
-        }
-
-        if (!isset($theme_json['settings']) && !isset($theme_json['styles']) && empty($theme_json['reset'])) {
-            // Allow empty merge objects only if at least one known section — empty object already rejected upstream.
-            // Partial updates may send only settings or only styles.
         }
 
         return null;

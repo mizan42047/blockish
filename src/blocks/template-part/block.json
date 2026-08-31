@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "blockish/template-part",
+  "version": "1.0.0",
+  "title": "Template Part",
+  "category": "blockish-framework",
+  "description": "Placeholder slot for a Theme Builder part. Matching parts (by area + conditions) render here.",
+  "keywords": [
+    "blockish",
+    "template",
+    "part",
+    "header",
+    "footer",
+    "placeholder",
+    "slot",
+    "theme builder"
+  ],
+  "textdomain": "blockish",
+  "attributes": {
+    "area": {
+      "type": "string",
+      "default": "header"
+    },
+    "slug": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "supports": {
+    "html": false,
+    "align": false,
+    "reusable": false
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

@@ -1,0 +1,59 @@
+[
+	{
+		"name": "blockish/post-title",
+		"attributes": {
+			"tag": { "label": "H1", "value": "h1" },
+			"linkToPost": false
+		}
+	},
+	{
+		"name": "blockish/post-featured-image",
+		"attributes": {
+			"imageSize": { "value": "large", "label": "Large" }
+		}
+	},
+	{
+		"name": "blockish/post-info",
+		"attributes": {
+			"items": [
+				{
+					"type": { "value": "author", "label": "Author" },
+					"beforeText": "Written by ",
+					"link": true,
+					"icon": { "value": "none", "label": "None" },
+					"showAvatar": false,
+					"avatarSize": 16
+				},
+				{
+					"type": { "value": "date", "label": "Date" },
+					"beforeText": "",
+					"link": true,
+					"icon": { "value": "none", "label": "None" },
+					"dateFormat": { "value": "default", "label": "Default" }
+				}
+			]
+		}
+	},
+	{
+		"name": "blockish/post-content",
+		"attributes": {
+			"align": "full"
+		}
+	},
+	{
+		"name": "blockish/post-info",
+		"attributes": {
+			"items": [
+				{
+					"type": { "value": "terms", "label": "Terms" },
+					"beforeText": "",
+					"link": true,
+					"icon": { "value": "none", "label": "None" },
+					"taxonomy": { "value": "post_tag", "label": "Tags" },
+					"termsCount": 10,
+					"termsSeparator": "  "
+				}
+			]
+		}
+	}
+]

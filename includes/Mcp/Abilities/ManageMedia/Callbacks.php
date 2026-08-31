@@ -126,7 +126,8 @@ class Callbacks
 					$base64_parts = explode( 'base64,', $base64_data, 2 );
 					$base64_data  = $base64_parts[1];
 				}
-				$file_content = base64_decode( $base64_data );
+				// phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode -- MCP media upload payload.
+				$file_content = base64_decode( $base64_data, true );
 				if ( false === $file_content ) {
 					return [ 'error' => 'Invalid base64_data.' ];
 				}
@@ -152,7 +153,7 @@ class Callbacks
 
 			$wp_filetype = wp_check_filetype( $filename, null );
 			if ( empty( $wp_filetype['type'] ) ) {
-				@unlink( $upload['file'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				wp_delete_file( $upload['file'] );
 				return [ 'error' => 'Unsupported or unrecognized file type for: ' . $filename ];
 			}
 
@@ -166,7 +167,7 @@ class Callbacks
 			$attachment_id = wp_insert_attachment( $attachment, $upload['file'], $post_id );
 
 			if ( is_wp_error( $attachment_id ) ) {
-				@unlink( $upload['file'] ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				wp_delete_file( $upload['file'] );
 				return [ 'error' => $attachment_id->get_error_message() ];
 			}
 
@@ -191,7 +192,7 @@ class Callbacks
 
 			$attachment_id = media_handle_sideload( $file, $post_id, $title ? (string) $title : null );
 			if ( is_wp_error( $attachment_id ) ) {
-				@unlink( $tmp ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				wp_delete_file( $tmp );
 				return [ 'error' => $attachment_id->get_error_message() ];
 			}
 		}

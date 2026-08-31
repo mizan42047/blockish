@@ -1,0 +1,37 @@
+[
+	{
+		"name": "blockish/query-title",
+		"attributes": {
+			"type": { "label": "Search", "value": "search" },
+			"showPrefix": true,
+			"showSearchTerm": true,
+			"tag": { "label": "H1", "value": "h1" },
+			"margin": {
+				"Desktop": {
+					"top": "var:preset|spacing|30",
+					"right": "0",
+					"bottom": "var:preset|spacing|40",
+					"left": "0"
+				}
+			}
+		}
+	},
+	{
+		"name": "core/search",
+		"attributes": {
+			"label": "Search",
+			"showLabel": false,
+			"placeholder": "Type here…",
+			"buttonText": "Search",
+			"buttonPosition": "button-inside",
+			"buttonUseIcon": true,
+			"style": {
+				"spacing": {
+					"margin": {
+						"bottom": "var:preset|spacing|30"
+					}
+				}
+			}
+		}
+	}
+]

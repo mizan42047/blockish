@@ -12,16 +12,18 @@
 		flex-shrink: 0;
 	}
 
-	&.is-color-official {
-		.blockish-social-icon-item__link {
-			background-color: var(--blockish-social-icon-official-color, #2563eb);
-		}
+	/*
+	 * Color + fill chrome must beat theme `a { color: currentColor }` / link resets.
+	 * Do not wrap these in :where() — that drops specificity to 0 and themes win.
+	 */
+	&.is-color-official .blockish-social-icon-item__link {
+		background-color: var(--blockish-social-icon-official-color, #2563eb);
+		color: var(--blockish-social-icons-secondary-color, #ffffff);
 	}
 
-	&.is-color-custom {
-		.blockish-social-icon-item__link {
-			background-color: var(--blockish-social-icons-primary-color, #111827);
-		}
+	&.is-color-custom .blockish-social-icon-item__link {
+		background-color: var(--blockish-social-icons-primary-color, #111827);
+		color: var(--blockish-social-icons-secondary-color, #ffffff);
 	}
 
 	&.shape-square {
@@ -66,17 +68,14 @@
 	}
 }
 
-:where(.blockish-social-icons){
+/* Soft layout defaults — attrs / convert-css can override. */
+:where(.blockish-social-icons) {
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: center;
 	column-gap: 12px;
 	row-gap: 12px;
 	--blockish-social-icons-secondary-color: #ffffff;
-}
-
-:where(.blockish-social-icons .blockish-social-icon-item__link) {
-	color: var(--blockish-social-icons-secondary-color, #ffffff);
 }
 
 :where(.blockish-social-icons .blockish-social-icon-item__link:hover) {

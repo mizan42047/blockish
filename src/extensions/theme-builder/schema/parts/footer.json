@@ -1,0 +1,611 @@
+[
+	{
+		"name": "blockish/container",
+		"attributes": {
+			"isVariationPicked": true,
+			"innerContentWidth": true,
+			"flexDirection": {
+				"Desktop": {
+					"label": "Column",
+					"value": "column"
+				}
+			},
+			"justifyContent": {
+				"Desktop": {
+					"label": "Start",
+					"value": "flex-start"
+				}
+			},
+			"alignItems": {
+				"Desktop": {
+					"label": "Stretch",
+					"value": "stretch"
+				}
+			},
+			"padding": {
+				"Desktop": {
+					"top": "64px",
+					"right": "24px",
+					"bottom": "0",
+					"left": "24px"
+				}
+			},
+			"metadata": {
+				"name": "Footer"
+			}
+		},
+		"innerBlocks": [
+			{
+				"name": "blockish/container",
+				"attributes": {
+					"isVariationPicked": true,
+					"containerWidth": "align-custom-width",
+					"customWidthContainer": [],
+					"flexDirection": {
+						"Desktop": {
+							"label": "Column",
+							"value": "column"
+						}
+					},
+					"justifyContent": [],
+					"alignItems": {
+						"Desktop": {
+							"label": "Stretch",
+							"value": "stretch"
+						}
+					},
+					"margin": {
+						"Desktop": {
+							"top": "0",
+							"right": "auto",
+							"bottom": "0",
+							"left": "auto"
+						}
+					},
+					"widthType": {
+						"Desktop": {
+							"label": "Full",
+							"value": "100%"
+						}
+					},
+					"metadata": {
+						"name": "Footer inner"
+					}
+				},
+				"innerBlocks": [
+					{
+						"name": "blockish/container",
+						"attributes": {
+							"isVariationPicked": true,
+							"containerWidth": "align-custom-width",
+							"display": "grid",
+							"gridLayoutType": "fixed",
+							"gridColumns": {
+								"Tablet": 2
+							},
+							"columnGap": {
+								"Desktop": "2.5rem"
+							},
+							"rowGap": {
+								"Desktop": "2.5rem"
+							},
+							"padding": {
+								"Desktop": {
+									"top": "0",
+									"right": "0",
+									"bottom": "48px",
+									"left": "0"
+								}
+							},
+							"metadata": {
+								"name": "Footer top"
+							},
+							"customCss": "{{SELECTOR}} { grid-template-columns: 1.5fr repeat(3, 1fr); } {{SELECTOR}} { align-items: start; } {{SELECTOR}} { justify-items: start; } {{SELECTOR}} { text-align: left; } @media (max-width: 768px) { {{SELECTOR}} { grid-template-columns: 1fr; } }"
+						},
+						"innerBlocks": [
+							{
+								"name": "blockish/container",
+								"attributes": {
+									"isVariationPicked": true,
+									"containerWidth": "align-custom-width",
+									"flexDirection": {
+										"Desktop": {
+											"label": "Column",
+											"value": "column"
+										}
+									},
+									"justifyContent": [],
+									"alignItems": [],
+									"columnGap": {
+										"Desktop": "0"
+									},
+									"rowGap": {
+										"Desktop": "0"
+									},
+									"metadata": {
+										"name": "Brand"
+									}
+								},
+								"innerBlocks": [
+									{
+										"name": "blockish/container",
+										"attributes": {
+											"isVariationPicked": true,
+											"containerWidth": "align-custom-width",
+											"flexDirection": {
+												"Desktop": {
+													"label": "Row",
+													"value": "row"
+												}
+											},
+											"justifyContent": [],
+											"alignItems": {
+												"Desktop": {
+													"label": "Center",
+													"value": "center"
+												}
+											},
+											"columnGap": {
+												"Desktop": "5px"
+											},
+											"metadata": {
+												"name": "Brand mark"
+											}
+										},
+										"innerBlocks": [
+											{
+												"name": "blockish/site-logo",
+												"attributes": {
+													"logoWidth": {
+														"Desktop": "36px"
+													}
+												},
+												"innerBlocks": []
+											},
+											{
+												"name": "blockish/site-title",
+												"attributes": {
+													"tag": {
+														"label": "P",
+														"value": "p"
+													},
+													"themeOverrideLevel": "3",
+													"margin": {
+														"Desktop": {
+															"top": "0px",
+															"bottom": "0px"
+														}
+													}
+												},
+												"innerBlocks": []
+											}
+										]
+									},
+									{
+										"name": "blockish/paragraph",
+										"attributes": {
+											"content": "AI builds the page. You Accept. Same WordPress editor.",
+											"margin": {
+												"Desktop": {
+													"top": "1.15rem",
+													"right": "0",
+													"bottom": "0",
+													"left": "0"
+												}
+											},
+											"maxWidth": {
+												"Desktop": "16rem"
+											}
+										},
+										"innerBlocks": []
+									}
+								]
+							},
+							{
+								"name": "blockish/container",
+								"attributes": {
+									"isVariationPicked": true,
+									"containerWidth": "align-custom-width",
+									"flexDirection": {
+										"Desktop": {
+											"label": "Column",
+											"value": "column"
+										}
+									},
+									"justifyContent": [],
+									"alignItems": [],
+									"rowGap": {
+										"Desktop": "0.85rem"
+									},
+									"metadata": {
+										"name": "Product"
+									}
+								},
+								"innerBlocks": [
+									{
+										"name": "blockish/heading",
+										"attributes": {
+											"content": "Product",
+											"tag": {
+												"label": "H4",
+												"value": "h4"
+											},
+											"margin": {
+												"Desktop": {
+													"top": "0",
+													"right": "0",
+													"bottom": "0.65rem",
+													"left": "0"
+												}
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/paragraph",
+										"attributes": {
+											"content": "Features",
+											"url": {
+												"url": "/#features",
+												"newTab": false,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/paragraph",
+										"attributes": {
+											"content": "How it works",
+											"url": {
+												"url": "/#workflow",
+												"newTab": false,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/paragraph",
+										"attributes": {
+											"content": "Pricing",
+											"url": {
+												"url": "/#pricing",
+												"newTab": false,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/paragraph",
+										"attributes": {
+											"content": "FAQ",
+											"url": {
+												"url": "/#faq",
+												"newTab": false,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									}
+								]
+							},
+							{
+								"name": "blockish/container",
+								"attributes": {
+									"isVariationPicked": true,
+									"containerWidth": "align-custom-width",
+									"flexDirection": {
+										"Desktop": {
+											"label": "Column",
+											"value": "column"
+										}
+									},
+									"justifyContent": [],
+									"alignItems": [],
+									"rowGap": {
+										"Desktop": "0.85rem"
+									},
+									"metadata": {
+										"name": "Resources"
+									}
+								},
+								"innerBlocks": [
+									{
+										"name": "blockish/heading",
+										"attributes": {
+											"content": "Resources",
+											"tag": {
+												"label": "H4",
+												"value": "h4"
+											},
+											"margin": {
+												"Desktop": {
+													"top": "0",
+													"right": "0",
+													"bottom": "0.65rem",
+													"left": "0"
+												}
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/paragraph",
+										"attributes": {
+											"content": "Documentation",
+											"url": {
+												"url": "https://blockish.wowdevs.com",
+												"newTab": true,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/paragraph",
+										"attributes": {
+											"content": "WordPress.org",
+											"url": {
+												"url": "https://wordpress.org/plugins/blockish/",
+												"newTab": true,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									}
+								]
+							},
+							{
+								"name": "blockish/container",
+								"attributes": {
+									"isVariationPicked": true,
+									"containerWidth": "align-custom-width",
+									"flexDirection": {
+										"Desktop": {
+											"label": "Column",
+											"value": "column"
+										}
+									},
+									"justifyContent": [],
+									"alignItems": [],
+									"rowGap": {
+										"Desktop": "0.85rem"
+									},
+									"metadata": {
+										"name": "Account"
+									}
+								},
+								"innerBlocks": [
+									{
+										"name": "blockish/heading",
+										"attributes": {
+											"content": "Account",
+											"tag": {
+												"label": "H4",
+												"value": "h4"
+											},
+											"margin": {
+												"Desktop": {
+													"top": "0",
+													"right": "0",
+													"bottom": "0.65rem",
+													"left": "0"
+												}
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/paragraph",
+										"attributes": {
+											"content": "Customer portal",
+											"url": {
+												"url": "https://blockish.wowdevs.com",
+												"newTab": true,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/paragraph",
+										"attributes": {
+											"content": "Support",
+											"url": {
+												"url": "https://blockish.wowdevs.com",
+												"newTab": true,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/paragraph",
+										"attributes": {
+											"content": "support@wowdevs.com",
+											"url": {
+												"url": "mailto:support@wowdevs.com",
+												"newTab": false,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									}
+								]
+							}
+						]
+					},
+					{
+						"name": "blockish/container",
+						"attributes": {
+							"isVariationPicked": true,
+							"containerWidth": "align-custom-width",
+							"flexWrap": {
+								"Desktop": "wrap"
+							},
+							"flexDirection": {
+								"Desktop": {
+									"label": "Row",
+									"value": "row"
+								}
+							},
+							"justifyContent": {
+								"Desktop": {
+									"label": "Space Between",
+									"value": "space-between"
+								}
+							},
+							"alignItems": {
+								"Desktop": {
+									"label": "Center",
+									"value": "center"
+								}
+							},
+							"columnGap": {
+								"Desktop": "1rem"
+							},
+							"rowGap": {
+								"Desktop": "1rem"
+							},
+							"containerBorder": "{\"top\":{\"width\":{\"Desktop\":\"1px\"},\"style\":\"solid\",\"color\":\"currentColor\"}}",
+							"padding": {
+								"Desktop": {
+									"top": "1.25rem",
+									"right": "0",
+									"bottom": "1.75rem",
+									"left": "0"
+								}
+							},
+							"metadata": {
+								"name": "Footer bottom"
+							}
+						},
+						"innerBlocks": [
+							{
+								"name": "blockish/paragraph",
+								"attributes": {
+									"content": "© WowDevs. All rights reserved.",
+									"margin": {
+										"Desktop": {
+											"top": "0",
+											"right": "0",
+											"bottom": "0",
+											"left": "0"
+										}
+									}
+								},
+								"innerBlocks": []
+							},
+							{
+								"name": "blockish/social-icons",
+								"attributes": {
+									"flexWrap": {
+										"Desktop": {
+											"label": "Unwrap",
+											"value": "nowrap"
+										}
+									},
+									"alignment": {
+										"Desktop": {
+											"label": "Right",
+											"value": "flex-end"
+										}
+									},
+									"iconSpacing": {
+										"Desktop": "10px"
+									},
+									"margin": {
+										"Desktop": {
+											"top": "0",
+											"right": "0",
+											"bottom": "0",
+											"left": "auto"
+										}
+									},
+									"widthType": {
+										"Desktop": {
+											"label": "Auto",
+											"value": "auto"
+										}
+									}
+								},
+								"innerBlocks": [
+									{
+										"name": "blockish/social-icon-item",
+										"attributes": {
+											"network": {
+												"label": "X",
+												"value": "x"
+											},
+											"label": "X",
+											"officialColor": "#000000",
+											"link": {
+												"url": "https://twitter.com",
+												"newTab": true,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/social-icon-item",
+										"attributes": {
+											"network": {
+												"label": "GitHub",
+												"value": "github"
+											},
+											"label": "GitHub",
+											"officialColor": "#181717",
+											"link": {
+												"url": "https://github.com",
+												"newTab": true,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/social-icon-item",
+										"attributes": {
+											"network": {
+												"label": "YouTube",
+												"value": "youtube"
+											},
+											"label": "YouTube",
+											"officialColor": "#FF0000",
+											"link": {
+												"url": "https://youtube.com",
+												"newTab": true,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									},
+									{
+										"name": "blockish/social-icon-item",
+										"attributes": {
+											"network": {
+												"label": "LinkedIn",
+												"value": "linkedin"
+											},
+											"label": "LinkedIn",
+											"officialColor": "#0A66C2",
+											"link": {
+												"url": "https://linkedin.com",
+												"newTab": true,
+												"noFollow": false
+											}
+										},
+										"innerBlocks": []
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+]

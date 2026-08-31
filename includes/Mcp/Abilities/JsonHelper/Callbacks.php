@@ -8,7 +8,10 @@ use WP_Error;
 
 class Callbacks
 {
-    public static function execute(array $_input): array|WP_Error
+    /**
+     * @return array<string, mixed>|WP_Error
+     */
+    public static function execute(array $_input)
     {
         $action = $_input['action'] ?? '';
         $data   = $_input['data'] ?? null;

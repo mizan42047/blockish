@@ -1,0 +1,133 @@
+{
+	"name": "core/query",
+	"attributes": {
+		"query": {
+			"perPage": 10,
+			"pages": 0,
+			"offset": 0,
+			"postType": "post",
+			"order": "desc",
+			"orderBy": "date",
+			"author": "",
+			"search": "",
+			"exclude": [],
+			"sticky": "",
+			"inherit": true
+		}
+	},
+	"innerBlocks": [
+		{
+			"name": "core/post-template",
+			"attributes": {
+				"style": {
+					"spacing": {
+						"blockGap": "var:preset|spacing|30",
+						"padding": {
+							"top": "0",
+							"bottom": "0"
+						}
+					}
+				},
+				"layout": {
+					"type": "grid",
+					"columnCount": 3,
+					"autoFit": true
+				}
+			},
+			"innerBlocks": [
+				{
+					"name": "blockish/container",
+					"attributes": {
+						"isVariationPicked": true,
+						"containerWidth": "align-custom-width",
+						"flexDirection": {
+							"Desktop": {
+								"label": "Column",
+								"value": "column"
+							}
+						}
+					},
+					"innerBlocks": [
+						{
+							"name": "blockish/post-featured-image"
+						},
+						{
+							"name": "blockish/container",
+							"attributes": {
+								"isVariationPicked": true,
+								"containerWidth": "align-custom-width",
+								"flexDirection": {
+									"Desktop": {
+										"label": "Column",
+										"value": "column"
+									}
+								},
+								"padding": {
+									"Desktop": {
+										"top": "var:preset|spacing|20",
+										"right": "var:preset|spacing|30",
+										"bottom": "var:preset|spacing|20",
+										"left": "var:preset|spacing|30"
+									}
+								}
+							},
+							"innerBlocks": [
+								{
+									"name": "blockish/post-info",
+									"attributes": {
+										"gap": {
+											"Desktop": "0px"
+										},
+										"typography": "{\"fontSize\":{\"Desktop\":\"0.75rem\"}}"
+									}
+								},
+								{
+									"name": "blockish/post-title",
+									"attributes": {
+										"typography": "{\"fontSize\":{\"Desktop\":\"1.75rem\"}}"
+									}
+								},
+								{
+									"name": "blockish/post-excerpt",
+									"attributes": {
+										"typography": "{\"fontSize\":{\"Desktop\":\"0.95rem\"}}"
+									}
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "core/query-pagination",
+			"attributes": {
+				"paginationArrow": "chevron",
+				"layout": {
+					"type": "flex",
+					"verticalAlignment": "center",
+					"justifyContent": "center"
+				},
+				"style": {
+					"spacing": {
+						"margin": {
+							"top": "var:preset|spacing|60",
+							"bottom": "var:preset|spacing|60"
+						}
+					}
+				}
+			},
+			"innerBlocks": [
+				{
+					"name": "core/query-pagination-previous"
+				},
+				{
+					"name": "core/query-pagination-numbers"
+				},
+				{
+					"name": "core/query-pagination-next"
+				}
+			]
+		}
+	]
+}

@@ -4,13 +4,10 @@ import {
 	__experimentalText as Text,
 	__experimentalVStack as VStack,
 } from '@wordpress/components';
-import { applyFilters } from '@wordpress/hooks';
-import { orderSidebarMenus, SIDEBAR_MENUS } from '../utils';
+import { getSidebarMenus } from '../utils';
 
-export default function DashboardSidebar( { activeMenu, onMenuClick } ) {
-	const menus = orderSidebarMenus(
-		applyFilters( 'blockish.dashboard.sidebarMenus', SIDEBAR_MENUS )
-	);
+export default function DashboardSidebar( { activeMenu, onMenuClick, extensions = {} } ) {
+	const menus = getSidebarMenus( extensions );
 
 	return (
 		<aside className="blockish-sidebar">

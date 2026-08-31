@@ -2,6 +2,8 @@
 
 namespace Blockish\Routes;
 
+use Blockish\Extensions\ThemeBuilder;
+use Blockish\ThemeBuilder\SiteEditorMigration;
 use WP_REST_Controller;
 use WP_REST_Request;
 
@@ -70,6 +72,10 @@ class ExtensionsV1 extends WP_REST_Controller {
 					$extension['status'] = 'locked';
 				}
 			}
+
+			if ( 'theme-builder' === $slug ) {
+				$extension = self::apply_theme_builder_availability( $extension );
+			}
 		}
 
 		return rest_ensure_response(
@@ -112,6 +118,10 @@ class ExtensionsV1 extends WP_REST_Controller {
 				continue;
 			}
 
+			if ( 'theme-builder' === $slug && 'active' === $status && ! ThemeBuilder::is_available_for_site() ) {
+				continue;
+			}
+
 			$next[ $slug ]['status'] = $status;
 
 			if ( is_array( $incoming ) && isset( $incoming['settings'] ) && is_array( $incoming['settings'] ) ) {
@@ -141,16 +151,41 @@ class ExtensionsV1 extends WP_REST_Controller {
 
 		update_option( self::EXTENSION_OPTION, $next );
 
-		return rest_ensure_response(
-			array(
-				'status'     => 'success',
-				'extensions' => $next,
-				'message'    => array( 'Extensions list has been updated successfully.' ),
-			)
-		);
+		// Same ordered payload as GET (hardcoded ExtensionList order), not option key order.
+		$response = $this->get_extensions();
+		$data     = $response->get_data();
+		if ( is_array( $data ) ) {
+			$data['message'] = array( 'Extensions list has been updated successfully.' );
+			$response->set_data( $data );
+		}
+
+		return $response;
 	}
 
 	private function get_saved_extensions() {
 		return get_option( self::EXTENSION_OPTION, array() );
+	}
+
+	/**
+	 * Theme Builder is classic-theme only; expose migration hints on block themes.
+	 *
+	 * @param array $extension Extension payload.
+	 * @return array
+	 */
+	private static function apply_theme_builder_availability( $extension ) {
+		if ( ThemeBuilder::is_available_for_site() ) {
+			$extension['unavailable'] = false;
+			unset( $extension['unavailableReason'], $extension['themeBuilderMigration'] );
+			return $extension;
+		}
+
+		$extension['unavailable']       = true;
+		$extension['unavailableReason'] = __(
+			'Theme Builder is for classic themes only. Block themes use the Site Editor. Your preference is kept — switch back to a classic theme and Theme Builder will work again without re-enabling.',
+			'blockish'
+		);
+		$extension['themeBuilderMigration'] = SiteEditorMigration::get_status();
+
+		return $extension;
 	}
 }

@@ -193,6 +193,18 @@ class DashboardToolsV1 extends WP_REST_Controller {
 
 		register_rest_route(
 			$this->namespace,
+			'/' . $this->rest_base . '/theme-override-settings',
+			array(
+				array(
+					'methods'             => 'POST',
+					'callback'            => array( $this, 'update_theme_override_settings' ),
+					'permission_callback' => array( $this, 'permissions_check' ),
+				),
+			)
+		);
+
+		register_rest_route(
+			$this->namespace,
 			'/' . $this->rest_base . '/generate-mcp-password',
 			array(
 				array(
@@ -466,14 +478,18 @@ class DashboardToolsV1 extends WP_REST_Controller {
 		$seo_settings = array(
 			'global_meta_description' => get_option( 'blockish_global_meta_description', '' ),
 		);
+		$theme_override_settings = array(
+			'global_theme_override_level' => \Blockish\Core\ThemeOverride::get_global_level(),
+		);
 
 		return rest_ensure_response(
 			array(
-				'status'             => 'success',
-				'schemas'            => $schemas,
-				'classManager'       => $class_manager,
-				'globalInteractions' => $global_interactions,
-				'seoSettings'        => $seo_settings,
+				'status'                 => 'success',
+				'schemas'                => $schemas,
+				'classManager'           => $class_manager,
+				'globalInteractions'     => $global_interactions,
+				'seoSettings'            => $seo_settings,
+				'themeOverrideSettings'  => $theme_override_settings,
 			)
 		);
 	}
@@ -487,6 +503,22 @@ class DashboardToolsV1 extends WP_REST_Controller {
 				'status'      => 'success',
 				'seoSettings' => array(
 					'global_meta_description' => get_option( 'blockish_global_meta_description', '' ),
+				),
+			)
+		);
+	}
+
+	public function update_theme_override_settings( WP_REST_Request $request ) {
+		$level = \Blockish\Core\ThemeOverride::sanitize_level(
+			(int) $request->get_param( 'global_theme_override_level' )
+		);
+		update_option( \Blockish\Core\ThemeOverride::OPTION_KEY, $level, false );
+
+		return rest_ensure_response(
+			array(
+				'status'                => 'success',
+				'themeOverrideSettings' => array(
+					'global_theme_override_level' => \Blockish\Core\ThemeOverride::get_global_level(),
 				),
 			)
 		);

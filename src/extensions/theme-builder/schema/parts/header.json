@@ -1,0 +1,172 @@
+[
+	{
+		"name": "blockish/container",
+		"attributes": {
+			"isVariationPicked": true,
+			"overflow": {
+				"label": "Hidden",
+				"value": "hidden"
+			},
+			"innerContentWidth": true,
+			"padding": {
+				"Desktop": {
+					"top": "var:preset|spacing|30",
+					"right": "var:preset|spacing|30",
+					"bottom": "var:preset|spacing|30",
+					"left": "var:preset|spacing|30"
+				}
+			}
+		},
+		"innerBlocks": [
+			{
+				"name": "blockish/container",
+				"attributes": {
+					"isVariationPicked": true,
+					"containerWidth": "align-custom-width",
+					"customWidthContainer": {},
+					"justifyContent": {
+						"Desktop": {
+							"label": "Space Between",
+							"value": "space-between"
+						}
+					},
+					"widthType": {
+						"Desktop": {
+							"value": "100%",
+							"label": "Full"
+						}
+					}
+				},
+				"innerBlocks": [
+					{
+						"name": "blockish/container",
+						"attributes": {
+							"isVariationPicked": true,
+							"containerWidth": "align-custom-width",
+							"alignItems": {
+								"Desktop": {
+									"label": "Center",
+									"value": "center"
+								}
+							},
+							"columnGap": {
+								"Desktop": "5px"
+							}
+						},
+						"innerBlocks": [
+							{
+								"name": "blockish/site-logo",
+								"attributes": {
+									"logoWidth": {
+										"Desktop": "30px"
+									}
+								}
+							},
+							{
+								"name": "blockish/site-title",
+								"attributes": {
+									"tag": {
+										"value": "p",
+										"label": "P"
+									},
+									"themeOverrideLevel": "1",
+									"margin": {
+										"Desktop": {
+											"top": "0px",
+											"bottom": "0px"
+										}
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "blockish/container",
+						"attributes": {
+							"isVariationPicked": true,
+							"containerWidth": "align-custom-width"
+						},
+						"innerBlocks": [
+							{
+								"name": "blockish/navigation",
+								"attributes": {
+									"hasStarted": true
+								},
+								"innerBlocks": [
+									{
+										"name": "blockish/navmenu",
+										"attributes": {},
+										"innerBlocks": [
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "Home",
+													"url": "/"
+												}
+											},
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "About",
+													"url": "/about/"
+												}
+											},
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "Services",
+													"url": "/services/"
+												}
+											},
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "Contact",
+													"url": "/contact/"
+												}
+											}
+										]
+									},
+									{
+										"name": "blockish/offcanvas",
+										"attributes": {},
+										"innerBlocks": [
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "Home",
+													"url": "/"
+												}
+											},
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "About",
+													"url": "/about/"
+												}
+											},
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "Services",
+													"url": "/services/"
+												}
+											},
+											{
+												"name": "blockish/navmenu-item",
+												"attributes": {
+													"label": "Contact",
+													"url": "/contact/"
+												}
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+]

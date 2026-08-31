@@ -36,6 +36,7 @@ Stylesheet + defaults (omit = these already apply). Write only what differs.
 :where(.blockish-site-title) { text-align: left; }
 
 /* Stylesheet */
+.blockish-site-title { margin: 0; }
 .blockish-site-title a { color: inherit; text-decoration: inherit; }
 ```
 

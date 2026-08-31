@@ -8,6 +8,28 @@ import { isValidMenu } from '../utils';
 import DashboardSidebar from './dashboard-sidebar';
 import ContentArea from './content-area';
 
+const THEME_BUILDER_SLUG = 'theme-builder';
+
+function isBlockThemeSite() {
+	return Boolean(window.blockishDashboardData?.isBlockTheme);
+}
+
+/**
+ * Theme Builder is classic-theme only — never bulk-enable on block themes.
+ */
+function filterBulkEnableSlugs(status, slugs, extensions = {}) {
+	const targets =
+		Array.isArray(slugs) && slugs.length > 0
+			? slugs
+			: Object.keys(extensions || {});
+
+	if (status !== 'active' || !isBlockThemeSite()) {
+		return targets;
+	}
+
+	return targets.filter((slug) => slug !== THEME_BUILDER_SLUG);
+}
+
 export default function App() {
 	const { setActiveMenu, loadDashboard, saveDashboard, updateModuleStatus, updateModuleSettings } = useDispatch(STORE_NAME);
 	const history = useHistory();
@@ -45,10 +67,10 @@ export default function App() {
 			return;
 		}
 
-		if (isValidMenu(routeMenu) && routeMenu !== activeMenu) {
+		if (isValidMenu(routeMenu, data?.extensions) && routeMenu !== activeMenu) {
 			setActiveMenu(routeMenu);
 		}
-	}, [location, activeMenu, setActiveMenu]);
+	}, [location, activeMenu, setActiveMenu, data?.extensions]);
 
 	const handleSave = () =>
 		saveDashboard({
@@ -83,20 +105,18 @@ export default function App() {
 	};
 
 	const handleToggleExtension = (slug, enabled) => {
+		const extension = data?.extensions?.[slug];
+		if (enabled && (extension?.unavailable || (slug === THEME_BUILDER_SLUG && isBlockThemeSite()))) {
+			return;
+		}
 		pendingSaveRef.current = true;
 		updateModuleStatus('extensions', slug, enabled ? 'active' : 'inactive');
 	};
 
 	const handleSetAllExtensionStatus = (status, slugs = null) => {
 		pendingSaveRef.current = true;
-		if (Array.isArray(slugs) && slugs.length > 0) {
-			slugs.forEach((slug) => {
-				updateModuleStatus('extensions', slug, status);
-			});
-			return;
-		}
-
-		Object.keys(data?.extensions || {}).forEach((slug) => {
+		const targets = filterBulkEnableSlugs(status, slugs, data?.extensions);
+		targets.forEach((slug) => {
 			updateModuleStatus('extensions', slug, status);
 		});
 	};
@@ -197,7 +217,11 @@ export default function App() {
 					</div>
 				</div>
 			)}
-			<DashboardSidebar activeMenu={activeMenu} onMenuClick={handleMenuClick} />
+			<DashboardSidebar
+				activeMenu={activeMenu}
+				onMenuClick={handleMenuClick}
+				extensions={data?.extensions}
+			/>
 
 			<FlexBlock as="main" className="blockish-main-content">
 				{isLoading && (

@@ -24,6 +24,15 @@ class ExtensionList extends ConfigList {
     }
 
     /**
+     * Theme Builder is classic-theme only.
+     *
+     * @return bool
+     */
+    private function is_theme_builder_allowed() {
+        return function_exists( 'wp_is_block_theme' ) && ! wp_is_block_theme();
+    }
+
+    /**
      * Sets the list of extensions.
      * This method defines the specific extension configuration items.
      */
@@ -57,6 +66,13 @@ class ExtensionList extends ConfigList {
                 'category'    => 'general',
                 'status'      => 'active',
             ),
+            'theme-builder' => array(
+                'name'        => __( 'Theme Builder', 'blockish' ),
+                'description' => __( 'Build site templates and template parts for classic themes — header, footer, front-page, page, single, archive, search, 404, and more — with Blockish blocks. Block themes use the Site Editor instead.', 'blockish' ),
+                'package'     => 'free',
+                'category'    => 'general',
+                'status'      => 'inactive',
+            ),
             'dynamic-data' => array(
                 'name'        => __( 'Dynamic Data', 'blockish' ),
                 'description' => __( 'Adds dynamic data binding capabilities to blocks.', 'blockish' ),
@@ -78,6 +94,29 @@ class ExtensionList extends ConfigList {
         );
 
         $this->list = apply_filters( 'blockish/extensions/list', $this->list );
+    }
+
+    /**
+     * @param string      $data   list|active
+     * @param string|null $module Extension slug.
+     * @return array|false
+     */
+    public function get_list( $data = 'list', $module = null ) {
+        $result = parent::get_list( $data, $module );
+
+        if ( 'active' !== $data || $this->is_theme_builder_allowed() ) {
+            return $result;
+        }
+
+        if ( null !== $module ) {
+            return ( 'theme-builder' === $module ) ? false : $result;
+        }
+
+        if ( is_array( $result ) ) {
+            unset( $result['theme-builder'] );
+        }
+
+        return $result;
     }
 
     /**

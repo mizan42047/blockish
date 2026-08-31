@@ -26,6 +26,17 @@ import useExtensionsAttributes from "./use-extensions-attributes";
 import generateCSS from "./generate-css";
 import deviceList from "./device-list";
 import generateBackgroundOverlayStyles from "./generate-background-overlay-styles";
+import {
+	getGlobalThemeOverrideLevel,
+	resolveThemeOverrideLevel,
+	sanitizeLevel,
+	nestedClassNames,
+	wrapperSelector,
+	wrapperClassList,
+	replaceWrapperToken,
+	THEME_OVERRIDE_MAX,
+	NESTED_CLASS_PREFIX,
+} from "./theme-override";
 import "./editor-sync";
 
 if( window?.blockish?.screen ){
@@ -58,5 +69,14 @@ if( window?.blockish?.screen ){
         useExtensionsAttributes,
         generateCSS,
         generateBackgroundOverlayStyles,
+        getGlobalThemeOverrideLevel,
+        resolveThemeOverrideLevel,
+        sanitizeLevel,
+        nestedClassNames,
+        wrapperSelector,
+        wrapperClassList,
+        replaceWrapperToken,
+        THEME_OVERRIDE_MAX,
+        NESTED_CLASS_PREFIX,
     }
 }

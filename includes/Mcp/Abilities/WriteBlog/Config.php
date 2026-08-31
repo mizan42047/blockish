@@ -21,7 +21,7 @@ class Config
                     'post_type'    => ['type' => 'string',  'description' => 'Post type slug. Defaults to "post".'],
                     'post_title'   => ['type' => 'string'],
                     'post_content' => ['type' => 'string'],
-                    'post_status'  => ['type' => 'string',  'description' => 'draft, publish, private, etc. Defaults to "draft".'],
+                    'post_status'  => ['type' => 'string',  'description' => 'publish, draft, private, etc. Defaults to "publish".'],
                     'post_excerpt' => ['type' => 'string'],
                     'post_parent'  => [
                         'type'        => 'integer',

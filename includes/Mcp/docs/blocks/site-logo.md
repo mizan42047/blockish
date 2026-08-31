@@ -36,8 +36,8 @@ Stylesheet + defaults (omit = these already apply). Write only what differs.
 /* Stylesheet */
 :where(.blockish-site-logo) { text-align: left; }
 :where(.blockish-site-logo .blockish-site-logo__image) { width: 120px; }
-.blockish-site-logo { margin: 0; }
-.blockish-site-logo a { display: inline-block; }
+.blockish-site-logo { margin: 0; line-height: 0; }
+.blockish-site-logo a { display: block; }
 .blockish-site-logo .blockish-site-logo__image { display: block; height: auto; }
 ```
 

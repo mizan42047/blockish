@@ -21,6 +21,8 @@ class ExtensionsLoader
      */
     private function load_active_extensions()
     {
+        // Bootstrap first so block-theme deactivation runs before ExtensionList reads options.
+        \Blockish\Extensions\ThemeBuilder::get_instance();
         \Blockish\Extensions\ClassManager::get_instance();
         \Blockish\Extensions\Interaction::get_instance();
         \Blockish\Extensions\Visibility::get_instance();

@@ -338,6 +338,20 @@ class ClassManager {
 
 		if ( wp_is_block_theme() ) {
 			$this->collect_used_post_ids_from_template_parts( $seen_content_ids );
+		} elseif (
+			class_exists( '\Blockish\ThemeBuilder\ClassicThemeBridge' )
+			&& \Blockish\ThemeBuilder\ClassicThemeBridge::is_enabled()
+		) {
+			$match = \Blockish\ThemeBuilder\ClassicThemeBridge::get_resolved_template();
+			if ( is_array( $match ) && ! empty( $match['post'] ) && $match['post'] instanceof \WP_Post ) {
+				$content = (string) $match['post']->post_content;
+				if ( '' !== $content ) {
+					$blocks = parse_blocks( $content );
+					PostPrime::prime_pattern_refs_from_blocks( $blocks );
+					$this->collect_used_post_ids_from_blocks( $blocks, $seen_content_ids );
+				}
+			}
+			$this->collect_used_post_ids_from_theme_builder_parts( $seen_content_ids );
 		}
 	}
 
@@ -355,6 +369,51 @@ class ClassManager {
 
 		foreach ( $parts as $part ) {
 			if ( ! $part instanceof \WP_Post || ! is_string( $part->post_content ) || '' === $part->post_content ) {
+				continue;
+			}
+			if ( ! empty( $seen_content_ids[ (int) $part->ID ] ) ) {
+				continue;
+			}
+			$seen_content_ids[ (int) $part->ID ] = true;
+			$blocks = parse_blocks( $part->post_content );
+			PostPrime::prime_pattern_refs_from_blocks( $blocks );
+			$this->collect_used_post_ids_from_blocks( $blocks, $seen_content_ids );
+		}
+
+		if ( class_exists( '\Blockish\Extensions\ThemeBuilder' ) && \Blockish\Extensions\ThemeBuilder::is_enabled() ) {
+			$this->collect_used_post_ids_from_theme_builder_parts( $seen_content_ids );
+		}
+	}
+
+	/**
+	 * Theme Builder parts are not wp_template_part posts — scan active parts for Class Manager IDs.
+	 *
+	 * @param array<int, true> $seen_content_ids
+	 */
+	private function collect_used_post_ids_from_theme_builder_parts( &$seen_content_ids ) {
+		$parts = get_posts(
+			array(
+				'post_type'              => 'blockish_tb',
+				'post_status'            => 'publish',
+				'posts_per_page'         => 100,
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => true,
+				'update_post_term_cache' => false,
+				'meta_query'             => array(
+					array(
+						'key'   => 'blockish_tb_kind',
+						'value' => 'part',
+					),
+				),
+			)
+		);
+
+		foreach ( $parts as $part ) {
+			if ( ! $part instanceof \WP_Post || ! is_string( $part->post_content ) || '' === $part->post_content ) {
+				continue;
+			}
+			$active = get_post_meta( $part->ID, 'blockish_tb_active', true );
+			if ( '' !== $active && ! $active ) {
 				continue;
 			}
 			if ( ! empty( $seen_content_ids[ (int) $part->ID ] ) ) {

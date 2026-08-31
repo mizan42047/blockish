@@ -34,6 +34,7 @@ class StyleGenerator
         add_action('untrash_post', [$this, 'delete_cache_on_save']); // Fires when restoring from trash  
         add_action('delete_attachment', [$this, 'delete_cache_on_save']); // Fires when an attachment is permanently deleted  
         add_action('update_option_permalink_structure', [$this, 'delete_cache_on_save']); // Fires when permalink structure changes
+        add_action('update_option_' . ThemeOverride::OPTION_KEY, [$this, 'delete_cache_on_save']);
     }
 
     public function delete_cache_on_save($post_id)
@@ -94,10 +95,14 @@ class StyleGenerator
     {
         $block_class = $block['attrs']['blockClass'] ?? '';
         if (!empty($block['blockName']) && str_contains($block['blockName'], 'blockish') && !empty($block_class)) {
+            $override_level = ThemeOverride::resolve_level( $block['attrs'] ?? array() );
             $block_content = new \WP_HTML_Tag_Processor($block_content);
             $block_content->next_tag();
             $block_content->add_class($block_class);
             $block_content->add_class('blockish-block-wrapper');
+            foreach ( ThemeOverride::nested_class_names( $override_level ) as $nested_class ) {
+                $block_content->add_class( $nested_class );
+            }
             return $block_content->get_updated_html();
         }
 
@@ -134,28 +139,31 @@ class StyleGenerator
             return $block_data;
         }
 
+        $attr_hash = md5( $block_data['blockName'] . wp_json_encode( $block_data['attrs'] ?? array() ) );
+
         $cache_key = $this->get_cache_key();
-        if (!empty($this->get_cached_css_data($cache_key)[$this->block_count])) {
-            $cached_data = $this->get_cached_css_data($cache_key)[$this->block_count];
-            $cached_block_name = $cached_data['blockName'];
-            $cached_block_class = $cached_data['blockClass'];
-            $cached_css = $cached_data['css'];
+        if ( ! empty( $this->get_cached_css_data( $cache_key )[ $this->block_count ] ) ) {
+            $cached_data        = $this->get_cached_css_data( $cache_key )[ $this->block_count ];
+            $cached_block_name  = $cached_data['blockName'] ?? '';
+            $cached_block_class = $cached_data['blockClass'] ?? '';
+            $cached_attr_hash   = $cached_data['attrHash'] ?? '';
+            $cached_css         = $cached_data['css'] ?? '';
             if (
                 $block_data['blockName'] === $cached_block_name &&
-                !empty($cached_css) &&
-                !empty($cached_block_class)
+                $attr_hash === $cached_attr_hash &&
+                ! empty( $cached_css ) &&
+                ! empty( $cached_block_class )
             ) {
                 $block_data['attrs']['blockClass'] = $cached_block_class;
-                $this->collected_block_css .= $cached_css;
-                $this->block_count += 1;
+                $this->collected_block_css        .= $cached_css;
+                $this->block_count                += 1;
                 return $block_data;
             }
         }
-
-        $attr_hash = md5($block_data['blockName'] . wp_json_encode($block_data['attrs'] ?? []));
         $block_data['attrs']['blockClass'] = 'bb-' . substr($attr_hash, 0, 6);
-        $block_css_class = $block_data['attrs']['blockClass'].'.blockish-block-wrapper';
         $block_class = $block_data['attrs']['blockClass'];
+        $override_level = ThemeOverride::resolve_level( $block_data['attrs'] ?? array() );
+        $wrapper_root = ThemeOverride::wrapper_selector( $block_class, $override_level );
         $name = str_replace(['blockish-dynamicity/', 'blockish/'], '', $block_data['blockName']);
         $metadata = \Blockish\Core\Utilities::get_block_metadata($name);
         $block_meta_attributes = $metadata['attributes'] ?? [];
@@ -174,11 +182,11 @@ class StyleGenerator
             $attribute_value = $attributes[$meta_key];
 
             // Function to apply CSS to the rules
-            $apply_css = function ($device_slug, $value) use ($meta_attr, &$css_rules, $block_css_class) {
+            $apply_css = function ($device_slug, $value) use ($meta_attr, &$css_rules, $wrapper_root) {
                 if (!empty($meta_attr['selectors'])) {
                     foreach ($meta_attr['selectors'] as $selector => $rule) {
                         $final_rule = Utilities::replace_css_placeholders($rule, $value);
-                        $selector = str_replace('{{WRAPPER}}', $block_css_class, $selector);
+                        $selector = ThemeOverride::replace_wrapper_token_with_root( $selector, $wrapper_root );
                         $css_rules[$device_slug][$selector] = isset($css_rules[$device_slug][$selector])
                             ? $css_rules[$device_slug][$selector] . $final_rule
                             : $final_rule;
@@ -187,7 +195,10 @@ class StyleGenerator
 
                 if (!empty($meta_attr['groupSelector']['type'])) {
                     $type = $meta_attr['groupSelector']['type'];
-                    $selector = str_replace('{{WRAPPER}}', $block_css_class, $meta_attr['groupSelector']['selector']);
+                    $selector = ThemeOverride::replace_wrapper_token_with_root(
+                        $meta_attr['groupSelector']['selector'],
+                        $wrapper_root
+                    );
 
                     switch ($type) {
                         case 'BlockishBackground':
@@ -273,9 +284,11 @@ class StyleGenerator
                         $condition_met = false;
                         switch ($rule['condition']) {
                             case '==':
+                                // phpcs:ignore Universal.Operators.StrictComparisons.LooseEqual -- Dynamic rules may compare mixed scalar types.
                                 $condition_met = ($processed_condition_value == $rule['value']);
                                 break;
                             case '!=':
+                                // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual -- Dynamic rules may compare mixed scalar types.
                                 $condition_met = ($processed_condition_value != $rule['value']);
                                 break;
                             case 'empty':
@@ -333,17 +346,24 @@ class StyleGenerator
                 $custom_css = '';
             }
 
-            $selector   = '.' . $block_css_class;
+            $selector   = $wrapper_root;
             $custom_css = preg_replace( '/\{\{\s*SELECTOR\s*\}\}/', $selector, $custom_css );
             $custom_css = preg_replace( '/\bSELECTOR\b/', $selector, $custom_css );
-            $final_css .= $custom_css;
+            // Drop unresolved placeholders — corrupt customCss must not break the whole page stylesheet.
+            if ( false !== strpos( $custom_css, '{{' ) ) {
+                $custom_css = '';
+            }
+            if ( '' !== trim( $custom_css ) ) {
+                $final_css .= $custom_css;
+            }
         }
 
-        $cached_css_data = [
-            'blockName' => $block_data['blockName'],
+        $cached_css_data = array(
+            'blockName'  => $block_data['blockName'],
             'blockClass' => $block_class,
-            'css' => $final_css
-        ];
+            'attrHash'   => $attr_hash,
+            'css'        => $final_css,
+        );
 
         $merged_cached_data = $this->get_cached_css_data($cache_key);
         $merged_cached_data[] = $cached_css_data;

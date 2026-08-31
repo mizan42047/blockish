@@ -32,10 +32,10 @@ class Callbacks
 			}
 			$post = get_post( $post_id );
 			if ( ! $post ) {
-				throw new \Exception( 'post_id ' . $post_id . ' not found.' );
+				throw new \Exception( esc_html( sprintf( 'post_id %d not found.', $post_id ) ) );
 			}
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
-				throw new \Exception( 'You cannot edit post_id ' . $post_id . '.' );
+				throw new \Exception( esc_html( sprintf( 'You cannot edit post_id %d.', $post_id ) ) );
 			}
 		} elseif ( ! current_user_can( 'edit_theme_options' ) ) {
 			throw new \Exception( 'edit_theme_options is required for global interactions.' );

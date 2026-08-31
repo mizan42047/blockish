@@ -5,8 +5,8 @@ Plugin URI: https://blockish.wowdevs.com/
 Contributors: bdkoder, mizan42047
 Donate link: https://wowdevs.com/
 Tags: mcp, ai site builder, gutenberg, block editor, class manager
-Tested up to: 7.0
-Stable tag: 1.2.7
+Tested up to: 7.1
+Stable tag: 1.2.9
 Requires at least: 6.2
 Requires PHP: 7.4
 License: GPL-2.0-or-later
@@ -167,6 +167,23 @@ Terms of Service: https://freemius.com/terms/
 7. Class Manager Extension Panel
 
 == Changelog ==
+
+= 1.2.9 =
+
+* Improved: PHPCS/WPCS configuration — focus on security and compatibility checks; skip formatting-only sniffs
+* Fixed: PHP 7.4 compatibility in MCP Json Helper (removed union return type)
+* Fixed: Prepared SQL, exception escaping, and empty-code hygiene across MCP callbacks and AI Preview
+* Fixed: Magic Login redirect encoding (no double urlencode; `add_query_arg` handles encoding)
+* Improved: Media upload cleanup uses `wp_delete_file()`; stricter base64 decode for MCP uploads
+
+= 1.2.8 =
+
+* Added: Theme Builder extension (classic themes) — build headers, footers, and page templates with Blockish blocks; includes WooCommerce template and part starters
+* Added: MCP support for Theme Builder — AI can list and stage classic-theme templates and template parts via `get-templates` and `manage-template`
+* Added: Theme Override control on blocks — choose when Blockish styling should win over theme CSS
+* Improved: MCP-created pages and posts default to published status (layout changes still stage for Accept/Discard in the editor)
+* Improved: AI Preview Accept/Discard bar overlays the staged layout instead of leaving a blank row at the top
+* Note: Theme Builder is for classic themes only — block themes continue to use the Site Editor
 
 = 1.2.7 =
 

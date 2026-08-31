@@ -5,7 +5,7 @@
  * Description:       Build sites with AI via MCP (Cursor, Claude). 30+ Gutenberg blocks, Class Manager, and review & Accept in the editor.
  * Requires at least: 6.2
  * Requires PHP:      7.4
- * Version:           1.2.7
+ * Version:           1.2.9
  * Author:            wowdevs
  * Author URI:        https://wowdevs.com
  * Plugin URI:        https://blockish.wowdevs.com/
@@ -34,6 +34,7 @@ use Blockish\Routes\ClassPreviousV1;
 use Blockish\Routes\DashboardToolsV1;
 use Blockish\Routes\EditorSyncV1;
 use Blockish\Routes\ExtensionsV1;
+use Blockish\Routes\ThemeBuilderV1;
 use Blockish\Routes\IntegrationsV1;
 use Blockish\Routes\SVGUploaderV1;
 
@@ -54,7 +55,7 @@ final class Blockish
      *
      * @var string
      */
-    const VERSION = '1.2.7';
+    const VERSION = '1.2.8';
 
     /**
      * Holds the instance of this class.
@@ -160,6 +161,7 @@ final class Blockish
         LicenseNotice::get_instance();
         BlocksV1::get_instance();
         ExtensionsV1::get_instance();
+        ThemeBuilderV1::get_instance();
         EditorSyncV1::get_instance();
         ClassPreviousV1::get_instance();
         AiPreviewQueueV1::get_instance();

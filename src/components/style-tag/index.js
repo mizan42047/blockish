@@ -2,10 +2,27 @@ import { memo, useMemo } from '@wordpress/element';
 import { getBlockType } from '@wordpress/blocks';
 
 const BlockishStyleTag = ({ attributes, hash, name, additionalStyles = '' }) => {
-    const { useDeviceList, replaceCssPlaceholders, replaceString, generateCssString, isResponsiveValue, generateBackgroundControlStyles, generateBorderControlStyles, generateShadowControlStyles, generateTypographyControlStyles, generateCSSFilters, generateTextStrokeControlStyles, generateBackgroundOverlayStyles } = window.blockish.helpers;
+    const {
+        useDeviceList,
+        replaceCssPlaceholders,
+        generateCssString,
+        isResponsiveValue,
+        generateBackgroundControlStyles,
+        generateBorderControlStyles,
+        generateShadowControlStyles,
+        generateTypographyControlStyles,
+        generateCSSFilters,
+        generateTextStrokeControlStyles,
+        generateBackgroundOverlayStyles,
+        resolveThemeOverrideLevel,
+        wrapperSelector,
+        replaceWrapperToken,
+    } = window.blockish.helpers;
 
     const deviceList = useDeviceList();
     const schemaAttributes = getBlockType(name)?.attributes || {};
+    const overrideLevel = resolveThemeOverrideLevel( attributes );
+    const wrapperRoot = wrapperSelector( hash, overrideLevel );
 
     const styles = useMemo(() => {
         const cssRules = Object.fromEntries(deviceList.map(device => [device.slug, {}]));
@@ -18,13 +35,13 @@ const BlockishStyleTag = ({ attributes, hash, name, additionalStyles = '' }) => 
             const attributeValue = attributes[metaKey];
             const applyCss = (deviceSlug, value) => {
                 for (const selectorKey in metaAttribute.selectors) {
-                    const selector = replaceString(selectorKey, '{{WRAPPER}}', `bb-${hash}.blockish-block-wrapper`);
+                    const selector = replaceWrapperToken( selectorKey, wrapperRoot );
                     cssRules[deviceSlug][selector] = (cssRules[deviceSlug][selector] || '') + replaceCssPlaceholders(metaAttribute.selectors[selectorKey], value);
                 }
 
                 if (metaAttribute?.groupSelector && metaAttribute?.groupSelector?.type) {
                     const type = metaAttribute?.groupSelector?.type;
-                    const selector = replaceString(metaAttribute?.groupSelector?.selector, '{{WRAPPER}}', `bb-${hash}.blockish-block-wrapper`);
+                    const selector = replaceWrapperToken( metaAttribute?.groupSelector?.selector, wrapperRoot );
                     switch (type) {
                         case 'BlockishBackground':
                             let styles = generateBackgroundControlStyles(value, deviceSlug);
@@ -124,11 +141,11 @@ const BlockishStyleTag = ({ attributes, hash, name, additionalStyles = '' }) => 
         const rawCustomCss = attributes?.customCss || '';
         const isTemplateCss = String(rawCustomCss).replace(/\s+/g, '') === '{{SELECTOR}}{}';
         const customCss = (isTemplateCss ? '' : rawCustomCss)
-            .replace(/\{\{\s*SELECTOR\s*\}\}/g, `.bb-${hash}`)
-            .replace(/\bSELECTOR\b/g, `.bb-${hash}`);
+            .replace(/\{\{\s*SELECTOR\s*\}\}/g, wrapperRoot)
+            .replace(/\bSELECTOR\b/g, wrapperRoot);
 
         return `${generatedStyles}${customCss}`;
-    }, [attributes, hash, deviceList]);
+    }, [attributes, hash, deviceList, overrideLevel, wrapperRoot, schemaAttributes]);
 
     return <style>{styles + additionalStyles}</style>;
 };

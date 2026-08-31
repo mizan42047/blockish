@@ -27,7 +27,7 @@ class Callbacks
         $redirect_to = $input['redirect_to'] ?? admin_url();
         $magic_url = add_query_arg([
             'blockish_magic_token' => $token,
-            'redirect_to' => urlencode($redirect_to)
+            'redirect_to'          => $redirect_to,
         ], site_url());
 
         return ['url' => $magic_url];

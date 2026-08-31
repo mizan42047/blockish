@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <ruleset name="WordPress Plugin Coding Standards">
-	<description>A custom ruleset for the Blockish plugin.</description>
+	<description>Blockish PHPCS — security + WP APIs; formatting not enforced (spaces/short arrays OK).</description>
 
-	<!-- What to scan -->
 	<file>.</file>
 	<exclude-pattern>/vendor/</exclude-pattern>
 	<exclude-pattern>/node_modules/</exclude-pattern>
@@ -10,33 +9,78 @@
 	<exclude-pattern>/tests/</exclude-pattern>
 	<exclude-pattern>/.github/</exclude-pattern>
 	<exclude-pattern>/.wordpress-org/</exclude-pattern>
-	<exclude-pattern>/src/</exclude-pattern> <!-- usually contains JS/TS, exclude if no PHP -->
+	<exclude-pattern>/src/</exclude-pattern>
 
-	<!-- How to scan -->
-	<arg value="sp"/> <!-- Show sniff and progress -->
+	<arg value="sp"/>
 	<arg name="basepath" value="./"/>
 	<arg name="colors"/>
 	<arg name="extensions" value="php"/>
 	<arg name="parallel" value="8"/>
 
-	<!-- Rules: Check PHP version compatibility -->
 	<config name="testVersion" value="7.4-"/>
+	<config name="minimum_supported_wp_version" value="6.0"/>
 	<rule ref="PHPCompatibilityWP"/>
 
-	<!-- Rules: WordPress Coding Standards -->
-	<config name="minimum_supported_wp_version" value="6.0"/>
-	<rule ref="WordPress-Core"/>
-	<rule ref="WordPress-Docs"/>
-	<rule ref="WordPress-Extra"/>
+	<!-- WordPress-Core without mass formatting sniffs (codebase uses spaces + short arrays) -->
+	<rule ref="WordPress-Core">
+		<exclude name="Generic.WhiteSpace.DisallowSpaceIndent"/>
+		<exclude name="Generic.WhiteSpace.ArbitraryParenthesesSpacing"/>
+		<exclude name="Generic.Arrays.DisallowLongArraySyntax"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="Universal.WhiteSpace.CommaSpacing"/>
+		<exclude name="Generic.Formatting.MultipleStatementAlignment"/>
+		<exclude name="Generic.Formatting.SpaceAfterCast"/>
+		<exclude name="Generic.ControlStructures.InlineControlStructure"/>
+		<exclude name="Generic.Files.LineEndings"/>
+		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing"/>
+		<exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions"/>
+		<exclude name="WordPress.Arrays.MultipleStatementAlignment"/>
+		<exclude name="WordPress.WhiteSpace.CastStructureSpacing"/>
+		<exclude name="NormalizedArrays.Arrays.ArrayBraceSpacing"/>
+		<exclude name="NormalizedArrays.Arrays.CommaAfterLast"/>
+		<exclude name="PEAR.Functions.FunctionCallSignature"/>
+		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing"/>
+		<exclude name="Squiz.Functions.MultiLineFunctionDeclaration"/>
+		<exclude name="Squiz.Strings.DoubleQuoteUsage"/>
+		<exclude name="Squiz.WhiteSpace.SuperfluousWhitespace"/>
+		<exclude name="Squiz.ControlStructures.ControlSignature"/>
+		<exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie"/>
+		<exclude name="Generic.Classes.OpeningBraceSameLine"/>
+		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing"/>
+		<exclude name="WordPress.WhiteSpace.OperatorSpacing"/>
+		<exclude name="PSR2.Methods.FunctionClosingBrace"/>
+		<exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
+		<exclude name="PSR2.ControlStructures.ElseIfDeclaration"/>
+		<exclude name="PSR12.Traits.UseDeclaration.NoBlankLineAfterUse"/>
+	</rule>
 
-	<!-- Verify that the text_domain is set to the desired text-domain -->
+	<rule ref="WordPress-Extra">
+		<exclude name="WordPress.PHP.YodaConditions"/>
+		<exclude name="Universal.Operators.DisallowShortTernary"/>
+		<exclude name="Universal.Operators.DisallowStandalonePostIncrementDecrement"/>
+		<exclude name="Squiz.PHP.CommentedOutCode.Found"/>
+		<exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents"/>
+		<exclude name="WordPress.WP.AlternativeFunctions.parse_url_parse_url"/>
+		<exclude name="WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase"/>
+		<exclude name="WordPress.NamingConventions.ValidHookName.UseUnderscores"/>
+		<!-- Nice-to-have / low signal on legacy codebase -->
+		<exclude name="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+		<exclude name="Generic.CodeAnalysis.UselessOverridingMethod"/>
+		<exclude name="Universal.ControlStructures.DisallowLonelyIf"/>
+		<exclude name="Universal.Files.SeparateFunctionsFromOO"/>
+		<exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames"/>
+		<exclude name="WordPress.NamingConventions.ValidFunctionName"/>
+		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
+	</rule>
+
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="blockish"/>
+			<property name="text_domain" type="array">
+				<element value="blockish"/>
+			</property>
 		</properties>
 	</rule>
 
-	<!-- Allow for theme specific exceptions to the file name rules based on the theme hierarchy -->
 	<rule ref="WordPress.Files.FileName">
 		<properties>
 			<property name="strict_class_file_names" value="false"/>

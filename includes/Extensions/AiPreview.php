@@ -18,33 +18,20 @@ class AiPreview {
 		global $wpdb;
 
 		$limit    = max( 1, min( 500, $limit ) );
-		$like     = '%' . $wpdb->esc_like( self::BLOCK_COMMENT ) . '%';
-		$excluded = array(
-			'revision',
-			'nav_menu_item',
-			'customize_changeset',
-			'oembed_cache',
-			'user_request',
-			'wp_global_styles',
-			'wp_navigation',
-			'attachment',
-			'blockish-classes',
-		);
-
-		$placeholders = implode( ',', array_fill( 0, count( $excluded ), '%s' ) );
-		$params       = array_merge( $excluded, array( $like, $limit ) );
+		$like = '%' . $wpdb->esc_like( self::BLOCK_COMMENT ) . '%';
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT ID, post_type, post_title, post_name, post_status, post_modified, post_content
 				FROM {$wpdb->posts}
-				WHERE post_type NOT IN ({$placeholders})
+				WHERE post_type NOT IN ('revision','nav_menu_item','customize_changeset','oembed_cache','user_request','wp_global_styles','wp_navigation','attachment','blockish-classes')
 				AND post_status IN ('publish','draft','private','pending','future','auto-draft')
 				AND post_content LIKE %s
 				ORDER BY post_modified DESC
 				LIMIT %d",
-				...$params
+				$like,
+				$limit
 			),
 			ARRAY_A
 		);

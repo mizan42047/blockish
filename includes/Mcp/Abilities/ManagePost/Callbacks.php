@@ -140,7 +140,7 @@ class Callbacks
             }
             $args['post_type'] = $input['post_type'];
             $args['post_title'] = $input['post_title'];
-            $args['post_status'] = $input['post_status'] ?? 'draft';
+            $args['post_status'] = $input['post_status'] ?? 'publish';
             $args['post_excerpt'] = $input['post_excerpt'] ?? '';
             $args['post_parent'] = isset( $input['post_parent'] ) ? max( 0, (int) $input['post_parent'] ) : 0;
 

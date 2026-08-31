@@ -48,14 +48,25 @@ export default function ExtensionsPage({
 	const allExtensions = useMemo(() => {
 		return Object.entries(extensions || {}).map(([slug, item]) => {
 			const categoryKey = getExtensionCategoryKey(item, slug);
+			const isUnavailable = Boolean(item?.unavailable);
+			const status =
+				item?.status === 'locked'
+					? 'locked'
+					: (item?.status === 'inactive' || isUnavailable ? 'inactive' : 'active');
+
 			return {
 				slug,
 				name: item?.name || humanizeSlug(slug),
-				status: item?.status === 'locked' ? 'locked' : (item?.status === 'inactive' ? 'inactive' : 'active'),
+				status,
+				unavailable: isUnavailable,
+				unavailableReason: item?.unavailableReason || '',
+				themeBuilderMigration: item?.themeBuilderMigration || null,
 				categoryKey,
 				categoryLabel:
 					categoryKey === 'animation' ? __('Animation', 'blockish') : __('General', 'blockish'),
-				description: item?.description || __('Extension module', 'blockish'),
+				description: isUnavailable
+					? __('Classic themes only. Block themes use the Site Editor.', 'blockish')
+					: (item?.description || __('Extension module', 'blockish')),
 				hasSpecialControls: Boolean(EXTENSION_CONTROL_MAP[slug]) || slug === 'class-manager',
 				sourceName: item?.addon_name || item?.source_name || 'Blockish',
 			};

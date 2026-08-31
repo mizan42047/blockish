@@ -1,5 +1,6 @@
 import { applyFilters } from '@wordpress/hooks';
 import { addQueryArgs, getQueryArgs, removeQueryArgs } from '@wordpress/url';
+import { layout } from '@wordpress/icons';
 import {
 	blocks as blocksIcon,
 	layoutDashboard,
@@ -8,6 +9,10 @@ import {
 	settingsIcon,
 	zap,
 } from '../../components/icons/block-icons';
+
+export { settingsIcon };
+
+export const THEME_BUILDER_MENU_KEY = 'theme-builder';
 
 export const SIDEBAR_MENUS = [
 	{ key: 'dashboard', label: 'Dashboard', icon: layoutDashboard },
@@ -25,6 +30,52 @@ export const SIDEBAR_MENUS = [
 		icon: packageIcon,
 	},
 ];
+
+export function isThemeBuilderExtensionActive(extensions = {}) {
+	const tb = extensions?.[THEME_BUILDER_MENU_KEY];
+	if (!tb || tb.unavailable) {
+		return false;
+	}
+	return tb.status === 'active';
+}
+
+/**
+ * Inject Theme Builder after Extensions when that extension is enabled.
+ *
+ * @param {Array}  menus
+ * @param {Object} extensions
+ * @return {Array}
+ */
+export function withThemeBuilderMenu(menus = [], extensions = {}) {
+	const list = (Array.isArray(menus) ? menus : []).filter(
+		(menu) => menu?.key !== THEME_BUILDER_MENU_KEY
+	);
+
+	if (!isThemeBuilderExtensionActive(extensions)) {
+		return list;
+	}
+
+	const item = {
+		key: THEME_BUILDER_MENU_KEY,
+		label: 'Theme Builder',
+		icon: layout,
+		callback: () => {
+			const url = window.blockishThemeBuilderAdmin?.listUrl;
+			if (url) {
+				window.location.href = url;
+			}
+		},
+	};
+
+	const extensionsIndex = list.findIndex((menu) => menu?.key === 'extensions');
+	if (extensionsIndex >= 0) {
+		list.splice(extensionsIndex + 1, 0, item);
+	} else {
+		list.push(item);
+	}
+
+	return list;
+}
 
 /**
  * Pin Integrations → Forms → Addons at the bottom of the sidebar.
@@ -52,6 +103,15 @@ export function orderSidebarMenus(menus = []) {
 	];
 }
 
+export function getSidebarMenus(extensions = {}) {
+	return orderSidebarMenus(
+		withThemeBuilderMenu(
+			applyFilters('blockish.dashboard.sidebarMenus', SIDEBAR_MENUS),
+			extensions
+		)
+	);
+}
+
 export const BLOCK_FILTERS = [
 	{ key: 'all', label: 'All' },
 	{ key: 'layout', label: 'Layout' },
@@ -69,11 +129,8 @@ export const EXTENSION_FILTERS = [
 export const EXTENSION_CONTROL_MAP = {
 };
 
-export function isValidMenu(menuKey) {
-	const menus = orderSidebarMenus(
-		applyFilters('blockish.dashboard.sidebarMenus', SIDEBAR_MENUS)
-	);
-	return menus.some((menu) => menu.key === menuKey);
+export function isValidMenu(menuKey, extensions = {}) {
+	return getSidebarMenus(extensions).some((menu) => menu.key === menuKey);
 }
 
 export function getBlockCategoryKey(item = {}, slug = '') {

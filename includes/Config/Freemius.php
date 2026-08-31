@@ -254,6 +254,7 @@ class Freemius {
 		$is_cron    = wp_doing_cron();
 		$is_cli     = defined( 'WP_CLI' ) && WP_CLI;
 		$is_rest    = $this->is_rest_request_early();
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Freemius webhook/callback detection only.
 		$is_webhook = isset( $_REQUEST['fs_action'] ) || isset( $_REQUEST['freemius'] );
 
 		if ( ! $is_admin && ! $is_ajax && ! $is_cron && ! $is_cli && ! $is_rest && ! $is_webhook ) {
