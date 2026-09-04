@@ -1,5 +1,9 @@
 .blockish-navmenu {
+	overflow: visible;
+
 	.blockish-navmenu-nav {
+		overflow: visible;
+
 		> .block-list-appender {
 			position: relative !important;
 
@@ -8,5 +12,52 @@
 				display: flex !important;
 			}
 		}
+	}
+
+	// Editor submenu panel wrapper & list reset for Gutenberg inner blocks.
+	.blockish-navmenu-submenu__panel {
+		min-height: 0;
+		overflow: visible;
+	}
+
+	.blockish-navmenu-submenu__list {
+		display: flex;
+		flex-direction: column;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		background: transparent;
+		border: 0;
+		box-shadow: none;
+
+		:where(&) {
+			gap: 2px;
+		}
+
+		> .blockish-block-navmenu-item,
+		> .wp-block-blockish-navmenu-item {
+			max-width: none !important;
+			margin: 0 !important;
+			background: transparent !important;
+			box-shadow: none !important;
+
+			&.is-selected > .blockish-navmenu-item-link {
+				background: rgba( 0, 0, 0, 0.04 );
+			}
+		}
+	}
+
+	// Selected branch reveals the dropdown for editing in Gutenberg.
+	.blockish-block-navmenu-item.is-selected > .blockish-navmenu-item-children,
+	.blockish-block-navmenu-item.has-child-selected > .blockish-navmenu-item-children {
+		display: block;
+		pointer-events: auto;
+	}
+
+	.blockish-block-navmenu-item.is-selected > .blockish-navmenu-item-children > .blockish-navmenu-submenu,
+	.blockish-block-navmenu-item.has-child-selected > .blockish-navmenu-item-children > .blockish-navmenu-submenu {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
 	}
 }

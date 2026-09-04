@@ -1,18 +1,156 @@
 .blockish-offcanvas {
 	.blockish-offcanvas-nav {
-		// Match the frontend's tight, flush list: strip the editor's default
-		// block spacing between items so the divider borders sit flush.
-		> .blockish-block-navmenu-item {
-			margin: 0;
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		width: 100%;
+
+		> .wp-block,
+		> .blockish-block-navmenu-item,
+		> .wp-block-blockish-navmenu-item {
+			display: flex !important;
+			width: 100% !important;
+			max-width: 100% !important;
+			margin-left: 0 !important;
+			margin-right: 0 !important;
+			box-sizing: border-box;
 		}
 
 		> .block-list-appender {
 			position: relative !important;
+			width: 100%;
 
 			.block-editor-inserter__toggle.components-button.has-icon,
 			.block-list-appender__toggle {
 				display: flex !important;
 			}
 		}
+	}
+
+	// —— Mobile accordion (editor, offcanvas only) ——
+	.blockish-block-navmenu-item {
+		flex-wrap: wrap;
+		align-items: center;
+		column-gap: 4px;
+		background: transparent;
+
+		> .blockish-navmenu-item-link {
+			display: flex;
+			flex: 1 1 auto;
+			width: auto;
+			min-width: 0;
+			cursor: text;
+
+			.rich-text {
+				white-space: inherit !important;
+			}
+		}
+
+		> .blockish-navmenu-submenu-toggle {
+			display: inline-flex !important;
+			flex: 0 0 auto;
+			align-self: center;
+			cursor: pointer;
+
+			&:focus-visible {
+				outline: none;
+				box-shadow: inset 0 0 0 2px currentColor;
+			}
+		}
+
+		> .blockish-navmenu-item-children {
+			display: grid;
+			grid-template-rows: 0fr;
+			flex: 1 1 100%;
+			width: 100%;
+			min-width: 100%;
+			opacity: 0;
+			pointer-events: none;
+			transition:
+				grid-template-rows 0.36s cubic-bezier( 0.22, 1, 0.36, 1 ),
+				opacity 0.28s ease;
+			background: transparent;
+		}
+
+		&.is-selected > .blockish-navmenu-item-children,
+		&.is-submenu-open > .blockish-navmenu-item-children,
+		&.has-child-selected > .blockish-navmenu-item-children {
+			grid-template-rows: 1fr;
+			opacity: 1;
+			pointer-events: auto;
+		}
+	}
+
+	.blockish-navmenu-submenu {
+		display: block !important;
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		min-height: 0;
+		overflow: hidden;
+		background: transparent;
+		border: 0;
+		box-shadow: none;
+	}
+
+	.blockish-navmenu-submenu__panel {
+		min-height: 0;
+		overflow: hidden;
+	}
+
+	.blockish-navmenu-submenu__list {
+		display: flex;
+		flex-direction: column;
+		list-style: none;
+		margin: 0;
+		padding: 4px 0 4px 12px;
+		border-left: 2px solid #dcdcde;
+		background: transparent;
+		box-sizing: border-box;
+	}
+
+	.blockish-navmenu-submenu .blockish-navmenu-submenu__list {
+		border-left-color: #e8e8e8;
+	}
+
+	.blockish-navmenu-submenu__list > .blockish-block-navmenu-item,
+	.blockish-navmenu-submenu__list > .wp-block-blockish-navmenu-item {
+		display: flex !important;
+		flex-wrap: wrap;
+		align-items: center;
+		width: 100% !important;
+		max-width: 100% !important;
+		margin: 0 !important;
+		padding: 0;
+		background: transparent !important;
+		box-shadow: none !important;
+		column-gap: 4px;
+
+		&::before,
+		&::after {
+			display: none !important;
+		}
+
+		> .blockish-navmenu-item-link {
+			flex: 1 1 auto;
+			padding: 8px 10px;
+			border-radius: 4px;
+		}
+
+		&.is-selected > .blockish-navmenu-item-link,
+		&:hover > .blockish-navmenu-item-link {
+			background: rgba( 0, 0, 0, 0.04 );
+		}
+
+		> .blockish-navmenu-submenu-toggle {
+			display: inline-flex !important;
+			flex: 0 0 auto;
+		}
+	}
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.blockish-offcanvas .blockish-block-navmenu-item > .blockish-navmenu-item-children {
+		transition: none;
 	}
 }

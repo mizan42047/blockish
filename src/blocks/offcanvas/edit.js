@@ -1,12 +1,21 @@
 import { useBlockProps, useInnerBlocksProps, store as blockEditorStore } from '@wordpress/block-editor';
 import { useState, useEffect } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { createBlock } from '@wordpress/blocks';
+import { cloneBlock } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import clsx from 'clsx';
 import Inspector from './inspector';
 import Branding from './branding';
 import './editor.scss';
+
+/** Stable signature of a block tree (name + attrs + nested children). */
+function blockTreeSig( blocks ) {
+	return blocks.map( ( block ) => ( {
+		name: block.name,
+		attributes: block.attributes,
+		innerBlocks: blockTreeSig( block.innerBlocks || [] ),
+	} ) );
+}
 
 export default function Edit( props ) {
 	const { attributes, clientId } = props;
@@ -36,9 +45,7 @@ export default function Edit( props ) {
 	const [ isOpen, setIsOpen ] = useState( false );
 
 	// Find the sibling navmenu under the shared parent and read its items.
-	// A serialized signature of those items' attributes lets the sync effect
-	// depend on a primitive (stable across renders) instead of fresh array
-	// references, so it only fires when the source actually changes.
+	// Signature includes nested submenu trees so sync fires when children change.
 	const { sourceItems, sourceSig } = useSelect(
 		( select ) => {
 			const { getBlockRootClientId, getBlocks } = select( blockEditorStore );
@@ -51,7 +58,7 @@ export default function Edit( props ) {
 
 			return {
 				sourceItems: items,
-				sourceSig: JSON.stringify( items.map( ( item ) => item.attributes ) ),
+				sourceSig: JSON.stringify( blockTreeSig( items ) ),
 			};
 		},
 		[ clientId ]
@@ -60,9 +67,7 @@ export default function Edit( props ) {
 	const currentSig = useSelect(
 		( select ) =>
 			JSON.stringify(
-				select( blockEditorStore )
-					.getBlocks( clientId )
-					.map( ( block ) => block.attributes )
+				blockTreeSig( select( blockEditorStore ).getBlocks( clientId ) )
 			),
 		[ clientId ]
 	);
@@ -76,10 +81,10 @@ export default function Edit( props ) {
 
 		replaceInnerBlocks(
 			clientId,
-			sourceItems.map( ( item ) => createBlock( 'blockish/navmenu-item', item.attributes ) ),
+			sourceItems.map( ( item ) => cloneBlock( item ) ),
 			false
 		);
-	}, [ syncWithMenu, sourceSig, currentSig, clientId, replaceInnerBlocks ] );
+	}, [ syncWithMenu, sourceSig, currentSig, sourceItems, clientId, replaceInnerBlocks ] );
 
 	const blockProps = useBlockProps( {
 		className: clsx(

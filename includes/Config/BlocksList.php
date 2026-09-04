@@ -238,6 +238,13 @@ class BlocksList extends ConfigList {
                 'status'      => 'active',
                 'parent'      => 'navmenu',
             ),
+            'navmenu-submenu' => array(
+                'name'        => __('Nav Menu Submenu', 'blockish'),
+                'description' => __('A dropdown submenu panel nested under a Nav Menu Item. Contains nested Nav Menu Item blocks.', 'blockish'),
+                'package'     => 'free',
+                'status'      => 'active',
+                'parent'      => 'navmenu-item',
+            ),
             'offcanvas' => array(
                 'name'        => __('Off Canvas', 'blockish'),
                 'description' => __('A mobile slide-in drawer panel with a hamburger menu trigger. Can automatically mirror the sibling Nav Menu items or have custom content. Supports left/right side sliding, custom header, overlay styling, and close button configurations. Must be placed inside a Navigation block.', 'blockish'),

@@ -175,25 +175,112 @@ body.blockish-offcanvas-open {
 		list-style: none;
 		margin: 0;
 		padding: 0;
+		width: 100%;
 	}
 
+	// —— Mobile accordion (offcanvas only) ——
 	.blockish-block-navmenu-item {
-		display: flex;
-		width: 100%;
+		display: flex !important;
+		flex-wrap: wrap;
+		align-items: center;
+		width: 100% !important;
+		max-width: 100%;
+		box-sizing: border-box;
+		column-gap: 4px;
 
 		.blockish-navmenu-item-link {
 			display: flex;
 			align-items: center;
-			width: 100%;
+			flex: 1 1 auto;
+			width: auto;
+			min-width: 0;
 			padding: 12px 8px;
 			color: inherit;
 			text-decoration: none;
 			white-space: normal;
 			border-radius: 4px;
 			transition: background 0.15s ease;
+			box-sizing: border-box;
 
 			&:hover {
 				background: rgba( 0, 0, 0, 0.05 );
+			}
+		}
+
+		.blockish-navmenu-submenu-toggle {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			flex: 0 0 auto;
+			align-self: center;
+			padding: 4px;
+			margin: 0;
+			background: none;
+			border: none;
+			color: inherit;
+			cursor: pointer;
+			line-height: 0;
+			border-radius: 4px;
+			transition: background 0.15s ease, box-shadow 0.15s ease;
+
+			&:hover {
+				background: rgba( 0, 0, 0, 0.05 );
+			}
+
+			&:focus-visible {
+				outline: none;
+				box-shadow: inset 0 0 0 2px currentColor;
+			}
+		}
+
+		.blockish-navmenu-submenu-arrow {
+			display: block;
+			transition: transform 0.3s cubic-bezier( 0.22, 1, 0.36, 1 );
+		}
+
+		&.is-submenu-open > .blockish-navmenu-submenu-toggle .blockish-navmenu-submenu-arrow {
+			transform: rotate( 180deg );
+		}
+
+		> .blockish-navmenu-item-children {
+			display: grid;
+			grid-template-rows: 0fr;
+			flex: 1 1 100%;
+			width: 100%;
+			min-width: 100%;
+			opacity: 0;
+			transition:
+				grid-template-rows 0.36s cubic-bezier( 0.22, 1, 0.36, 1 ),
+				opacity 0.28s ease;
+		}
+
+		&.is-submenu-open > .blockish-navmenu-item-children {
+			grid-template-rows: 1fr;
+			opacity: 1;
+		}
+	}
+
+	.blockish-navmenu-submenu {
+		display: flex;
+		flex-direction: column;
+		list-style: none;
+		margin: 0;
+		padding: 4px 4px 4px 12px;
+		border-left: 2px solid rgba( 0, 0, 0, 0.1 );
+		box-sizing: border-box;
+		min-height: 0;
+		overflow: hidden;
+	}
+
+	.blockish-navmenu-submenu .blockish-navmenu-submenu {
+		border-left-color: rgba( 0, 0, 0, 0.06 );
+	}
+
+	@media ( prefers-reduced-motion: reduce ) {
+		.blockish-block-navmenu-item {
+			> .blockish-navmenu-item-children,
+			.blockish-navmenu-submenu-arrow {
+				transition: none;
 			}
 		}
 	}
